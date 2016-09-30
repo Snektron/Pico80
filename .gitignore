@@ -1,0 +1,5 @@
+.settings/
+build/
+Pico80.exe
+.cproject
+.project
