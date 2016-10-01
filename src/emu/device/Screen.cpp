@@ -80,6 +80,9 @@ void Screen::write(uint8_t value)
 	case CMD_GET_PIXEL:
 		reg_color.write(get_pixel(reg_x.read(), reg_y.read()));
 		break;
+	default:
+		Logger::warn(TAG) << "Unknown command written: " << value << Logger::endl;
+		break;
 	}
 }
 

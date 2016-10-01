@@ -1508,7 +1508,7 @@ int cpu_execute(z80cpu_t *cpu, int cycles) {
 				case 7: // RST y*8
 					context.cycles += 11;
 					push(context.cpu, r->PC);
-					r->PC = context.y * 8;
+					r->PC = context.y * 8;//TODO
 					break;
 				}
 				break;

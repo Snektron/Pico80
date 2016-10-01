@@ -1,14 +1,15 @@
 #include <cstdint>
 #include "emu/Asic.h"
+
+#include "../../include/emu/interrupt/TimerInt.h"
 #include "core/Time.h"
 #include "core/Logger.h"
 #include "emu/memory/Memory.h"
 #include "emu/device/Screen.h"
 #include "emu/device/Log.h"
+#include "emu/interrupt/Interrupt.h"
 
 #define TAG "Asic"
-#define CLOCK_RATE (50000000)
-#define CLOCK_FREQ (500)
 
 Asic::Asic()
 {
@@ -26,8 +27,10 @@ Asic::Asic()
 	memory->get_bank(BANK_C)->write(0x81);
 
 	screen = new Screen();
-
 	log = new Log();
+
+	interrupt = new Interrupt(this);
+	timer0 = new TimerInt(interrupt, 0, SECOND_IN_NANOS / TIMER_0_FREQ);
 
 	cpu = new Z80e::CPU(memory);
 
@@ -36,6 +39,9 @@ Asic::Asic()
 	cpu->add_device(PORT_MEM_BANK_A, memory->get_bank(BANK_A));
 	cpu->add_device(PORT_MEM_BANK_B, memory->get_bank(BANK_B));
 	cpu->add_device(PORT_MEM_BANK_C, memory->get_bank(BANK_C));
+
+	cpu->add_device(PORT_INT_MASK, interrupt->get_interrupt_mask());
+	cpu->add_device(PORT_INT_ACK, interrupt);
 
 	cpu->add_device(PORT_SCRN_CMD, screen);
 	cpu->add_device(PORT_SCRN_REG_X, screen->get_reg_x());
@@ -50,8 +56,6 @@ void Asic::trigger()
 	uint64_t cycles = CLOCK_RATE * Time::nanotoint(passed) / SECOND_IN_NANOS;
 
 	cpu->execute(cycles);
-	if (cycles > 0)
-		cpu->reset_interrupt();
 }
 
 void Asic::render()
@@ -59,9 +63,19 @@ void Asic::render()
 	screen->render();
 }
 
-void Asic::interrupt()
+void Asic::set_interrupt()
 {
 	cpu->set_interrupt();
+}
+
+void Asic::reset_interrupt()
+{
+	cpu->reset_interrupt();
+}
+
+TimerInt* Asic::get_timer_0()
+{
+	return timer0;
 }
 
 Asic::~Asic()
@@ -70,4 +84,5 @@ Asic::~Asic()
 	delete cpu;
 	delete memory;
 	delete screen;
+	delete interrupt;
 }

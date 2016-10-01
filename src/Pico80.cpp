@@ -25,6 +25,7 @@ void Pico80::start()
 {
 	timer.add(this);
 	timer.add(asic);
+	timer.add(asic->get_timer_0());
 	timer.start();
 }
 
