@@ -53,13 +53,21 @@ Screen::~Screen()
 	SDL_FreeSurface(display);
 }
 
-void Screen::render()
+void Screen::get_screen_rect(SDL_Rect& rect)
 {
 	int w = Graphics::get_width(), h = Graphics::get_height();
 	int pix = std::min(w / SCREEN_WIDTH, h / SCREEN_HEIGHT);
 	int sw = pix * SCREEN_WIDTH, sh = pix * SCREEN_HEIGHT;
-	int mx = (w - sw) / 2, my = (h - sw) / 2;
-	SDL_Rect dst = {mx, my, sw, sh};
+	rect.x = (w - sw) / 2;
+	rect.y = (h - sw) / 2;
+	rect.w = sw;
+	rect.h = sh;
+}
+
+void Screen::render()
+{
+	SDL_Rect dst;
+	get_screen_rect(dst);
 
 	SDL_BlitScaled(display, NULL, Graphics::get_surface(), &dst);
 }

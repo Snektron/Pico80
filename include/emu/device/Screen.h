@@ -23,7 +23,10 @@ private:
 public:
 	Screen();
 	~Screen();
+
+	void get_screen_rect(SDL_Rect& rect);
 	void render();
+
 	void write(uint8_t value); // screen command port
 	uint8_t read();
 

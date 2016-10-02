@@ -1,12 +1,14 @@
 #include <cstdint>
 #include "emu/Asic.h"
 
-#include "../../include/emu/interrupt/TimerInt.h"
+#include "emu/interrupt/TimerInt.h"
 #include "core/Time.h"
 #include "core/Logger.h"
+#include "emu/Ports.h"
 #include "emu/memory/Memory.h"
 #include "emu/device/Screen.h"
 #include "emu/device/Log.h"
+#include "emu/device/Mouse.h"
 #include "emu/interrupt/Interrupt.h"
 
 #define TAG "Asic"
@@ -28,6 +30,7 @@ Asic::Asic()
 
 	screen = new Screen();
 	log = new Log();
+	mouse = new Mouse(screen);
 
 	interrupt = new Interrupt(this);
 	timer0 = new TimerInt(interrupt, 0, SECOND_IN_NANOS / TIMER_0_FREQ);
@@ -47,6 +50,9 @@ Asic::Asic()
 	cpu->add_device(PORT_SCRN_REG_X, screen->get_reg_x());
 	cpu->add_device(PORT_SCRN_REG_Y, screen->get_reg_y());
 	cpu->add_device(PORT_SCRN_REG_COLOR, screen->get_reg_color());
+
+	cpu->add_device(PORT_MOUSE_X, mouse->get_mouse_x());
+	cpu->add_device(PORT_MOUSE_Y, mouse->get_mouse_y());
 }
 
 void Asic::trigger()
@@ -54,7 +60,6 @@ void Asic::trigger()
 	Time::nanoseconds passed = Time::nanotime() - last;
 	last = Time::nanotime();
 	uint64_t cycles = CLOCK_RATE * Time::nanotoint(passed) / SECOND_IN_NANOS;
-
 	cpu->execute(cycles);
 }
 
@@ -82,7 +87,10 @@ Asic::~Asic()
 {
 	Logger::info(TAG, "Destroying asic");
 	delete cpu;
-	delete memory;
-	delete screen;
+	delete timer0;
 	delete interrupt;
+	delete mouse;
+	delete log;
+	delete screen;
+	delete memory;
 }
