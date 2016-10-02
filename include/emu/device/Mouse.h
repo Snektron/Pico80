@@ -7,26 +7,28 @@
 
 class MouseDevice : public Z80e::IODevice
 {
-private:
+protected:
 	Screen *screen;
 
 public:
 	MouseDevice(Screen *screen);
 
 	void write(uint8_t value);
-	virtual uint8_t read();
+	virtual uint8_t read() = 0;
 	virtual ~MouseDevice() = default;
 };
 
 class MouseX : public MouseDevice
 {
 public:
+	MouseX(Screen *screen): MouseDevice(screen){}
 	uint8_t read();
 };
 
 class MouseY : public MouseDevice
 {
 public:
+	MouseY(Screen *screen): MouseDevice(screen){}
 	uint8_t read();
 };
 

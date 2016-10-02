@@ -1,5 +1,6 @@
 #include <exception>
 #include <SDL2/SDL.h>
+#include <string>
 #include "core/Graphics.h"
 #include "core/Logger.h"
 
@@ -8,7 +9,7 @@
 SDL_Window *window;
 SDL_Surface *surface;
 
-void Graphics::init(int w, int h)
+void Graphics::init(std::string name, int w, int h)
 {
 	Logger::info(TAG, "Initializing graphics");
 
@@ -18,7 +19,7 @@ void Graphics::init(int w, int h)
 		throw std::runtime_error("Failed to initialize graphics");
 	}
 
-	window = SDL_CreateWindow("Pico80",
+	window = SDL_CreateWindow(name.c_str(),
 			SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 			w, h, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 

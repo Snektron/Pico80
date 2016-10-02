@@ -1,4 +1,5 @@
 #include "Pico80.h"
+#include "core/System.h"
 #include "core/Logger.h"
 #include "core/Graphics.h"
 #include "core/Input.h"
@@ -9,10 +10,7 @@
 
 Pico80::Pico80()
 {
-	Logger::info(TAG, "Starting");
-
-	Time::init();
-	Graphics::init(512, 512);
+	System::init("Pico80", 512, 512);
 
 	set_interval(SECOND_IN_NANOS / FPS);
 
@@ -43,11 +41,7 @@ void Pico80::trigger()
 
 Pico80::~Pico80()
 {
-	Logger::info(TAG, "Stopping");
-
+	System::destroy();
 	delete asic;
-
-	Graphics::destroy();
-
 	Logger::info(TAG, "Stopped");
 }

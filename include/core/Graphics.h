@@ -1,11 +1,12 @@
 #ifndef INCLUDE_CORE_GRAPHICS_H_
 #define INCLUDE_CORE_GRAPHICS_H_
 
+#include <string>
 #include <SDL2/SDL.h>
 
 namespace Graphics
 {
-	void init(int w, int h);
+	void init(std::string name, int w, int h);
 	void update();
 	void destroy();
 	void refresh_surface();
