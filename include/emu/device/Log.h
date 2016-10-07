@@ -2,24 +2,24 @@
 #define INCLUDE_EMU_DEVICE_LOG_H_
 
 #include <cstdint>
-#include <sstream>
+#include <string>
 #include "core/Logger.h"
 #include "z80e/z80e.h"
 
 class Log : public Z80e::IODevice
 {
 private:
-	std::stringstream buffer;
+	std::string buffer;
 
 public:
 	void write(uint8_t value)
 	{
 		if (value)
-			buffer.put((char) value);
+			buffer.append(std::string(1, (char) value));
 		else
 		{
-			Logger::info("Z80", buffer.str());
-			buffer.str("");
+			Logger::info("Z80", buffer);
+			buffer = "";
 		}
 	}
 

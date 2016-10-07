@@ -4,6 +4,7 @@
 #include "core/Graphics.h"
 #include "core/Input.h"
 #include "core/Time.h"
+#include <io.h>
 
 #define TAG "Pico80"
 #define FPS 60

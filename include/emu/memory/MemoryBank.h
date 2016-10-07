@@ -2,15 +2,15 @@
 #define INCLUDE_EMU_MEMORY_MEMORYBANK_H_
 
 #include <cstdint>
-#include "emu/memory/PageRegistery.h"
-#include "emu/memory/MemoryPage.h"
+#include "emu/memory/Page.h"
+#include "PageManager.h"
 #include "z80e/z80e.h"
 
 class MemoryBank : public Z80e::BasicIODevice
 {
 private:
 	PageRegistery *registery;
-	MemoryPage *page;
+	Page *page;
 
 public:
 	MemoryBank(PageRegistery *registery):

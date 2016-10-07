@@ -3,7 +3,8 @@
 
 #include <cstdint>
 #include "emu/memory/MemoryBank.h"
-#include "emu/memory/PageRegistery.h"
+#include "emu/memory/PageManager.h"
+#include "emu/device/StorageController.h"
 #include "z80e/z80e.h"
 
 #define BANK_0 0
@@ -15,10 +16,10 @@ class Memory : public Z80e::Memory
 {
 private:
 	PageRegistery *registery;
-	MemoryBank* banks[4];
+	MemoryBank* bank[4];
 
 public:
-	Memory();
+	Memory(StorageController *store_ctrl);
 	uint8_t read(uint16_t address);
 	void write(uint16_t address, uint8_t value);
 	MemoryBank* get_bank(int bank);

@@ -1,14 +1,14 @@
 #include <cstdint>
 #include "emu/Asic.h"
-
-#include "emu/interrupt/TimerInt.h"
 #include "core/Time.h"
 #include "core/Logger.h"
 #include "emu/Ports.h"
+#include "emu/interrupt/TimerInt.h"
 #include "emu/memory/Memory.h"
 #include "emu/device/Screen.h"
 #include "emu/device/Log.h"
 #include "emu/device/Mouse.h"
+#include "emu/device/StorageController.h"
 #include "emu/interrupt/Interrupt.h"
 
 #define TAG "Asic"
@@ -22,18 +22,20 @@ Asic::Asic()
 
 	last = Time::nanotime();
 
-	memory = new Memory();
+	storage_controller = new StorageController();
+
+	memory = new Memory(storage_controller);
 	memory->get_bank(BANK_0)->write(0);
 	memory->get_bank(BANK_A)->write(0);
-	memory->get_bank(BANK_B)->write(0x80);
-	memory->get_bank(BANK_C)->write(0x81);
+	memory->get_bank(BANK_B)->write(RAM_PAGE(0));
+	memory->get_bank(BANK_C)->write(RAM_PAGE(1));
 
 	screen = new Screen();
 	log = new Log();
 	mouse = new Mouse(screen);
 
 	interrupt = new Interrupt(this);
-	timer0 = new TimerInt(interrupt, 0, SECOND_IN_NANOS / TIMER_0_FREQ);
+	timer0 = new TimerInt(interrupt, INT_TIMER, SECOND_IN_NANOS / TIMER_0_FREQ);
 
 	cpu = new Z80e::CPU(memory);
 
@@ -47,12 +49,15 @@ Asic::Asic()
 	cpu->add_device(PORT_INT_ACK, interrupt);
 
 	cpu->add_device(PORT_SCRN_CMD, screen);
-	cpu->add_device(PORT_SCRN_REG_X, screen->get_reg_x());
-	cpu->add_device(PORT_SCRN_REG_Y, screen->get_reg_y());
-	cpu->add_device(PORT_SCRN_REG_COLOR, screen->get_reg_color());
+	cpu->add_device(PORT_SCRN_ARG0, screen->get_arg0());
+	cpu->add_device(PORT_SCRN_ARG1, screen->get_arg1());
+	cpu->add_device(PORT_SCRN_ARG2, screen->get_arg2());
 
 	cpu->add_device(PORT_MOUSE_X, mouse->get_mouse_x());
 	cpu->add_device(PORT_MOUSE_Y, mouse->get_mouse_y());
+	cpu->add_device(PORT_MOUSE_BTN, mouse->get_mouse_state());
+
+	cpu->add_device(PORT_STORAGE_CTRL, storage_controller);
 }
 
 void Asic::trigger()
@@ -89,8 +94,10 @@ Asic::~Asic()
 	delete cpu;
 	delete timer0;
 	delete interrupt;
+
 	delete mouse;
 	delete log;
 	delete screen;
 	delete memory;
+	delete storage_controller;
 }

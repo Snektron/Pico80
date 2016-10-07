@@ -7,6 +7,7 @@
 #include "emu/device/Screen.h"
 #include "emu/device/Log.h"
 #include "emu/device/Mouse.h"
+#include "emu/device/StorageController.h"
 #include "emu/interrupt/Interrupt.h"
 #include "interrupt/TimerInt.h"
 
@@ -24,6 +25,7 @@ private:
 	Screen *screen;
 	Log *log;
 	Mouse *mouse;
+	StorageController *storage_controller;
 
 	Interrupt *interrupt;
 	TimerInt *timer0;

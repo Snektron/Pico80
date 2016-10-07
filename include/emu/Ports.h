@@ -9,13 +9,17 @@
 
 #define PORT_INT_MASK 4
 #define PORT_INT_ACK 5
+#define INT_TIMER 0
 
 #define PORT_SCRN_CMD 6
-#define PORT_SCRN_REG_X 7
-#define PORT_SCRN_REG_Y 8
-#define PORT_SCRN_REG_COLOR 9
+#define PORT_SCRN_ARG0 7
+#define PORT_SCRN_ARG1 8
+#define PORT_SCRN_ARG2 9
 
 #define PORT_MOUSE_X 10
 #define PORT_MOUSE_Y 11
+#define PORT_MOUSE_BTN 12
+
+#define PORT_STORAGE_CTRL 13
 
 #endif /* INCLUDE_EMU_PORTS_H_ */

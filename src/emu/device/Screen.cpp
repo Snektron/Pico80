@@ -76,17 +76,17 @@ void Screen::write(uint8_t value)
 {
 	switch(value)
 	{
-	case CMD_SYNC:
+	case SC_SYNC:
 		Screen::sync();
 		break;
-	case CMD_CLEAR:
-		clear(reg_color.read());
+	case SC_CLEAR:
+		clear(arg0.read());
 		break;
-	case CMD_SET_PIXEL:
-		set_pixel(reg_x.read(), reg_y.read(), reg_color.read());
+	case SC_SET_PIXEL:
+		set_pixel(arg1.read(), arg2.read(), arg0.read());
 		break;
-	case CMD_GET_PIXEL:
-		reg_color.write(get_pixel(reg_x.read(), reg_y.read()));
+	case SC_GET_PIXEL:
+		arg0.write(get_pixel(arg1.read(), arg2.read()));
 		break;
 	default:
 		Logger::warn(TAG) << "Unknown command written: " << value << Logger::endl;
@@ -127,17 +127,17 @@ uint32_t Screen::palcol(uint8_t index)
 	return SDL_MapRGB(display->format, color.r, color.g, color.b);
 }
 
-Z80e::BasicIODevice* Screen::get_reg_x()
+Z80e::BasicIODevice* Screen::get_arg0()
 {
-	return &reg_x;
+	return &arg0;
 }
 
-Z80e::BasicIODevice* Screen::get_reg_y()
+Z80e::BasicIODevice* Screen::get_arg1()
 {
-	return &reg_y;
+	return &arg1;
 }
 
-Z80e::BasicIODevice* Screen::get_reg_color()
+Z80e::BasicIODevice* Screen::get_arg2()
 {
-	return &reg_color;
+	return &arg2;
 }
