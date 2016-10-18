@@ -1,6 +1,3 @@
-#ifndef INCLUDE_EMU_PORTS_H_
-#define INCLUDE_EMU_PORTS_H_
-
 #define PORT_LOG_OUT 0
 
 #define PORT_MEM_BANK_A 1
@@ -9,7 +6,6 @@
 
 #define PORT_INT_MASK 4
 #define PORT_INT_ACK 5
-#define INT_TIMER 0
 
 #define PORT_SCRN_CMD 6
 #define PORT_SCRN_ARG0 7
@@ -22,4 +18,4 @@
 
 #define PORT_STORAGE_CTRL 13
 
-#endif /* INCLUDE_EMU_PORTS_H_ */
+#define INT_TIMER 0

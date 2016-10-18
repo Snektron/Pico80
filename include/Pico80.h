@@ -4,10 +4,9 @@
 #include "core/Time.h"
 #include "emu/Asic.h"
 
-class Pico80 : Time::TimerCallback
+class Pico80 : Time::Interval
 {
 private:
-	Time::Timer timer;
 	Asic* asic;
 
 public:
@@ -16,6 +15,8 @@ public:
 	void start();
 
 	void trigger();
+
+	void stop();
 
 	~Pico80();
 };

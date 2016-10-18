@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include "emu/device/StorageController.h"
+#include "core/Logger.h"
 
 #define PAGE_SIZE 16384
 

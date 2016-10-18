@@ -1,91 +1,137 @@
-#include <core/Logger.h>
-#include <ostream>
+#include "Logger.h"
+#include <string>
+#include <fstream>
+#include <mutex>
+#include <iostream>
+#include <memory>
 #include <ctime>
 #include <iomanip>
 
-using std::string;
-using std::ostream;
-
-ostream& logout = std::cout;
-
-void logtime(ostream& out)
+namespace Logger
 {
-	time_t t = time(0);
-	struct tm *now = localtime(&t);
-	out << '[' << std::setw(2) << std::setfill('0') << now->tm_hour;
-	out << ':' << std::setw(2) << std::setfill('0') << now->tm_min;
-	out << ':' << std::setw(2) << std::setfill('0') << now->tm_sec << ']';
-}
+	void ConsolePolicy::write(std::string& line)
+	{
+		static std::mutex mutex;
+		std::lock_guard<std::mutex> lock(mutex);
+		std::cout << line << std::endl;
+	}
 
-void loglevel(ostream& out, string level)
-{
-	out << "[" << level << "] ";
-}
+	FilePolicy::FilePolicy(std::string file):
+		out("file", std::ios_base::app)
+	{}
 
-void logtag(ostream& out, string tag)
-{
-	out << tag << ": ";
-}
+	void FilePolicy::write(std::string& line)
+	{
+		if (out)
+		{
+			std::lock_guard<std::mutex> lock(mutex);
+			out << line << std::endl;
+		}
+	}
 
-ostream& loghdr(ostream& out, string level, string tag)
-{
-	logtime(out);
-	loglevel(out, level);
-	logtag(out, tag);
-	return out;
-}
+	FilePolicy::~FilePolicy()
+	{
+		if (out)
+			out.close();
+	}
 
-void Logger::flush()
-{
-	get_stream().flush();
-}
+	LogStream::LogStreamBuf::LogStreamBuf(std::shared_ptr<LoggingPolicy> policy):
+		policy(policy)
+	{}
 
-ostream& Logger::endl(ostream& os)
-{
-	return os << std::endl;
-}
+	LogStream::LogStreamBuf::LogStreamBuf(const LogStreamBuf& copy):
+		policy(copy.policy)
+	{}
 
-ostream& Logger::get_stream()
-{
-	return logout;
-}
+	int LogStream::LogStreamBuf::sync()
+	{
+		std::string msg = str();
+		policy->write(msg);
+		str("");
+		return 0;
+	}
 
-ostream& Logger::debug(string tag)
-{
-	return loghdr(get_stream(), "debug", tag);
-}
+	LogStream::LogStream(std::shared_ptr<LoggingPolicy> policy):
+		buf(policy),
+		std::ostream(&buf)
+	{}
 
-ostream& Logger::info(string tag)
-{
-	return loghdr(get_stream(), "info", tag);
-}
+	LogStream::LogStream(const LogStream& copy):
+		buf(copy.buf),
+		std::ostream(&buf)
+	{}
 
-ostream& Logger::warn(string tag)
-{
-	return loghdr(get_stream(), "warn", tag);
-}
+	namespace
+	{
+		std::shared_ptr<LoggingPolicy> policy(new NullPolicy());
+	}
 
-ostream& Logger::error(string tag)
-{
-	return loghdr(get_stream(), "error", tag);
-}
+	void init(std::shared_ptr<LoggingPolicy> newpolicy)
+	{
+		policy = newpolicy;
+	}
 
-void Logger::debug(string tag, string msg)
-{
-	debug(tag) << msg << Logger::endl;
-}
+	void init(LoggingPolicy *policy)
+	{
+		init(std::shared_ptr<LoggingPolicy>(policy));
+	}
 
-void Logger::info(string tag, string msg)
-{
-	info(tag) << msg << Logger::endl;
-}
+	LogStream log(std::string level, std::string tag)
+	{
+		LogStream stream(policy);
+		time_t t = time(0);
+		struct tm *now = localtime(&t);
+		stream << '[' << std::setw(2) << std::setfill('0') << now->tm_hour;
+		stream << ':' << std::setw(2) << std::setfill('0') << now->tm_min;
+		stream << ':' << std::setw(2) << std::setfill('0') << now->tm_sec;
+		stream << "][" << level << "] " << tag << ": ";
+		return stream;
+	}
 
-void Logger::warn(string tag, string msg)
-{
-	warn(tag) << msg << Logger::endl;
-}
+	LogStream debug(std::string tag)
+	{
+		LogStream stream = log("debug", tag);
+		return stream;
+	}
 
-void Logger::error(string tag, string msg)
-{
-	error(tag) << msg << Logger::endl;
+	LogStream info(std::string tag)
+	{
+		return log("info", tag);
+	}
+
+	LogStream warn(std::string tag)
+	{
+		return log("warn", tag);
+	}
+
+	LogStream error(std::string tag)
+	{
+		return log("error", tag);
+	}
+
+	void debug(std::string tag, std::string msg)
+	{
+		debug(tag) << msg << endl;
+	}
+
+	void info(std::string tag, std::string msg)
+	{
+		info(tag) << msg << endl;
+	}
+
+	void warn(std::string tag, std::string msg)
+	{
+		warn(tag) << msg << endl;
+	}
+
+	void error(std::string tag, std::string msg)
+	{
+		error(tag) << msg << endl;
+	}
+
+	std::ostream& endl(std::ostream& log)
+	{
+		log.flush();
+		return log;
+	}
 }

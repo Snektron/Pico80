@@ -17,53 +17,22 @@ namespace Time
 
 	nanoseconds nanotime();
 
-	uint64_t nanotoint(nanoseconds nanos);
+	uint64_t toint(nanoseconds nanos);
 
-	class TimerCallback
-	{
-	private:
-		Time::point next_trigger;
-		nanoseconds interval;
-
-	public:
-		virtual void trigger() = 0;
-		virtual ~TimerCallback() = default;
-
-		void set_interval(uint64_t newinterval)
-		{
-			interval = nanoseconds(newinterval);
-		}
-
-		nanoseconds get_interval()
-		{
-			return interval;
-		}
-
-		void set_next_trigger(Time::point next)
-		{
-			next_trigger = next;
-		}
-
-		Time::point get_next_trigger()
-		{
-			return next_trigger;
-		}
-	};
-
-	class Timer
+	class Interval
 	{
 	private:
 		bool running;
-		std::list<TimerCallback*> callbacks;
-		TimerCallback* next = nullptr;
+		nanoseconds interval;
 
-		void init();
 	public:
-		Timer();
-		void add(TimerCallback* callback);
-		void remove(TimerCallback* callback);
+		Interval(nanoseconds interval);
 		void start();
 		void stop();
+		virtual void trigger() = 0;
+		void set_interval(nanoseconds interval);
+		nanoseconds get_interval();
+		virtual ~Interval() = default;
 	};
 }
 

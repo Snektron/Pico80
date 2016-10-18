@@ -9,6 +9,7 @@
 
 void System::init(std::string name, int w, int h)
 {
+	Logger::init(new Logger::ConsolePolicy());
 	Logger::info(TAG, "Starting");
 	Time::init();
 	Graphics::init(name, w, h);

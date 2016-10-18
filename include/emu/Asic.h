@@ -16,7 +16,7 @@
 
 #define TIMER_0_FREQ 1
 
-class Asic : public Time::TimerCallback
+class Asic : public Time::Interval
 {
 private:
 	Time::nanoseconds last;
@@ -33,8 +33,10 @@ private:
 	Z80e::CPU *cpu;
 public:
 	Asic();
+	void start();
 	void trigger();
 	void render();
+
 	void set_interrupt();
 	void reset_interrupt();
 	TimerInt* get_timer_0();

@@ -5,7 +5,10 @@
 
 #define TAG "Input"
 
-bool quit = false;
+namespace
+{
+	bool quit = false;
+}
 
 void Input::update()
 {

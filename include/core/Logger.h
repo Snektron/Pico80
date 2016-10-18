@@ -1,36 +1,82 @@
-#ifndef INCLUDE_LOG_LOGGER_H_
-#define INCLUDE_LOG_LOGGER_H_
+#ifndef SRC_LOGGER_H_
+#define SRC_LOGGER_H_
 
-#include <ostream>
-#include <iostream>
 #include <string>
-
-using std::string;
-using std::ostream;
+#include <fstream>
+#include <mutex>
+#include <sstream>
+#include <memory>
 
 namespace Logger
 {
-	void flush();
+	class LoggingPolicy
+	{
+	public:
+		virtual void write(std::string& line) = 0;
+		virtual ~LoggingPolicy() = default;
+	};
 
-	ostream& endl(ostream& os);
+	class ConsolePolicy: public LoggingPolicy
+	{
+	public:
+		void write(std::string& line);
+	};
 
-	ostream& get_stream();
+	class NullPolicy: public LoggingPolicy
+	{
+	public:
+		void write(std::string& line){}
+	};
 
-	ostream& debug(string tag);
+	class FilePolicy: public LoggingPolicy
+	{
+	private:
+		std::ofstream out;
+		std::mutex mutex;
 
-	ostream& info(string tag);
+	public:
+		FilePolicy(std::string file);
+		void write(std::string& line);
+		~FilePolicy();
+	};
 
-	ostream& warn(string tag);
+	class LogStream: public std::ostream
+	{
+	private:
+		class LogStreamBuf: public std::stringbuf
+		{
+		private:
+			std::shared_ptr<LoggingPolicy> policy;
 
-	ostream& error(string tag);
+		public:
+			LogStreamBuf(std::shared_ptr<LoggingPolicy> policy);
+			LogStreamBuf(const LogStreamBuf& copy);
+			int sync();
+		};
 
-	void debug(string tag, string msg);
+		LogStreamBuf buf;
 
-	void info(string tag, string msg);
+	public:
+		LogStream(std::shared_ptr<LoggingPolicy> policy);
+		LogStream(const LogStream& copy);
+	};
 
-	void warn(string tag, string msg);
+	void init(std::shared_ptr<LoggingPolicy> policy);
+	void init(LoggingPolicy *policy);
 
-	void error(string tag, string msg);
+	LogStream log(std::string level, std::string tag);
+
+	LogStream debug(std::string tag);
+	LogStream info(std::string tag);
+	LogStream warn(std::string tag);
+	LogStream error(std::string tag);
+
+	void debug(std::string tag, std::string msg);
+	void info(std::string tag, std::string msg);
+	void warn(std::string tag, std::string msg);
+	void error(std::string tag, std::string msg);
+
+	std::ostream& endl(std::ostream& log);
 }
 
-#endif /* INCLUDE_LOG_LOGGER_H_ */
+#endif /* SRC_LOGGER_H_ */

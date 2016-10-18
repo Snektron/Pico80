@@ -6,8 +6,11 @@
 
 #define TAG "Graphics"
 
-SDL_Window *window;
-SDL_Surface *surface;
+namespace
+{
+	SDL_Window *window;
+	SDL_Surface *surface;
+}
 
 void Graphics::init(std::string name, int w, int h)
 {

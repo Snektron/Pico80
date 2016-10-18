@@ -13,14 +13,12 @@
 
 #define TAG "Asic"
 
-Asic::Asic()
+Asic::Asic():
+	Interval(Time::nanoseconds(SECOND_IN_NANOS / CLOCK_FREQ))
 {
 	Logger::info(TAG, "Initializing asic");
 	Logger::info(TAG) << "Clock rate: " << CLOCK_RATE/1000000.0 << " Mhz" << Logger::endl;
 	Logger::info(TAG) << "Clock freq: " << CLOCK_FREQ << " hz" << Logger::endl;
-	set_interval(SECOND_IN_NANOS / CLOCK_FREQ);
-
-	last = Time::nanotime();
 
 	storage_controller = new StorageController();
 
@@ -60,11 +58,17 @@ Asic::Asic()
 	cpu->add_device(PORT_STORAGE_CTRL, storage_controller);
 }
 
+void Asic::start()
+{
+	last = Time::nanotime();
+	Interval::start();
+}
+
 void Asic::trigger()
 {
 	Time::nanoseconds passed = Time::nanotime() - last;
 	last = Time::nanotime();
-	uint64_t cycles = CLOCK_RATE * Time::nanotoint(passed) / SECOND_IN_NANOS;
+	uint64_t cycles = CLOCK_RATE * Time::toint(passed) / SECOND_IN_NANOS;
 	cpu->execute(cycles);
 }
 

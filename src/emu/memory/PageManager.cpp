@@ -89,7 +89,14 @@ int PageRegistery::read_rom(StorageController *store_ctrl)
 
 void PageRegistery::save_rom()
 {
+	Logger::info(TAG, "Saving rom");
 	std::ofstream rom_image(ROM_IMAGE, std::ios::binary);
+
+	if (!rom_image)
+	{
+		Logger::error(TAG, "Failed opening rom image");
+		return;
+	}
 
 	for (int i = 0; i < rom_pages; i++)
 	{
