@@ -4,6 +4,8 @@
 #include <cstdint>
 #include <list>
 #include <chrono>
+#include <atomic>
+#include <functional>
 
 #define SECOND_IN_NANOS (1000000000)
 
@@ -19,20 +21,30 @@ namespace Time
 
 	uint64_t toint(nanoseconds nanos);
 
-	class Interval
+	class Timer
 	{
 	private:
-		bool running;
+		std::atomic<bool> running;
 		nanoseconds interval;
 
 	public:
-		Interval(nanoseconds interval);
+		Timer(nanoseconds interval);
 		void start();
 		void stop();
 		virtual void trigger() = 0;
 		void set_interval(nanoseconds interval);
 		nanoseconds get_interval();
-		virtual ~Interval() = default;
+		virtual ~Timer() = default;
+	};
+
+	class TimerWrapper : public Timer
+	{
+	private:
+		std::function<void()> callback;
+
+	public:
+		TimerWrapper(const std::function<void()> callback, nanoseconds interval);
+		void trigger();
 	};
 }
 

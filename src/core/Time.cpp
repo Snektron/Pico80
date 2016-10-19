@@ -1,7 +1,8 @@
+#include "core/Time.h"
 #include <chrono>
 #include <cstdint>
 #include <thread>
-#include "core/Time.h"
+#include <atomic>
 
 using namespace std::chrono;
 
@@ -17,12 +18,12 @@ namespace Time
 		return duration_cast<nanoseconds>(nanos).count();
 	}
 
-	Interval::Interval(nanoseconds interval):
+	Timer::Timer(nanoseconds interval):
 			running(false),
 			interval(interval)
 	{}
 
-	void Interval::start()
+	void Timer::start()
 	{
 		running = true;
 
@@ -37,18 +38,28 @@ namespace Time
 		}
 	}
 
-	void Interval::stop()
+	void Timer::stop()
 	{
 		running = false;
 	}
 
-	void Interval::set_interval(nanoseconds interval)
+	void Timer::set_interval(nanoseconds interval)
 	{
 		this->interval = interval;
 	}
 
-	nanoseconds Interval::get_interval()
+	nanoseconds Timer::get_interval()
 	{
 		return interval;
+	}
+
+	TimerWrapper::TimerWrapper(const std::function<void()> callback, nanoseconds interval):
+			Timer(interval),
+			callback(callback)
+	{}
+
+	void TimerWrapper::trigger()
+	{
+		callback();
 	}
 }

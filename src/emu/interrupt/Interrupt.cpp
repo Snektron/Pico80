@@ -5,10 +5,6 @@
 
 #define TAG "Interrupt"
 
-Interrupt::Interrupt(Asic *asic):
-	asic(asic)
-{}
-
 void check_index(int& index)
 {
 	if (index < 0 || index > 8)
@@ -44,7 +40,7 @@ void Interrupt::trigger(int index)
 
 	if (is_enabled(index))
 	{
-		asic->set_interrupt();
+		Asic::set_interrupt();
 		uint8_t trigger_mask = Z80e::BasicIODevice::read();
 		trigger_mask |= 1 << index;
 		Z80e::BasicIODevice::write(trigger_mask);
@@ -54,7 +50,7 @@ void Interrupt::trigger(int index)
 void Interrupt::write(uint8_t value)
 {
 	if (!value) // if all interrupts are acknowleged, stop interrupting.
-		asic->reset_interrupt();
+		Asic::reset_interrupt();
 	Z80e::BasicIODevice::write(value);
 }
 

@@ -6,12 +6,12 @@
 #include "core/Time.h"
 #include "core/Logger.h"
 
-class TimerInt : public InterruptDevice, public Time::Interval
+class TimerInt : public InterruptDevice, public Time::Timer
 {
 public:
 	TimerInt(Interrupt *interrupt, int index, Time::nanoseconds interval):
 		InterruptDevice(interrupt, index),
-		Time::Interval(interval)
+		Time::Timer(interval)
 	{}
 
 	void trigger()

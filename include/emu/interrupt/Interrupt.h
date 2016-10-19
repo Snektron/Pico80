@@ -5,16 +5,12 @@
 #include "z80e/z80e.h"
 #include "core/Time.h"
 
-class Asic;
-
 class Interrupt : public Z80e::BasicIODevice
 {
 private:
-	Asic *asic;
 	Z80e::BasicIODevice mask;
 
 public:
-	Interrupt(Asic *asic);
 	void set_enabled(int index, bool enabled);
 	bool is_enabled(int index);
 	void trigger(int index);

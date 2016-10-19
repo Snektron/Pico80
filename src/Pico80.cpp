@@ -6,44 +6,54 @@
 #include "core/Input.h"
 #include "core/Time.h"
 #include "core/Display.h"
+#include "emu/Asic.h"
 
 #define TAG "Pico80"
 #define FPS 60
 
-Pico80::Pico80():
-	Time::Interval(Time::nanoseconds(SECOND_IN_NANOS / FPS))
+namespace Pico80
 {
-	System::init("Pico80", 512, 512);
+	namespace
+	{
+		Time::TimerWrapper timer(trigger, Time::nanoseconds(SECOND_IN_NANOS / FPS));
+	}
 
-	asic = new Asic();
+	void init()
+	{
+		System::init("Pico80", 512, 512);
+		Asic::init();
+		Logger::info(TAG, "Started");
+	}
 
-	Logger::info(TAG, "Started");
-}
+	void start()
+	{
+		std::thread asic(Asic::start);
 
-void Pico80::start()
-{
-	Interval::start();
-}
+		timer.start();
 
-void Pico80::trigger()
-{
-	Graphics::clear();
-	Input::update();
-	Display::render();
-	Graphics::update();
+		Asic::stop();
+		asic.join();
+	}
 
-	if (Input::quitRequested())
-		stop();
-}
+	void stop()
+	{
+		timer.stop();
+	}
 
-void Pico80::stop()
-{
-	Interval::stop();
-}
+	void trigger()
+	{
+		Graphics::clear();
+		Input::update();
+		Display::render();
+		Graphics::update();
 
-Pico80::~Pico80()
-{
-	System::destroy();
-	delete asic;
-	Logger::info(TAG, "Stopped");
+		if (Input::quitRequested())
+			stop();
+	}
+
+	void destroy()
+	{
+		Asic::destroy();
+		System::destroy();
+	}
 }
