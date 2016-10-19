@@ -5,7 +5,7 @@ INCLUDE = include
 
 CXX	= g++
 CC = gcc
-FLAGS = -I $(SRC) -I $(INCLUDE) `sdl2-config --cflags --libs`
+FLAGS = -MMD -MP -I $(SRC) -I $(INCLUDE) `sdl2-config --cflags --libs`
 CXXFLAGS = $(FLAGS) -std=c++11
 CFLAGS = $(FLAGS)
 RM = rm
@@ -18,11 +18,13 @@ CXXSRCS = $(patsubst $(SRC)/%, %, $(call rwildcard, $(SRC)/, *.cpp))
 
 OBJECTS = $(CXXSRCS:%.cpp=%.o) $(CSRCS:%.c=%.o)
 
+-include $(OBJECTS:%.o=%.d)
+
 vpath %.o $(BUILD)
 vpath %.cpp $(SRC)
 vpath %.c $(SRC)
 
-all: clean $(TARGET)
+all: $(TARGET)
 
 $(TARGET): $(OBJECTS)
 	$(CXX) $(addprefix $(BUILD)/, $(OBJECTS)) $(FLAGS) -o $@
@@ -35,8 +37,8 @@ $(TARGET): $(OBJECTS)
 	$(MD) $(BUILD)/$(dir $@)
 	$(CC) $< $(CFLAGS) -c -o $(BUILD)/$@
 
-clean: 
+clean:
 	$(RM) -rf $(BUILD)
 	$(RM) -f $(TARGET)
-
+	
 .PHONY: all clean

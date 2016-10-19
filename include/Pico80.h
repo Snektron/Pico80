@@ -11,13 +11,9 @@ private:
 
 public:
 	Pico80();
-
 	void start();
-
 	void trigger();
-
 	void stop();
-
 	~Pico80();
 };
 
