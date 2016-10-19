@@ -15,7 +15,7 @@ namespace Time
 
 	void init();
 
-	nanoseconds nanotime();
+	point now();
 
 	uint64_t toint(nanoseconds nanos);
 

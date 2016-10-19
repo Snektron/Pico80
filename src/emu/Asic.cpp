@@ -33,7 +33,7 @@ Asic::Asic():
 	mouse = new Mouse(screen);
 
 	interrupt = new Interrupt(this);
-	timer0 = new TimerInt(interrupt, INT_TIMER, SECOND_IN_NANOS / TIMER_0_FREQ);
+	timer0 = new TimerInt(interrupt, INT_TIMER, Time::nanoseconds(SECOND_IN_NANOS / TIMER_0_FREQ));
 
 	cpu = new Z80e::CPU(memory);
 
@@ -60,21 +60,16 @@ Asic::Asic():
 
 void Asic::start()
 {
-	last = Time::nanotime();
+	last = Time::now();
 	Interval::start();
 }
 
 void Asic::trigger()
 {
-	Time::nanoseconds passed = Time::nanotime() - last;
-	last = Time::nanotime();
+	Time::nanoseconds passed = Time::now() - last;
+	last = Time::now();
 	uint64_t cycles = CLOCK_RATE * Time::toint(passed) / SECOND_IN_NANOS;
 	cpu->execute(cycles);
-}
-
-void Asic::render()
-{
-	screen->render();
 }
 
 void Asic::set_interrupt()

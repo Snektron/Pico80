@@ -5,7 +5,9 @@ INCLUDE = include
 
 CXX	= g++
 CC = gcc
-FLAGS = -I $(SRC) -I $(INCLUDE) -std=c++11 `sdl2-config --cflags --libs`
+FLAGS = -I $(SRC) -I $(INCLUDE) `sdl2-config --cflags --libs`
+CXXFLAGS = $(FLAGS) -std=c++11
+CFLAGS = $(FLAGS)
 RM = rm
 MD = mkdir -p
 
@@ -27,11 +29,11 @@ $(TARGET): $(OBJECTS)
 	
 %.o: %.cpp
 	$(MD) $(BUILD)/$(dir $@)
-	$(CXX) $< $(FLAGS) -c -o $(BUILD)/$@
+	$(CXX) $< $(CXXFLAGS) -c -o $(BUILD)/$@
 	
 %.o: %.c
 	$(MD) $(BUILD)/$(dir $@)
-	$(CC) $< $(FLAGS) -c -o $(BUILD)/$@
+	$(CC) $< $(CFLAGS) -c -o $(BUILD)/$@
 
 clean: 
 	$(RM) -rf $(BUILD)

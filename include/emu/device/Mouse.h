@@ -5,11 +5,6 @@
 #include "z80e/z80e.h"
 #include "emu/device/Screen.h"
 
-#define MOUSE_BTN_LEFT 0
-#define MOUSE_BTN_RIGHT 1
-#define MOUSE_BTN_MIDDLE 2
-
-
 class MouseDevice : public Z80e::IODevice
 {
 protected:

@@ -1,7 +1,7 @@
-#include <exception>
-#include <SDL2/SDL.h>
-#include <string>
 #include "core/Graphics.h"
+#include <exception>
+#include <string>
+#include <SDL2/SDL.h>
 #include "core/Logger.h"
 
 #define TAG "Graphics"

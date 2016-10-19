@@ -5,6 +5,7 @@
 #include "core/Graphics.h"
 #include "core/Input.h"
 #include "core/Time.h"
+#include "core/Display.h"
 
 #define TAG "Pico80"
 #define FPS 60
@@ -26,10 +27,9 @@ void Pico80::start()
 
 void Pico80::trigger()
 {
-	Input::update();
-
 	Graphics::clear();
-//	asic->render();
+	Input::update();
+	Display::render();
 	Graphics::update();
 
 	if (Input::quitRequested())

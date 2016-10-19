@@ -19,7 +19,7 @@
 class Asic : public Time::Interval
 {
 private:
-	Time::nanoseconds last;
+	Time::point last;
 
 	Memory *memory;
 	Screen *screen;
@@ -35,7 +35,6 @@ public:
 	Asic();
 	void start();
 	void trigger();
-	void render();
 
 	void set_interrupt();
 	void reset_interrupt();

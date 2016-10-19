@@ -10,7 +10,7 @@
 #define TAG "PageManager"
 #define ROM_IMAGE "rom.bin"
 
-ostream& hex(ostream& os, int value)
+std::ostream& hex(std::ostream& os, int value)
 {
 	os << "0x";
 	os << std::setfill('0');
@@ -23,7 +23,7 @@ ostream& hex(ostream& os, int value)
 	return os;
 }
 
-ostream& hexrange(ostream& os, int low, int high)
+std::ostream& hexrange(std::ostream& os, int low, int high)
 {
 	return hex(hex(os, low) << " - ", high);
 }

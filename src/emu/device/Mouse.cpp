@@ -1,8 +1,9 @@
 #include <cstdint>
 #include <SDL2/SDL.h>
 #include "emu/device/Mouse.h"
-#include "emu/device/Screen.h"
 #include "core/Logger.h"
+#include "core/Input.h"
+#include "core/Display.h"
 #include "z80e/z80e.h"
 
 MouseDevice::MouseDevice(Screen *screen):
@@ -19,32 +20,23 @@ int clamp(int x, int a, int b)
 
 uint8_t MouseX::read()
 {
-	SDL_Rect scrn;
-	screen->get_screen_rect(scrn);
-	int x;
-	SDL_GetMouseState(&x, NULL);
-	return (uint8_t) clamp((x - scrn.x) * SCREEN_WIDTH / scrn.w, 0, SCREEN_WIDTH);
+	SDL_Rect dst;
+	Display::get_display_rect(dst);
+	int x = Input::Mouse::X();
+	return (uint8_t) clamp((x - dst.x) * DISPLAY_WIDTH / dst.w, 0, DISPLAY_WIDTH);
 }
 
 uint8_t MouseY::read()
 {
-	SDL_Rect scrn;
-	screen->get_screen_rect(scrn);
-	int y;
-	SDL_GetMouseState(&y, NULL);
-	return (uint8_t) clamp((y - scrn.y) * SCREEN_HEIGHT / scrn.h, 0, SCREEN_HEIGHT);
+	SDL_Rect dst;
+	Display::get_display_rect(dst);
+	int y = Input::Mouse::Y();
+	return (uint8_t) clamp((y - dst.y) * DISPLAY_HEIGHT / dst.h, 0, DISPLAY_HEIGHT);
 }
 
 uint8_t MouseState::read()
 {
-	uint8_t state = 0;
-	uint32_t mouse = SDL_GetMouseState(NULL, NULL);
-
-	state |= ((mouse >> (SDL_BUTTON_LEFT - 1)) & 1) << MOUSE_BTN_LEFT;
-	state |= ((mouse >> (SDL_BUTTON_RIGHT - 1)) & 1) << MOUSE_BTN_RIGHT;
-	state |= ((mouse >> (SDL_BUTTON_MIDDLE - 1)) & 1) << MOUSE_BTN_MIDDLE;
-
-	return state;
+	return (uint8_t) Input::Mouse::State();
 }
 
 void MouseState::write(uint8_t value)
