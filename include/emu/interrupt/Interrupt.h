@@ -11,9 +11,9 @@ private:
 	Z80e::BasicIODevice mask;
 
 public:
-	void set_enabled(int index, bool enabled);
-	bool is_enabled(int index);
-	void trigger(int index);
+	void set_enabled(int pin, bool enabled);
+	bool is_enabled(int pin);
+	void trigger(int pin);
 	void write(uint8_t value);
 	Z80e::BasicIODevice* get_interrupt_mask();
 };
@@ -21,22 +21,25 @@ public:
 class InterruptDevice
 {
 private:
-	Interrupt *interrupt;
+	Interrupt *owner;
 	int index;
 public:
-	InterruptDevice(Interrupt *interrupt, int index):
-		interrupt(interrupt),
+	InterruptDevice(Interrupt *owner, int index):
+		owner(owner),
 		index(index)
 	{}
 
 	void trigger()
 	{
-		interrupt->trigger(index);
+		if (owner)
+			owner->trigger(index);
 	}
 
 	bool is_enabled()
 	{
-		return interrupt->is_enabled(index);
+		if (!owner)
+			return false;
+		return owner->is_enabled(index);
 	}
 };
 

@@ -7,7 +7,7 @@
 #include <atomic>
 #include <functional>
 
-#define SECOND_IN_NANOS (1000000000)
+#define SECOND_IN_NANOS (1000000000ull)
 
 namespace Time
 {

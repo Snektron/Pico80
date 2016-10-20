@@ -14,11 +14,14 @@
 
 #define TAG "Asic"
 
+// calculate instructions executed in a certain time (ns)
+#define INSTRUCTIONS(ns) (CLOCK_RATE * (ns) / SECOND_IN_NANOS)
+
 namespace Asic
 {
 	namespace
 	{
-		Time::TimerWrapper timer(trigger, std::chrono::seconds(1));
+		Time::TimerWrapper timer(trigger, Time::nanoseconds(SECOND_IN_NANOS/CLOCK_FREQ));
 		Time::point last;
 
 		Memory *memory;
@@ -28,7 +31,7 @@ namespace Asic
 		StorageController *storage_controller;
 
 		Interrupt *interrupt;
-		TimerInt *timer0;
+		TimerInt *timer_int;
 
 		Z80e::CPU *cpu;
 	}
@@ -52,7 +55,7 @@ namespace Asic
 		mouse = new Mouse(screen);
 
 		interrupt = new Interrupt();
-		timer0 = new TimerInt(interrupt, INT_TIMER, Time::nanoseconds(SECOND_IN_NANOS / TIMER_0_FREQ));
+		timer_int = new TimerInt(interrupt, INT_TIMER, INSTRUCTIONS(SECOND_IN_NANOS / TIMER_FREQ));
 
 		cpu = new Z80e::CPU(memory);
 
@@ -92,8 +95,19 @@ namespace Asic
 	{
 		Time::nanoseconds passed = Time::now() - last;
 		last = Time::now();
-		uint64_t cycles = CLOCK_RATE * Time::toint(passed) / SECOND_IN_NANOS;
-		cpu->execute(cycles);
+		uint64_t cycles = INSTRUCTIONS(Time::toint(passed));
+		uint64_t timer_cycles = timer_int->instructions_to_trigger();
+
+		while (timer_cycles < cycles)
+		{
+			int executed = timer_cycles - cpu->execute(timer_cycles);
+			cycles -= executed;
+			timer_int->trigger();
+			timer_cycles = timer_int->instructions_to_trigger();
+		}
+
+		int executed = cycles - cpu->execute(cycles);
+		timer_int->update(executed);
 	}
 
 	void set_interrupt()
@@ -106,16 +120,11 @@ namespace Asic
 		cpu->reset_interrupt();
 	}
 
-	TimerInt* get_timer_0()
-	{
-		return timer0;
-	}
-
 	void destroy()
 	{
 		Logger::info(TAG, "Destroying asic");
 		delete cpu;
-		delete timer0;
+		delete timer_int;
 		delete interrupt;
 
 		delete mouse;

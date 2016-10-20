@@ -5,44 +5,46 @@
 
 #define TAG "Interrupt"
 
-void check_index(int& index)
+bool check_pin(int pin)
 {
-	if (index < 0 || index > 8)
+	if (pin < 0 || pin > 8)
 	{
-		Logger::warn(TAG) << "Interrupt out of range: " << index << Logger::endl;
-		Logger::warn(TAG, "Falling back to index 0");
-		index = 0;
+		Logger::warn(TAG) << "Interrupt out of range: " << pin << Logger::endl;
+		return false;
 	}
+
+	return true;
 }
 
-void Interrupt::set_enabled(int index, bool enabled)
+void Interrupt::set_enabled(int pin, bool enabled)
 {
-	check_index(index);
+	if (!check_pin(pin))
+		return;
+
 	uint8_t enable_mask = mask.read();
 
 	if (enabled)
-		enable_mask |= 1 << index;
+		enable_mask |= 1 << pin;
 	else
-		enable_mask &= ~(1 << index);
+		enable_mask &= ~(1 << pin);
 
 	mask.write(enable_mask);
 }
 
-bool Interrupt::is_enabled(int index)
+bool Interrupt::is_enabled(int pin)
 {
-	check_index(index);
-	return mask.read() & (1 << index);
+	if (!check_pin(pin))
+		return false;
+	return mask.read() & (1 << pin);
 }
 
-void Interrupt::trigger(int index)
+void Interrupt::trigger(int pin)
 {
-	check_index(index);
-
-	if (is_enabled(index))
+	if (is_enabled(pin))
 	{
 		Asic::set_interrupt();
 		uint8_t trigger_mask = Z80e::BasicIODevice::read();
-		trigger_mask |= 1 << index;
+		trigger_mask |= 1 << pin;
 		Z80e::BasicIODevice::write(trigger_mask);
 	}
 }

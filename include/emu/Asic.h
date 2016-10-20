@@ -6,7 +6,7 @@
 #define CLOCK_RATE 50000000
 #define CLOCK_FREQ 500
 
-#define TIMER_0_FREQ 1
+#define TIMER_FREQ 1
 
 namespace Asic
 {
@@ -18,7 +18,7 @@ namespace Asic
 
 	void set_interrupt();
 	void reset_interrupt();
-	TimerInt* get_timer_0();
+
 	void destroy();
 }
 
