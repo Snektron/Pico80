@@ -3,7 +3,9 @@
 
 #include "interrupt/TimerInt.h"
 
-#define CLOCK_RATE 50000000
+#define MHZ(x) (x * 1000000)
+
+#define CLOCK_RATE MHZ(50)
 #define CLOCK_FREQ 500
 
 #define TIMER_FREQ 1

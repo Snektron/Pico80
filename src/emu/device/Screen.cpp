@@ -11,7 +11,7 @@
 
 Screen::Screen()
 {
-	clear(1);
+	clear(0);
 	sync();
 }
 

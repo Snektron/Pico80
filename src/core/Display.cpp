@@ -7,26 +7,27 @@
 
 #define TAG "Display"
 #define SCREEN_INDEX(x, y) (SCREEN_WIDTH * (y & 0x7F) + (x & 0x7F))
-#define COLOR(col) {((col) >> 16) & 0xFF, ((col) >> 8) & 0xFF, ((col) & 0xFF), 0xFF}
+//#define COLOR(col) {((col) >> 16) & 0xFF, ((col) >> 8) & 0xFF, ((col) & 0xFF), 0xFF}
+#define COLOR(r, g, b) {r, g, b}
 
 const SDL_Color palette[16] =
 {
-	COLOR(0x000000), // Black [Black]
-	COLOR(0x2196F3), // Blue [Blue 500]
-	COLOR(0x4CAF50), // Green [Green 500]
-	COLOR(0x009688), // Teal [Teal 500]
-	COLOR(0x795548), // Brown [Brown 500]
-	COLOR(0x9C27B0), // Purple [Purple 500]
-	COLOR(0xFF9800), // Orange [Orange 500]
-	COLOR(0xBDBDBD), // Light gray [Gray 400]
-	COLOR(0x616161), // Dark gray [Grey 700]
-	COLOR(0x03A9F4), // Light Blue [Light Blue 500]
-	COLOR(0x8BC34A), // Light Green [Light Green 500]
-	COLOR(0x00BCD4), // Cyan [Cyan 500]
-	COLOR(0xF44336), // Red [Red 500]
-	COLOR(0xE91E63), // Pink [Pink 500]
-	COLOR(0xFFEE58), // Yellow [Yellow 400]
-	COLOR(0xFFFFFF), // White [Grey]
+	{ 20,  12,  28}, // black
+	{ 68,  36,  52}, // plum
+	{ 48,  52, 109}, // midnight
+	{ 78,  74,  78}, // iron
+	{133,  76,  48}, // earth
+	{ 52, 101,  36}, // moss
+	{208,  70,  72}, // berry
+	{117, 113,  97}, // olive
+	{ 89, 125, 206}, // cornflower
+	{210, 125,  44}, // ocher
+	{133, 149, 161}, // slate
+	{109, 170,  44}, // leaf
+	{210, 170, 153}, // peach
+	{109, 194, 202}, // sky
+	{218, 212,  94}, // maize
+	{222, 238, 214} // peppermint
 };
 
 namespace Display
