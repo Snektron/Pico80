@@ -16,9 +16,7 @@ public:
 		InterruptDevice(interrupt, index),
 		interval(interval),
 		left(interval)
-	{
-		Logger::debug("Timer int") << "Timer Interrupt period: " << interval << " cycles" << Logger::endl;
-	}
+	{}
 
 	void update(uint64_t executed)
 	{
