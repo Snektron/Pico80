@@ -6,9 +6,9 @@
 #include "emu/memory/PageManager.h"
 #include "emu/device/StorageController.h"
 #include "core/Logger.h"
+#include "Settings.h"
 
 #define TAG "PageManager"
-#define ROM_IMAGE "rom.bin"
 
 std::ostream& hex(std::ostream& os, int value)
 {
@@ -33,7 +33,7 @@ PageRegistery::PageRegistery(StorageController *store_ctrl):
 {
 	Logger::info(TAG, "Initializing page manager");
 
-	rom_pages = read_rom(store_ctrl);
+	rom_pages = load_rom(store_ctrl);
 	Logger::info(TAG) << "Loaded " << rom_pages << " rom page(s)" << Logger::endl;
 
 	for (int i = 0; i < NUM_RAM_PAGES; i++)
@@ -60,13 +60,15 @@ PageRegistery::~PageRegistery()
 			delete pages[i];
 }
 
-int PageRegistery::read_rom(StorageController *store_ctrl)
+int PageRegistery::load_rom(StorageController *store_ctrl)
 {
-	std::ifstream rom_image(ROM_IMAGE, std::ios::binary);
+	std::string rom_location = Settings::get_rom();
+	std::ifstream rom_image(rom_location, std::ios::binary);
 
+	Logger::info(TAG) << "Loading rom image " << rom_location << Logger::endl;
 	if (!rom_image.is_open())
 	{
-		Logger::error(TAG, "Failed to open kernel image");
+		Logger::error(TAG, "Failed to open rom image");
 		throw new std::runtime_error("Error initializing page manager");
 	}
 
@@ -90,7 +92,7 @@ int PageRegistery::read_rom(StorageController *store_ctrl)
 void PageRegistery::save_rom()
 {
 	Logger::info(TAG, "Saving rom");
-	std::ofstream rom_image(ROM_IMAGE, std::ios::binary);
+	std::ofstream rom_image(Settings::get_rom(), std::ios::binary);
 
 	if (!rom_image)
 	{
@@ -98,7 +100,7 @@ void PageRegistery::save_rom()
 		return;
 	}
 
-	for (int i = 0; i < rom_pages; i++)
+	for (int i = 0; i < rom_pages - 1; i++)
 	{
 		Page *page = pages[i];
 		rom_image.write((char*) page->raw_data(), PAGE_SIZE);

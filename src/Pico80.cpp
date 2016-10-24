@@ -1,7 +1,7 @@
 #include "Pico80.h"
 #include <thread>
+#include "Settings.h"
 #include "core/System.h"
-#include "core/Config.h"
 #include "core/Logger.h"
 #include "core/Graphics.h"
 #include "core/Input.h"
@@ -20,15 +20,15 @@ namespace Pico80
 		Time::TimerWrapper timer(trigger, Time::nanoseconds(SECOND_IN_NANOS / FPS));
 	}
 
+	bool parse_args(int argc, char* argv[])
+	{
+		return Settings::parse_args(argc, argv);
+	}
+
 	void init()
 	{
 		System::init("Pico80", 512, 512);
 		Asic::init();
-
-		Config config(CFG);
-		bool test = config.get_bool("test", true);
-		Logger::info(TAG) << "test: " << test << Logger::endl;
-
 		Logger::info(TAG, "Started");
 	}
 

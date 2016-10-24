@@ -15,7 +15,7 @@ private:
 	Page* pages[0x100];
 	int rom_pages;
 
-	int read_rom(StorageController *store_ctrl);
+	int load_rom(StorageController *store_ctrl);
 	void save_rom();
 
 public:

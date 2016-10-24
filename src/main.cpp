@@ -6,6 +6,9 @@
 
 int main(int argc, char* argv[])
 {
+	if (!Pico80::parse_args(argc, argv))
+		return EXIT_SUCCESS;
+
 	try{
 		Pico80::init();
 		Pico80::start();
