@@ -2,17 +2,13 @@
 #define INCLUDE_EMU_DEVICE_MOUSE_H_
 
 #include <cstdint>
+#include <memory>
 #include "z80e/z80e.h"
 #include "emu/device/Screen.h"
 
 class MouseDevice : public Z80e::IODevice
 {
-protected:
-	Screen *screen;
-
 public:
-	MouseDevice(Screen *screen);
-
 	void write(uint8_t value);
 	virtual uint8_t read() = 0;
 	virtual ~MouseDevice() = default;
@@ -21,14 +17,12 @@ public:
 class MouseX : public MouseDevice
 {
 public:
-	MouseX(Screen *screen): MouseDevice(screen){}
 	uint8_t read();
 };
 
 class MouseY : public MouseDevice
 {
 public:
-	MouseY(Screen *screen): MouseDevice(screen){}
 	uint8_t read();
 };
 
@@ -42,15 +36,15 @@ public:
 class Mouse
 {
 private:
-	MouseX x;
-	MouseY y;
-	MouseState state;
+	std::shared_ptr<MouseX> x;
+	std::shared_ptr<MouseY> y;
+	std::shared_ptr<MouseState> state;
 
 public:
-	Mouse(Screen *screen);
-	MouseX* get_mouse_x();
-	MouseY* get_mouse_y();
-	MouseState* get_mouse_state();
+	Mouse();
+	std::shared_ptr<MouseX> get_mouse_x();
+	std::shared_ptr<MouseY> get_mouse_y();
+	std::shared_ptr<MouseState> get_mouse_state();
 };
 
 #endif /* INCLUDE_EMU_DEVICE_MOUSE_H_ */

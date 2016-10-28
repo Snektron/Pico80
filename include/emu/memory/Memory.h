@@ -2,6 +2,7 @@
 #define INCLUDE_EMU_MEMORY_MEMORY_H_
 
 #include <cstdint>
+#include <memory>
 #include "emu/memory/MemoryBank.h"
 #include "emu/memory/PageManager.h"
 #include "emu/device/StorageController.h"
@@ -15,15 +16,15 @@
 class Memory : public Z80e::Memory
 {
 private:
-	PageRegistery *registery;
-	MemoryBank* bank[4];
+	std::shared_ptr<PageRegistery> registery;
+	std::shared_ptr<MemoryBank> bank[4];
 
 public:
-	Memory(StorageController *store_ctrl);
+	Memory(std::shared_ptr<StorageController> store_ctrl);
 	uint8_t read(uint16_t address);
 	void write(uint16_t address, uint8_t value);
-	MemoryBank* get_bank(int bank);
-	PageRegistery* get_registery();
+	std::shared_ptr<MemoryBank> get_bank(int bank);
+	std::shared_ptr<PageRegistery> get_registery();
 	~Memory();
 };
 

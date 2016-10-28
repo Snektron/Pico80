@@ -1,14 +1,11 @@
-#include <cstdint>
-#include <SDL2/SDL.h>
 #include "emu/device/Mouse.h"
+#include <cstdint>
+#include <memory>
+#include <SDL2/SDL.h>
 #include "core/Logger.h"
 #include "core/Input.h"
 #include "core/Display.h"
 #include "z80e/z80e.h"
-
-MouseDevice::MouseDevice(Screen *screen):
-	screen(screen)
-{}
 
 void MouseDevice::write(uint8_t value)
 {}
@@ -42,22 +39,23 @@ uint8_t MouseState::read()
 void MouseState::write(uint8_t value)
 {}
 
-Mouse::Mouse(Screen *screen):
-		x(screen),
-		y(screen)
+Mouse::Mouse():
+	x(new MouseX()),
+	y(new MouseY()),
+	state(new MouseState())
 {}
 
-MouseX* Mouse::get_mouse_x()
+std::shared_ptr<MouseX> Mouse::get_mouse_x()
 {
-	return &x;
+	return x;
 }
 
-MouseY* Mouse::get_mouse_y()
+std::shared_ptr<MouseY> Mouse::get_mouse_y()
 {
-	return &y;
+	return y;
 }
 
-MouseState* Mouse::get_mouse_state()
+std::shared_ptr<MouseState> Mouse::get_mouse_state()
 {
-	return &state;
+	return state;
 }

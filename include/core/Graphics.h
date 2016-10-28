@@ -14,7 +14,6 @@ namespace Graphics
 	int get_width();
 	int get_height();
 	SDL_Window* get_window();
-	SDL_Surface* get_surface();
 }
 
 #endif /* INCLUDE_CORE_GRAPHICS_H_ */

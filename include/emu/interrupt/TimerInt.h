@@ -2,6 +2,7 @@
 #define INCLUDE_EMU_INTERRUPT_TIMERINT_H_
 
 #include <cstdint>
+#include <memory>
 #include "emu/interrupt/Interrupt.h"
 #include "core/Logger.h"
 
@@ -12,7 +13,7 @@ private:
 	uint64_t left;
 
 public:
-	TimerInt(Interrupt *interrupt, int index, uint64_t interval):
+	TimerInt(std::shared_ptr<Interrupt> interrupt, int index, uint64_t interval):
 		InterruptDevice(interrupt, index),
 		interval(interval),
 		left(interval)

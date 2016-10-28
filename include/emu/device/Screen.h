@@ -2,6 +2,7 @@
 #define INCLUDE_EMU_DEVICE_SCREEN_H_
 
 #include <cstdint>
+#include <memory>
 #include <SDL2/SDL.h>
 #include "z80e/z80e.h"
 #include "core/Display.h"
@@ -14,7 +15,7 @@
 class Screen : public Z80e::IODevice
 {
 private:
-	Z80e::BasicIODevice arg0, arg1, arg2;
+	std::shared_ptr<Z80e::BasicIODevice> arg0, arg1, arg2;
 	uint8_t vram[DISPLAY_WIDTH * DISPLAY_HEIGHT];
 
 public:
@@ -28,9 +29,9 @@ public:
 	void set_pixel(uint8_t x, uint8_t y, uint8_t color);
 	uint8_t get_pixel(uint8_t x, uint8_t y);
 
-	Z80e::BasicIODevice* get_arg0();
-	Z80e::BasicIODevice* get_arg1();
-	Z80e::BasicIODevice* get_arg2();
+	std::shared_ptr<Z80e::BasicIODevice> get_arg0();
+	std::shared_ptr<Z80e::BasicIODevice> get_arg1();
+	std::shared_ptr<Z80e::BasicIODevice> get_arg2();
 };
 
 #endif /* INCLUDE_EMU_DEVICE_SCREEN_H_ */

@@ -16,26 +16,30 @@ bool check_pin(int pin)
 	return true;
 }
 
+Interrupt::Interrupt():
+	mask(new Z80e::BasicIODevice())
+{}
+
 void Interrupt::set_enabled(int pin, bool enabled)
 {
 	if (!check_pin(pin))
 		return;
 
-	uint8_t enable_mask = mask.read();
+	uint8_t enable_mask = mask->read();
 
 	if (enabled)
 		enable_mask |= 1 << pin;
 	else
 		enable_mask &= ~(1 << pin);
 
-	mask.write(enable_mask);
+	mask->write(enable_mask);
 }
 
 bool Interrupt::is_enabled(int pin)
 {
 	if (!check_pin(pin))
 		return false;
-	return mask.read() & (1 << pin);
+	return mask->read() & (1 << pin);
 }
 
 void Interrupt::trigger(int pin)
@@ -56,7 +60,7 @@ void Interrupt::write(uint8_t value)
 	Z80e::BasicIODevice::write(value);
 }
 
-Z80e::BasicIODevice* Interrupt::get_interrupt_mask()
+std::shared_ptr<Z80e::BasicIODevice> Interrupt::get_interrupt_mask()
 {
-	return &mask;
+	return mask;
 }

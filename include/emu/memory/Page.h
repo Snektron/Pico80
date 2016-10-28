@@ -2,6 +2,7 @@
 #define INCLUDE_EMU_MEMORY_PAGE_H_
 
 #include <algorithm>
+#include <memory>
 #include "emu/device/StorageController.h"
 #include "core/Logger.h"
 
@@ -45,10 +46,10 @@ public:
 class StoragePage : public Page
 {
 private:
-	StorageController *store_ctrl;
+	std::shared_ptr<StorageController> store_ctrl;
 
 public:
-	StoragePage(StorageController *store_ctrl):
+	StoragePage(std::shared_ptr<StorageController> store_ctrl):
 		store_ctrl(store_ctrl)
 	{}
 

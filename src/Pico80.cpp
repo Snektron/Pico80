@@ -60,7 +60,6 @@ namespace Pico80
 
 	void destroy()
 	{
-		Asic::destroy();
 		System::destroy();
 	}
 }

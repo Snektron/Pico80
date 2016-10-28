@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <cstring>
 #include <algorithm>
+#include <memory>
 #include "core/Graphics.h"
 #include "core/Logger.h"
 #include "core/Display.h"
@@ -9,7 +10,10 @@
 
 #define TAG "Screen"
 
-Screen::Screen()
+Screen::Screen():
+	arg0(new Z80e::BasicIODevice()),
+	arg1(new Z80e::BasicIODevice()),
+	arg2(new Z80e::BasicIODevice())
 {
 	clear(0);
 	sync();
@@ -23,13 +27,13 @@ void Screen::write(uint8_t value)
 		Screen::sync();
 		break;
 	case SC_CLEAR:
-		clear(arg0.read());
+		clear(arg0->read());
 		break;
 	case SC_SET_PIXEL:
-		set_pixel(arg1.read(), arg2.read(), arg0.read());
+		set_pixel(arg1->read(), arg2->read(), arg0->read());
 		break;
 	case SC_GET_PIXEL:
-		arg0.write(get_pixel(arg1.read(), arg2.read()));
+		arg0->write(get_pixel(arg1->read(), arg2->read()));
 		break;
 	default:
 		Logger::warn(TAG) << "Unknown command written: " << value << Logger::endl;
@@ -62,17 +66,17 @@ uint8_t Screen::get_pixel(uint8_t x, uint8_t y)
 	return vram[DISPLAY_INDEX(x, y)];
 }
 
-Z80e::BasicIODevice* Screen::get_arg0()
+std::shared_ptr<Z80e::BasicIODevice> Screen::get_arg0()
 {
-	return &arg0;
+	return arg0;
 }
 
-Z80e::BasicIODevice* Screen::get_arg1()
+std::shared_ptr<Z80e::BasicIODevice> Screen::get_arg1()
 {
-	return &arg1;
+	return arg1;
 }
 
-Z80e::BasicIODevice* Screen::get_arg2()
+std::shared_ptr<Z80e::BasicIODevice> Screen::get_arg2()
 {
-	return &arg2;
+	return arg2;
 }

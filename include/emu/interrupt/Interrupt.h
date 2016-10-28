@@ -2,29 +2,31 @@
 #define INCLUDE_EMU_DEVICE_INTERRUPT_H_
 
 #include <cstdint>
+#include <memory>
 #include "z80e/z80e.h"
 #include "core/Time.h"
 
 class Interrupt : public Z80e::BasicIODevice
 {
 private:
-	Z80e::BasicIODevice mask;
+	std::shared_ptr<Z80e::BasicIODevice> mask;
 
 public:
+	Interrupt();
 	void set_enabled(int pin, bool enabled);
 	bool is_enabled(int pin);
 	void trigger(int pin);
 	void write(uint8_t value);
-	Z80e::BasicIODevice* get_interrupt_mask();
+	std::shared_ptr<Z80e::BasicIODevice> get_interrupt_mask();
 };
 
 class InterruptDevice
 {
 private:
-	Interrupt *owner;
+	std::shared_ptr<Interrupt> owner;
 	int index;
 public:
-	InterruptDevice(Interrupt *owner, int index):
+	InterruptDevice(std::shared_ptr<Interrupt> owner, int index):
 		owner(owner),
 		index(index)
 	{}

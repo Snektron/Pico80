@@ -20,8 +20,6 @@ namespace Asic
 
 	void set_interrupt();
 	void reset_interrupt();
-
-	void destroy();
 }
 
 #endif /* INCLUDE_EMU_ASIC_H_ */

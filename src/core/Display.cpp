@@ -27,7 +27,7 @@ const SDL_Color palette[16] =
 	{210, 170, 153}, // peach
 	{109, 194, 202}, // sky
 	{218, 212,  94}, // maize
-	{222, 238, 214} // peppermint
+	{222, 238, 214}  // peppermint
 };
 
 namespace Display

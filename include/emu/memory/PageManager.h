@@ -2,6 +2,7 @@
 #define INCLUDE_EMU_MEMORY_PAGEMANAGER_H_
 
 #include <cstdint>
+#include <memory>
 #include "emu/memory/Page.h"
 #include "emu/device/StorageController.h"
 #include "z80e/z80e.h"
@@ -12,15 +13,15 @@
 class PageRegistery
 {
 private:
-	Page* pages[0x100];
+	std::shared_ptr<Page> pages[0x100];
 	int rom_pages;
 
-	int load_rom(StorageController *store_ctrl);
+	int load_rom(std::shared_ptr<StorageController> store_ctrl);
 	void save_rom();
 
 public:
-	PageRegistery(StorageController *store_ctrl);
-	Page* get_page(uint8_t page);
+	PageRegistery(std::shared_ptr<StorageController> store_ctrl);
+	std::shared_ptr<Page> get_page(uint8_t page);
 	~PageRegistery();
 };
 

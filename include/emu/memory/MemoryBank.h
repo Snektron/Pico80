@@ -2,6 +2,7 @@
 #define INCLUDE_EMU_MEMORY_MEMORYBANK_H_
 
 #include <cstdint>
+#include <memory>
 #include "emu/memory/Page.h"
 #include "PageManager.h"
 #include "z80e/z80e.h"
@@ -9,13 +10,12 @@
 class MemoryBank : public Z80e::BasicIODevice
 {
 private:
-	PageRegistery *registery;
-	Page *page;
+	std::shared_ptr<PageRegistery> registery;
+	std::shared_ptr<Page> page;
 
 public:
-	MemoryBank(PageRegistery *registery):
-		registery(registery),
-		page(nullptr)
+	MemoryBank(std::shared_ptr<PageRegistery> registery):
+		registery(registery)
 	{}
 
 	void write(uint8_t value)

@@ -1,6 +1,7 @@
+#include "emu/Asic.h"
 #include <cstdint>
 #include <chrono>
-#include "emu/Asic.h"
+#include <memory>
 #include "core/Time.h"
 #include "core/Logger.h"
 #include "emu/Ports.h"
@@ -24,16 +25,16 @@ namespace Asic
 		Time::TimerWrapper timer(trigger, Time::nanoseconds(SECOND_IN_NANOS/CLOCK_FREQ));
 		Time::point last;
 
-		Memory *memory;
-		Screen *screen;
-		Log *log;
-		Mouse *mouse;
-		StorageController *storage_controller;
+		std::shared_ptr<Memory> memory;
+		std::shared_ptr<Screen> screen;
+		std::shared_ptr<Log> log;
+		std::shared_ptr<Mouse> mouse;
+		std::shared_ptr<StorageController> storage_controller;
 
-		Interrupt *interrupt;
-		TimerInt *timer_int;
+		std::shared_ptr<Interrupt> interrupt;
+		std::shared_ptr<TimerInt> timer_int;
 
-		Z80e::CPU *cpu;
+		std::shared_ptr<Z80e::CPU> cpu;
 	}
 
 	void init()
@@ -42,22 +43,22 @@ namespace Asic
 		Logger::info(TAG) << "Clock rate: " << CLOCK_RATE/1000000.0 << " Mhz" << Logger::endl;
 		Logger::info(TAG) << "Clock freq: " << CLOCK_FREQ << " hz" << Logger::endl;
 
-		storage_controller = new StorageController();
+		storage_controller = std::make_shared<StorageController>();
 
-		memory = new Memory(storage_controller);
+		memory = std::make_shared<Memory>(storage_controller);
 		memory->get_bank(BANK_0)->write(0);
 		memory->get_bank(BANK_A)->write(0);
 		memory->get_bank(BANK_B)->write(RAM_PAGE(0));
 		memory->get_bank(BANK_C)->write(RAM_PAGE(1));
 
-		screen = new Screen();
-		log = new Log();
-		mouse = new Mouse(screen);
+		screen = std::make_shared<Screen>();
+		log = std::make_shared<Log>();
+		mouse = std::make_shared<Mouse>();
 
-		interrupt = new Interrupt();
-		timer_int = new TimerInt(interrupt, INT_TIMER, INSTRUCTIONS(SECOND_IN_NANOS / TIMER_FREQ));
+		interrupt = std::make_shared<Interrupt>();
+		timer_int = std::make_shared<TimerInt>(interrupt, INT_TIMER, INSTRUCTIONS(SECOND_IN_NANOS / TIMER_FREQ));
 
-		cpu = new Z80e::CPU(memory);
+		cpu = std::make_shared<Z80e::CPU>(memory);
 
 		cpu->add_device(PORT_LOG_OUT, log);
 
@@ -118,19 +119,5 @@ namespace Asic
 	void reset_interrupt()
 	{
 		cpu->reset_interrupt();
-	}
-
-	void destroy()
-	{
-		Logger::info(TAG, "Destroying asic");
-		delete cpu;
-		delete timer_int;
-		delete interrupt;
-
-		delete mouse;
-		delete log;
-		delete screen;
-		delete memory;
-		delete storage_controller;
 	}
 }

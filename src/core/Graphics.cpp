@@ -83,8 +83,3 @@ SDL_Window* Graphics::get_window()
 {
 	return window;
 }
-
-SDL_Surface* Graphics::get_surface()
-{
-	return surface;
-}
