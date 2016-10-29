@@ -11,7 +11,7 @@ namespace Input
 {
 	void update();
 	void handleEvent(SDL_Event* event);
-	bool quitRequested();
+	bool quit_requested();
 
 	// thread safe mouse access
 	namespace Mouse

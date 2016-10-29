@@ -2,18 +2,21 @@
 #define INCLUDE_CORE_GRAPHICS_H_
 
 #include <string>
+#include <memory>
 #include <SDL2/SDL.h>
 
 namespace Graphics
 {
 	void init(std::string name, int w, int h);
-	void update();
 	void destroy();
+	void update();
 	void refresh_surface();
+
 	void clear();
+	void blit(SDL_Surface *src, SDL_Rect& dstrect);
+
 	int get_width();
 	int get_height();
-	SDL_Window* get_window();
 }
 
 #endif /* INCLUDE_CORE_GRAPHICS_H_ */

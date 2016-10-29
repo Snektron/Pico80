@@ -31,20 +31,21 @@ namespace Time
 		Timer(nanoseconds interval);
 		void start();
 		void stop();
-		virtual void trigger() = 0;
 		void set_interval(nanoseconds interval);
 		nanoseconds get_interval();
+
+		virtual bool trigger() = 0;
 		virtual ~Timer() = default;
 	};
 
 	class TimerWrapper : public Timer
 	{
 	private:
-		std::function<void()> callback;
+		std::function<bool()> callback;
 
 	public:
-		TimerWrapper(const std::function<void()> callback, nanoseconds interval);
-		void trigger();
+		TimerWrapper(const std::function<bool()> callback, nanoseconds interval);
+		bool trigger();
 	};
 }
 

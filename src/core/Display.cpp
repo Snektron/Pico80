@@ -1,7 +1,7 @@
 #include "core/Display.h"
 #include <algorithm>
 #include <mutex>
-#include <SDL2/SDL.h>
+#include <memory>
 #include "core/Graphics.h"
 #include "core/Logger.h"
 
@@ -34,18 +34,19 @@ namespace Display
 {
 	namespace
 	{
-		SDL_Surface *display;
+		std::unique_ptr<SDL_Surface> display;
 		std::mutex mutex;
 	}
 
 	void init()
 	{
 		std::lock_guard<std::mutex> lock(mutex);
+
 		Logger::info(TAG, "Initializing display");
 
-		display = SDL_CreateRGBSurface(0, DISPLAY_WIDTH, DISPLAY_HEIGHT, 32, 0, 0, 0, 0);
+		display = std::unique_ptr<SDL_Surface>(SDL_CreateRGBSurface(0, DISPLAY_WIDTH, DISPLAY_HEIGHT, 32, 0, 0, 0, 0));
 
-		if (display == NULL)
+		if (!display)
 		{
 			Logger::info(TAG) << "Failed to create display: " << SDL_GetError() << Logger::endl;
 			throw std::runtime_error("Failed to initialize display");
@@ -55,25 +56,27 @@ namespace Display
 	void render()
 	{
 		std::lock_guard<std::mutex> lock(mutex);
+
 		SDL_Rect dst;
 		get_display_rect(dst);
-		SDL_BlitScaled(display, NULL, Graphics::get_surface(), &dst);
+		Graphics::blit(display.get(), dst);
 	}
 
 	void destroy()
 	{
 		std::lock_guard<std::mutex> lock(mutex);
+
 		Logger::info(TAG, "Destroying display");
-		if (!display)
-			return;
-		SDL_FreeSurface(display);
+		SDL_FreeSurface(display.release());
 	}
 
 	void write(uint8_t *data)
 	{
 		std::lock_guard<std::mutex> lock(mutex);
+
 		if (!display)
 			return;
+
 		uint32_t *pixels = (uint32_t*) display->pixels;
 		for (int i = 0; i < DISPLAY_WIDTH * DISPLAY_HEIGHT; i++)
 		{

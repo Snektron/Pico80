@@ -41,16 +41,11 @@ namespace Input
 			break;
 		case SDL_WINDOWEVENT:
 			if (event->window.event == SDL_WINDOWEVENT_RESIZED)
-			{
-				Logger::info(TAG) << "Window resized: "
-						<< event->window.data1 << "x"
-						<< event->window.data2 << Logger::endl;
 				Graphics::refresh_surface();
-			}
 		}
 	}
 
-	bool quitRequested()
+	bool quit_requested()
 	{
 		return quit;
 	}

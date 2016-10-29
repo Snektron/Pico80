@@ -8,8 +8,8 @@ namespace Pico80
 {
 	bool parse_args(int argc, char* argv[]);
 	void init();
-	void start();
-	void trigger();
+	void run();
+	bool trigger();
 	void destroy();
 }
 

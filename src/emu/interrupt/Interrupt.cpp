@@ -16,8 +16,9 @@ bool check_pin(int pin)
 	return true;
 }
 
-Interrupt::Interrupt():
-	mask(new Z80e::BasicIODevice())
+Interrupt::Interrupt(std::shared_ptr<Z80e::CPU> cpu):
+	mask(new Z80e::BasicIODevice()),
+	cpu(cpu)
 {}
 
 void Interrupt::set_enabled(int pin, bool enabled)
@@ -46,7 +47,7 @@ void Interrupt::trigger(int pin)
 {
 	if (is_enabled(pin))
 	{
-		Asic::set_interrupt();
+		cpu->set_interrupt();
 		uint8_t trigger_mask = Z80e::BasicIODevice::read();
 		trigger_mask |= 1 << pin;
 		Z80e::BasicIODevice::write(trigger_mask);
@@ -56,7 +57,7 @@ void Interrupt::trigger(int pin)
 void Interrupt::write(uint8_t value)
 {
 	if (!value) // if all interrupts are acknowleged, stop interrupting.
-		Asic::reset_interrupt();
+		cpu->reset_interrupt();
 	Z80e::BasicIODevice::write(value);
 }
 

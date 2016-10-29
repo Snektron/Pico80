@@ -11,7 +11,7 @@ int main(int argc, char* argv[])
 
 	try{
 		Pico80::init();
-		Pico80::start();
+		Pico80::run();
 		Pico80::destroy();
 	}
 	catch (const std::runtime_error& err)

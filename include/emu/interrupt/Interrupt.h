@@ -10,9 +10,10 @@ class Interrupt : public Z80e::BasicIODevice
 {
 private:
 	std::shared_ptr<Z80e::BasicIODevice> mask;
+	std::shared_ptr<Z80e::CPU> cpu;
 
 public:
-	Interrupt();
+	Interrupt(std::shared_ptr<Z80e::CPU> cpu);
 	void set_enabled(int pin, bool enabled);
 	bool is_enabled(int pin);
 	void trigger(int pin);

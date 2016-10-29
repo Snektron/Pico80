@@ -1,7 +1,7 @@
 #include "Pico80.h"
 #include <thread>
+#include <memory>
 #include "Settings.h"
-#include "core/System.h"
 #include "core/Logger.h"
 #include "core/Graphics.h"
 #include "core/Input.h"
@@ -18,6 +18,7 @@ namespace Pico80
 	namespace
 	{
 		Time::TimerWrapper timer(trigger, Time::nanoseconds(SECOND_IN_NANOS / FPS));
+		std::unique_ptr<Asic> asic;
 	}
 
 	bool parse_args(int argc, char* argv[])
@@ -27,39 +28,39 @@ namespace Pico80
 
 	void init()
 	{
-		System::init("Pico80", 512, 512);
-		Asic::init();
+		Logger::init(new Logger::ConsolePolicy());
+		Logger::info(TAG, "Starting");
+		Graphics::init("Pico80", 512, 512);
+		Display::init();
+
+		asic = std::make_unique<Asic>();
 		Logger::info(TAG, "Started");
 	}
 
-	void start()
+	void run()
 	{
-		std::thread asic(Asic::start);
+		std::thread asic_thread(Asic::start, asic.get());
 
 		timer.start();
 
-		Asic::stop();
-		asic.join();
+		asic->stop();
+		asic_thread.join();
 	}
 
-	void stop()
-	{
-		timer.stop();
-	}
-
-	void trigger()
+	bool trigger()
 	{
 		Graphics::clear();
 		Input::update();
 		Display::render();
 		Graphics::update();
 
-		if (Input::quitRequested())
-			stop();
+		return Input::quit_requested();
 	}
 
 	void destroy()
 	{
-		System::destroy();
+		Logger::info(TAG, "Stopping");
+		Display::destroy();
+		Graphics::destroy();
 	}
 }

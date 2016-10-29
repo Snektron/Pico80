@@ -20,15 +20,15 @@ namespace Settings
 			switch_handler handler;
 		};
 
-		void parse_rom(char* argv[]);
+		void switch_rom(char* argv[]);
 
 		std::map<std::string, switch_t> switches =
 		{
-				SWITCH("--rom", 1, &parse_rom),
-				SWITCH("-r", 1, &parse_rom)
+				SWITCH("--rom", 1, &switch_rom),
+				SWITCH("-r", 1, &switch_rom)
 		};
 
-		void parse_rom(char* argv[])
+		void switch_rom(char* argv[])
 		{
 			rom = std::string(argv[1]);
 		}

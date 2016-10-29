@@ -15,7 +15,7 @@ Screen::Screen():
 	arg1(new Z80e::BasicIODevice()),
 	arg2(new Z80e::BasicIODevice())
 {
-	clear(0);
+	clear(10);
 	sync();
 }
 

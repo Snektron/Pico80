@@ -1,6 +1,7 @@
 #include "core/Graphics.h"
 #include <exception>
 #include <string>
+#include <memory>
 #include <SDL2/SDL.h>
 #include "core/Logger.h"
 
@@ -9,7 +10,15 @@
 namespace
 {
 	SDL_Window *window;
-	SDL_Surface *surface;
+	std::unique_ptr<SDL_Surface> surface;
+}
+
+SDL_Window* create_window(std::string title, int w, int h, uint32_t flags)
+{
+	return SDL_CreateWindow(title.c_str(),
+				SDL_WINDOWPOS_UNDEFINED,
+				SDL_WINDOWPOS_UNDEFINED,
+				w, h, flags);
 }
 
 void Graphics::init(std::string name, int w, int h)
@@ -22,11 +31,9 @@ void Graphics::init(std::string name, int w, int h)
 		throw std::runtime_error("Failed to initialize graphics");
 	}
 
-	window = SDL_CreateWindow(name.c_str(),
-			SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-			w, h, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+	window = create_window(name, w, h, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 
-	if (window == NULL)
+	if (!window)
 	{
 		Logger::error(TAG) << "Failed to create window: " << SDL_GetError() << Logger::endl;
 		throw std::runtime_error("Failed to initialize graphics");
@@ -37,27 +44,30 @@ void Graphics::init(std::string name, int w, int h)
 	Logger::info(TAG, "Graphics initialized.");
 }
 
+void Graphics::destroy()
+{
+	Logger::info(TAG, "Destroying graphics");
+
+	SDL_FreeSurface(surface.release());
+
+	SDL_DestroyWindow(window);
+	SDL_Quit();
+}
+
 void Graphics::update()
 {
 	SDL_UpdateWindowSurface(window);
 }
 
-void Graphics::destroy()
-{
-	Logger::info("Graphics", "Destroying graphics");
-
-	SDL_FreeSurface(surface);
-	SDL_DestroyWindow(window);
-	SDL_Quit();
-}
-
 void Graphics::refresh_surface()
 {
 	if (surface)
-		SDL_FreeSurface(surface);
+		SDL_FreeSurface(surface.release());
 
-	surface = SDL_GetWindowSurface(window);
-	if (surface == NULL)
+	std::unique_ptr<SDL_Surface> sf(SDL_GetWindowSurface(window));
+	surface = std::move(sf);
+
+	if (!surface)
 	{
 		Logger::error(TAG) << "Failed initialize surface: " << SDL_GetError() << Logger::endl;
 		throw std::runtime_error("Failed to initialize graphics");
@@ -66,7 +76,12 @@ void Graphics::refresh_surface()
 
 void Graphics::clear()
 {
-	SDL_FillRect(surface, NULL, 0);
+	SDL_FillRect(surface.get(), NULL, 0);
+}
+
+void Graphics::blit(SDL_Surface *src, SDL_Rect& dstrect)
+{
+	SDL_BlitScaled(src, NULL, surface.get(), &dstrect);
 }
 
 int Graphics::get_width()
@@ -77,9 +92,4 @@ int Graphics::get_width()
 int Graphics::get_height()
 {
 	return surface->h;
-}
-
-SDL_Window* Graphics::get_window()
-{
-	return window;
 }

@@ -30,7 +30,11 @@ namespace Time
 		while(running)
 		{
 			Time::point start = now();
-			trigger();
+			if (trigger())
+			{
+				stop();
+				break;
+			}
 			Time::point stop = now();
 			Time::point next = start + interval;
 			if (next > stop)
@@ -53,13 +57,13 @@ namespace Time
 		return interval;
 	}
 
-	TimerWrapper::TimerWrapper(const std::function<void()> callback, nanoseconds interval):
+	TimerWrapper::TimerWrapper(const std::function<bool()> callback, nanoseconds interval):
 			Timer(interval),
 			callback(callback)
 	{}
 
-	void TimerWrapper::trigger()
+	bool TimerWrapper::trigger()
 	{
-		callback();
+		return callback();
 	}
 }
