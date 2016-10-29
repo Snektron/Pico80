@@ -8,6 +8,7 @@ namespace Settings
 	bool parse_args(int argc, char* argv[]);
 
 	std::string get_rom();
+	bool save_rom();
 };
 
 

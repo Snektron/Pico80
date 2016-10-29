@@ -52,7 +52,8 @@ std::shared_ptr<Page> PageRegistery::get_page(uint8_t page)
 
 PageRegistery::~PageRegistery()
 {
-	save_rom();
+	if (Settings::save_rom())
+		save_rom();
 }
 
 int PageRegistery::load_rom(std::shared_ptr<StorageController> store_ctrl)
@@ -67,21 +68,28 @@ int PageRegistery::load_rom(std::shared_ptr<StorageController> store_ctrl)
 		throw new std::runtime_error("Error initializing page manager");
 	}
 
-	int index = 0;
-	while (!rom_image.eof())
+	rom_image.seekg (0, rom_image.end);
+	int length = rom_image.tellg();
+	rom_image.seekg (0, rom_image.beg);
+	int n = length/PAGE_SIZE;
+
+	if (n > 128)
+	{
+		Logger::error(TAG) << "Too many rom pages (" << n << ")" << Logger::endl;
+		throw new std::runtime_error("Error initializing page manager");
+	}
+
+	int i = 0;
+	for (; i < n; i++)
 	{
 		auto page = std::make_shared<StoragePage>(store_ctrl);
 		rom_image.read((char*) page->raw_data(), PAGE_SIZE);
-		pages[index++] = page;
-		if (index >= 128)
-		{
-			Logger::error(TAG, "Too many storage pages");
-			throw new std::runtime_error("Error initializing page manager");
-		}
+		pages[i] = page;
 	}
+
 	rom_image.close();
 
-	return index;
+	return n;
 }
 
 void PageRegistery::save_rom()
