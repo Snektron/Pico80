@@ -30,11 +30,11 @@ private:
 	std::shared_ptr<Mouse> mouse;
 	std::shared_ptr<StorageController> storage_controller;
 
-	std::shared_ptr<Z80e::CPU> cpu;
-
 	std::shared_ptr<Interrupt> interrupt;
 	std::shared_ptr<TimerInt> timer_int;
 	std::shared_ptr<InterruptDevice> f12_int;
+
+	std::shared_ptr<Z80e::CPU> cpu;
 public:
 	Asic();
 

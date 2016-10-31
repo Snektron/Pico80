@@ -890,7 +890,7 @@ int cpu_execute(z80cpu_t *cpu, int cycles) {
 			if (cpu->IFF_wait) {
 				cpu->IFF_wait = 0;
 			} else {
-				if (cpu->interrupt) {
+				if (cpu->interrupting(cpu->interrupt)) {
 					cpu->halted = 0;
 					handle_interrupt(&context);
 					goto exit_loop;

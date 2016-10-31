@@ -1,5 +1,7 @@
-#include <cstdint>
 #include "emu/interrupt/Interrupt.h"
+#include <cstdint>
+#include <atomic>
+#include <mutex>
 #include "emu/Asic.h"
 #include "core/Logger.h"
 
@@ -16,13 +18,14 @@ bool check_pin(int pin)
 	return true;
 }
 
-Interrupt::Interrupt(std::shared_ptr<Z80e::CPU> cpu):
+Interrupt::Interrupt():
 	trig(new Z80e::ReadonlyIODevice()),
-	cpu(cpu)
+	interrupting(false)
 {}
 
 void Interrupt::set_enabled(int pin, bool enabled)
 {
+	std::lock_guard<std::mutex> lock();
 	if (!check_pin(pin))
 		return;
 
@@ -38,6 +41,7 @@ void Interrupt::set_enabled(int pin, bool enabled)
 
 bool Interrupt::is_enabled(int pin)
 {
+	std::lock_guard<std::mutex> lock();
 	if (!check_pin(pin))
 		return false;
 	return Z80e::BasicIODevice::read() & (1 << pin);
@@ -45,9 +49,10 @@ bool Interrupt::is_enabled(int pin)
 
 void Interrupt::trigger(int pin)
 {
+	std::lock_guard<std::mutex> lock();
 	if (is_enabled(pin))
 	{
-		cpu->set_interrupt();
+		interrupting = 1;
 		uint8_t trigger_mask = trig->read();
 		trigger_mask |= 1 << pin;
 		trig->set_value(trigger_mask);
@@ -56,14 +61,20 @@ void Interrupt::trigger(int pin)
 
 void Interrupt::write(uint8_t value)
 {
+	std::lock_guard<std::mutex> lock();
 	uint8_t trigger_mask = value & trig->read(); // only disable pins
 	trig->set_value(trigger_mask); // disable interrupt trigs
 	if (!trigger_mask) // if all interrupts are acknowleged, stop interrupting.
-		cpu->reset_interrupt();
+		interrupting = 0;
 	Z80e::BasicIODevice::write(value);
+}
+
+bool Interrupt::is_interrupting()
+{
+	return interrupting.load();
 }
 
 std::shared_ptr<Z80e::ReadonlyIODevice> Interrupt::get_interrupt_trig()
 {
-	return trig;
+	return trig; // TODO make thread-safe
 }

@@ -38,11 +38,11 @@ Asic::Asic():
 	log = std::make_shared<Log>();
 	mouse = std::make_shared<Mouse>();
 
-	cpu = std::make_shared<Z80e::CPU>(memory);
-
-	interrupt = std::make_shared<Interrupt>(cpu);
+	interrupt = std::make_shared<Interrupt>();
 	timer_int = std::make_shared<TimerInt>(interrupt, INT_TIMER, INSTRUCTIONS(SECOND_IN_NANOS / TIMER_FREQ));
 	f12_int = std::make_shared<InterruptDevice>(interrupt, INT_F12);
+
+	cpu = std::make_shared<Z80e::CPU>(memory, interrupt);
 
 	cpu->add_device(PORT_LOG_OUT, log);
 

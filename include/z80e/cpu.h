@@ -30,7 +30,8 @@ struct z80cpu {
 	void *memory;
 	uint8_t (*read_byte)(void *, uint16_t);
 	void (*write_byte)(void *, uint16_t, uint8_t);
-	int interrupt;
+	void *interrupt;
+	int (*interrupting)(void *);
 };
 
 

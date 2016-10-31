@@ -1,153 +1,124 @@
-/*
- * Keys.h
- *
- *  Created on: 31 okt. 2016
- *      Author: Robin
- */
-
 #ifndef INCLUDE_CORE_KEYS_H_
 #define INCLUDE_CORE_KEYS_H_
 
-// KnightOS key equates
+// internal key defines. They are redefined to provide a simpler subset of all keys
 
-#define KB_kDown 0x01
-#define KB_kLeft 0x02
-#define KB_kRight 0x03
-#define KB_kUp 0x04
-#define KB_kEnter 0x09
-#define KB_kEntry 0x09
-#define KB_kSolve 0x09
-#define KB_kPlus 0x0A
-#define KB_kMem 0x0A
-#define KB_kQuote 0x0A
-#define KB_kMinus 0x0B
-#define KB_kLSqBracket 0x0B
-#define KB_kW 0x0B
-#define KB_kMul 0x0C
-#define KB_kRSqBracket 0x0C
-#define KB_kR 0x0C
-#define KB_kDiv 0x0D
-#define KB_kVarE 0x0D
-#define KB_kM 0x0D
-#define KB_kPower 0x0E
-#define KB_kPi 0x0E
-#define KB_kH 0x0E
-#define KB_kClear 0x0F
-#define KB_kChs 0x11
-#define KB_kNeg 0x11
-#define KB_kAns 0x11
-#define KB_kQuestion 0x11
-#define KB_k3 0x12
-#define KB_kTheta 0x12
-#define KB_kL3 0x12
-#define KB_k6 0x13
-#define KB_kL6 0x13
-#define KB_kV 0x13
-#define KB_k9 0x14
-#define KB_kVarW 0x14
-#define KB_kQ 0x14
-#define KB_kRParen 0x15
-#define KB_kRBrace 0x15
-#define KB_kL 0x15
-#define KB_kTan 0x16
-#define KB_kInvTan 0x16
-#define KB_kG 0x16
-#define KB_kVars 0x17
-#define KB_kDistr 0x17
-#define KB_kDecPnt 0x19
-#define KB_kDot 0x19
-#define KB_kPeriod 0x19
-#define KB_kVarI 0x19
-#define KB_kImaginary 0x19
-#define KB_kColon 0x19
-#define KB_k2 0x1A
-#define KB_kL2 0x1A
-#define KB_kZ 0x1A
-#define KB_k5 0x1B
-#define KB_kL5 0x1B
-#define KB_kU 0x1B
-#define KB_k8 0x1C
-#define KB_kVarV 0x1C
-#define KB_kP 0x1C
-#define KB_kLParen 0x1D
-#define KB_kLBrace 0x1D
-#define KB_kK 0x1D
-#define KB_kCos 0x1E
-#define KB_kInvCos 0x1E
-#define KB_kF 0x1E
-#define KB_kPrgm 0x1F
-#define KB_kDraw 0x1F
-#define KB_kC 0x1F
-#define KB_kStat 0x20
-#define KB_kList 0x20
-#define KB_k0 0x21
-#define KB_kCatalog 0x21
-#define KB_kSpace 0x21
-#define KB_k1 0x22
-#define KB_kL1 0x22
-#define KB_kY 0x22
-#define KB_k4 0x23
-#define KB_kL4 0x23
-#define KB_kT 0x23
-#define KB_k7 0x24
-#define KB_kVarU 0x24
-#define KB_kO 0x24
-#define KB_kComma 0x25
-#define KB_kEE 0x25
-#define KB_kJ 0x25
-#define KB_kSin 0x26
-#define KB_kInvSin 0x26
-#define KB_kE 0x26
-#define KB_kApps 0x27
-#define KB_kAngle 0x27
-#define KB_kB 0x27
-#define KB_kGraphvar 0x28
-#define KB_kXTThetaN 0x28
-#define KB_kLink 0x28
-#define KB_kStore 0x2A
-#define KB_kRcl 0x2A
-#define KB_kX 0x2A
-#define KB_kLn 0x2B
-#define KB_kEx 0x2B
-#define KB_kS 0x2B
-#define KB_kLog 0x2C
-#define KB_k10x 0x2C
-#define KB_kN 0x2C
-#define KB_kSquare 0x2D
-#define KB_kXSqu 0x2D
-#define KB_kSqRoot 0x2D
-#define KB_kI 0x2D
-#define KB_kRecip 0x2E
-#define KB_kXNeg 0x2E
-#define KB_kMatrix 0x2E
-#define KB_kD 0x2E
-#define KB_kMath 0x2F
-#define KB_kA 0x2F
-#define KB_kTest 0x2F
-#define KB_kAlpha 0x30
-#define KB_kALock 0x30
-#define KB_kGraph 0x31
-#define KB_kTable 0x31
-#define KB_kF5 0x31
-#define KB_kTrace 0x32
-#define KB_kCalc 0x32
-#define KB_kF4 0x32
-#define KB_kZoom 0x33
-#define KB_kFormat 0x33
-#define KB_kF3 0x33
-#define KB_kWindow 0x34
-#define KB_kTblSet 0x34
-#define KB_kTableSet 0x34
-#define KB_kF2 0x34
-#define KB_kYEqu 0x35
-#define KB_kStatPlot 0x35
-#define KB_kF1 0x35
-#define KB_k2nd 0x36
-#define KB_kShift 0x36
-#define KB_kMode 0x37
-#define KB_kQuite 0x37
-#define KB_kDel 0x38
-#define KB_kIns 0x38
-#define KB_kDelete 0x38
+#define KM_SHIFT (1 << 0)
+#define KM_CTRL (1 << 1)
+#define KM_ALT (1 << 2)
+
+#define K_F1 0x01
+#define K_F2 0x02
+#define K_F3 0x03
+#define K_F4 0x04
+#define K_F5 0x05
+
+#define K_DOWN 0x06
+#define K_LEFT 0x07
+#define K_RIGHT 0x08
+#define K_UP 0x09
+
+#define K_BACKSPACE 0xA
+#define K_ESC 0x0B
+#define K_SHIFT 0x0C
+#define K_CTRL 0x0D
+#define K_SPACE 0x0E
+#define K_ENTER 0x0F
+
+#define K_A 0x10
+#define K_B 0x11
+#define K_C 0x12
+#define K_D 0x13
+#define K_E 0x14
+#define K_F 0x15
+#define K_G 0x16
+#define K_H 0x17
+#define K_I 0x18
+#define K_J 0x19
+#define K_K 0x1A
+#define K_L 0x1B
+#define K_M 0x1C
+#define K_N 0x1D
+#define K_O 0x1E
+#define K_P 0x1F
+#define K_Q 0x20
+#define K_R 0x21
+#define K_S 0x22
+#define K_T 0x23
+#define K_U 0x24
+#define K_V 0x25
+#define K_W 0x26
+#define K_X 0x27
+#define K_Y 0x28
+#define K_Z 0x29
+
+#define K_PLUS 0x2A
+#define K_MINUS 0x2B
+#define K_ASTERISK 0x2C
+#define K_MULTIPLY K_ASTERISK
+#define K_SLASH 0x2D
+#define K_DIVIDE K_SLASH
+#define K_NEGATIVE 0x2E
+#define K_EQUALS 0x2F
+
+#define K_a 0x30
+#define K_b 0x31
+#define K_c 0x32
+#define K_d 0x33
+#define K_e 0x34
+#define K_f 0x35
+#define K_g 0x36
+#define K_h 0x37
+#define K_i 0x38
+#define K_j 0x39
+#define K_k 0x3A
+#define K_l 0x3B
+#define K_m 0x3C
+#define K_n 0x3D
+#define K_o 0x3E
+#define K_p 0x3F
+#define K_q 0x40
+#define K_r 0x41
+#define K_s 0x42
+#define K_t 0x43
+#define K_u 0x44
+#define K_v 0x45
+#define K_w 0x46
+#define K_x 0x47
+#define K_y 0x48
+#define K_z 0x49
+
+#define K_LBRACE 0x4A
+#define K_RBRACE 0x4B
+#define K_LBRACKET 0x4C
+#define K_RBRACKET 0x4D
+#define K_LPAREN 0x4E
+#define K_RPAREN 0x4F
+
+#define K_0 0x50
+#define K_1 0x51
+#define K_2 0x52
+#define K_3 0x53
+#define K_4 0x54
+#define K_5 0x55
+#define K_6 0x56
+#define K_7 0x57
+#define K_8 0x58
+#define K_9 0x59
+
+#define K_UNDERSCORE 0x5A
+#define K_QUESTION 0x5B
+#define K_PERIOD 0x5C
+#define K_DOT K_PERIOD
+#define K_COMMA 0x5D
+#define K_EXCLAIM 0x5E
+#define K_COLON 0x5F
+#define K_DEL 0x60
+#define K_INS 0x61
+#define K_QUOTEDBL 0x62
+#define K_QUOTE 0x63
+
+#define K_QUIT 0x64
+#define K_MODE 0x65
 
 #endif /* INCLUDE_CORE_KEYS_H_ */

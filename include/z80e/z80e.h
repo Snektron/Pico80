@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <memory>
+#include <atomic>
 extern "C"
 {
 #include "z80e/cpu.h"
@@ -94,16 +95,33 @@ namespace Z80e
 		}
 	};
 
+	class InterruptController
+	{
+	public:
+		static int interrupting(void *interrupt)
+		{
+			InterruptController *ictrl = (InterruptController*) interrupt;
+			if (ictrl)
+				return ictrl->is_interrupting();
+			return 0;
+		}
+
+		virtual bool is_interrupting() = 0;
+		virtual ~InterruptController() = default;
+	};
+
 	class CPU
 	{
 	private:
 		std::unique_ptr<z80cpu_t, void(*)(z80cpu_t*)> z80;
 		std::shared_ptr<Memory> mem;
+		std::shared_ptr<InterruptController> ictrl;
 		std::shared_ptr<IODevice> devices[0x100];
 
 	public:
-		CPU(std::shared_ptr<Memory> mem):
+		CPU(std::shared_ptr<Memory> mem, std::shared_ptr<InterruptController> ictrl):
 			z80(cpu_init(), cpu_free),
+			ictrl(ictrl),
 			mem(mem)
 		{
 			z80iodevice_t device = {nullptr, &IODevice::io_read, &IODevice::io_write};
@@ -112,6 +130,8 @@ namespace Z80e
 			z80->memory = mem.get();
 			z80->read_byte = &Memory::mem_read;
 			z80->write_byte = &Memory::mem_write;
+			z80->interrupt = ictrl.get();
+			z80->interrupting = &InterruptController::interrupting;
 		}
 
 		void add_device(uint8_t port, std::shared_ptr<IODevice> device)
@@ -163,16 +183,6 @@ namespace Z80e
 		void write_word(uint16_t address, uint16_t value)
 		{
 			cpu_write_word(z80.get(), address, value);
-		}
-
-		void set_interrupt()
-		{
-			z80->interrupt = 1;
-		}
-
-		void reset_interrupt()
-		{
-			z80->interrupt = 0;
 		}
 
 		int execute(int cycles)

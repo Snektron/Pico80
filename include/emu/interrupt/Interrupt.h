@@ -3,21 +3,25 @@
 
 #include <cstdint>
 #include <memory>
+#include <atomic>
+#include <mutex>
 #include "z80e/z80e.h"
 #include "core/Time.h"
 
-class Interrupt : public Z80e::BasicIODevice
+class Interrupt : public Z80e::BasicIODevice, public Z80e::InterruptController
 {
 private:
 	std::shared_ptr<Z80e::ReadonlyIODevice> trig;
-	std::shared_ptr<Z80e::CPU> cpu;
+	std::atomic<bool> interrupting;
+	std::mutex lock;
 
 public:
-	Interrupt(std::shared_ptr<Z80e::CPU> cpu);
+	Interrupt();
 	void set_enabled(int pin, bool enabled);
 	bool is_enabled(int pin);
 	void trigger(int pin);
 	void write(uint8_t value);
+	bool is_interrupting();
 	std::shared_ptr<Z80e::ReadonlyIODevice> get_interrupt_trig();
 };
 

@@ -1,13 +1,12 @@
 #ifndef INCLUDE_CORE_INPUT_H_
 #define INCLUDE_CORE_INPUT_H_
 
+#include <functional>
 #include <SDL2/SDL.h>
 
 #define MOUSE_BTN_LEFT 0
 #define MOUSE_BTN_RIGHT 1
 #define MOUSE_BTN_MIDDLE 2
-
-#define KB_kDown 0
 
 namespace Input
 {
@@ -27,6 +26,8 @@ namespace Input
 	{
 		void handleKeyboardEvent(SDL_Event *event, bool down);
 		bool getKeyState(uint8_t key);
+		bool getF12State();
+		int mapKey(SDL_Keysym *sym);
 	}
 }
 
