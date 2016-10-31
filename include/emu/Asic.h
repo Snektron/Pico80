@@ -34,6 +34,7 @@ private:
 
 	std::shared_ptr<Interrupt> interrupt;
 	std::shared_ptr<TimerInt> timer_int;
+	std::shared_ptr<InterruptDevice> f12_int;
 public:
 	Asic();
 

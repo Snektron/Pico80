@@ -7,6 +7,8 @@
 #define MOUSE_BTN_RIGHT 1
 #define MOUSE_BTN_MIDDLE 2
 
+#define KB_kDown 0
+
 namespace Input
 {
 	void update();
@@ -19,6 +21,12 @@ namespace Input
 		int X();
 		int Y();
 		int State();
+	}
+
+	namespace Keyboard
+	{
+		void handleKeyboardEvent(SDL_Event *event, bool down);
+		bool getKeyState(uint8_t key);
 	}
 }
 

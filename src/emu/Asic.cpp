@@ -2,9 +2,10 @@
 #include <cstdint>
 #include <chrono>
 #include <memory>
+
+#include "emu/Platform.h"
 #include "core/Time.h"
 #include "core/Logger.h"
-#include "emu/Ports.h"
 #include "emu/interrupt/TimerInt.h"
 #include "emu/memory/Memory.h"
 #include "emu/device/Screen.h"
@@ -41,6 +42,7 @@ Asic::Asic():
 
 	interrupt = std::make_shared<Interrupt>(cpu);
 	timer_int = std::make_shared<TimerInt>(interrupt, INT_TIMER, INSTRUCTIONS(SECOND_IN_NANOS / TIMER_FREQ));
+	f12_int = std::make_shared<InterruptDevice>(interrupt, INT_F12);
 
 	cpu->add_device(PORT_LOG_OUT, log);
 
@@ -49,7 +51,7 @@ Asic::Asic():
 	cpu->add_device(PORT_MEM_BANK_C, memory->get_bank(BANK_C));
 
 	cpu->add_device(PORT_INT_MASK, interrupt->get_interrupt_mask());
-	cpu->add_device(PORT_INT_ACK, interrupt);
+	cpu->add_device(PORT_INT_TRIG, interrupt);
 
 	cpu->add_device(PORT_SCRN_CMD, screen);
 	cpu->add_device(PORT_SCRN_ARG0, screen->get_arg0());

@@ -5,7 +5,9 @@
 #define PORT_MEM_BANK_C 3
 
 #define PORT_INT_MASK 4
-#define PORT_INT_ACK 5
+#define PORT_INT_TRIG 5
+#define INT_TIMER 0
+#define INT_F12 1
 
 #define PORT_SCRN_CMD 6
 #define PORT_SCRN_ARG0 7
@@ -17,5 +19,3 @@
 #define PORT_MOUSE_BTN 12
 
 #define PORT_STORAGE_CTRL 13
-
-#define INT_TIMER 0

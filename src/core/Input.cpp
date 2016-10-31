@@ -1,5 +1,6 @@
 #include "core/Input.h"
 #include <atomic>
+#include <cstdint>
 #include <SDL2/SDL.h>
 #include "core/Logger.h"
 #include "core/Graphics.h"
@@ -12,6 +13,9 @@ namespace
 	std::atomic<int> mouseX(0);
 	std::atomic<int> mouseY(0);
 	std::atomic<int> mouseState(0);
+
+	std::mutex keymutex;
+	std::array<bool, 0x100> keys({0});
 }
 
 namespace Input
@@ -42,6 +46,13 @@ namespace Input
 		case SDL_WINDOWEVENT:
 			if (event->window.event == SDL_WINDOWEVENT_RESIZED)
 				Graphics::refresh_surface();
+			break;
+		case SDL_KEYDOWN:
+			Keyboard::handleKeyboardEvent(event, true);
+			break;
+		case SDL_KEYUP:
+			Keyboard::handleKeyboardEvent(event, false);
+			break;
 		}
 	}
 
@@ -65,6 +76,25 @@ namespace Input
 		int State()
 		{
 			return mouseState;
+		}
+	}
+
+	namespace Keyboard
+	{
+		void handleKeyboardEvent(SDL_Event *event, bool down)
+		{
+			std::lock_guard<std::mutex> lock(keymutex);
+			switch(event->key.keysym.sym)
+			{
+			case SDLK_RETURN:
+				break;
+			}
+		}
+
+		bool getKeyState(uint8_t key)
+		{
+			std::lock_guard<std::mutex> lock(keymutex);
+			return keys[key];
 		}
 	}
 }
