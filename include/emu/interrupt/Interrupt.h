@@ -9,7 +9,7 @@
 class Interrupt : public Z80e::BasicIODevice
 {
 private:
-	std::shared_ptr<Z80e::BasicIODevice> mask;
+	std::shared_ptr<Z80e::ReadonlyIODevice> trig;
 	std::shared_ptr<Z80e::CPU> cpu;
 
 public:
@@ -18,7 +18,7 @@ public:
 	bool is_enabled(int pin);
 	void trigger(int pin);
 	void write(uint8_t value);
-	std::shared_ptr<Z80e::BasicIODevice> get_interrupt_mask();
+	std::shared_ptr<Z80e::ReadonlyIODevice> get_interrupt_trig();
 };
 
 class InterruptDevice

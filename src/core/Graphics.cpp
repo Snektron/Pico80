@@ -40,8 +40,6 @@ void Graphics::init(std::string name, int w, int h)
 	}
 
 	refresh_surface();
-
-	Logger::info(TAG, "Graphics initialized.");
 }
 
 void Graphics::destroy()

@@ -75,6 +75,25 @@ namespace Z80e
 		}
 	};
 
+	class ReadonlyIODevice : public IODevice
+	{
+	private:
+		uint8_t portvalue;
+	public:
+		uint8_t read()
+		{
+			return portvalue;
+		}
+
+		void write(uint8_t value)
+		{}
+
+		void set_value(uint8_t value)
+		{
+			portvalue = value;
+		}
+	};
+
 	class CPU
 	{
 	private:

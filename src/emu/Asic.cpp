@@ -50,8 +50,8 @@ Asic::Asic():
 	cpu->add_device(PORT_MEM_BANK_B, memory->get_bank(BANK_B));
 	cpu->add_device(PORT_MEM_BANK_C, memory->get_bank(BANK_C));
 
-	cpu->add_device(PORT_INT_MASK, interrupt->get_interrupt_mask());
-	cpu->add_device(PORT_INT_TRIG, interrupt);
+	cpu->add_device(PORT_INT_MASK, interrupt);
+	cpu->add_device(PORT_INT_TRIG, interrupt->get_interrupt_trig());
 
 	cpu->add_device(PORT_SCRN_CMD, screen);
 	cpu->add_device(PORT_SCRN_ARG0, screen->get_arg0());
@@ -88,4 +88,5 @@ bool Asic::trigger()
 
 	int executed = cycles - cpu->execute(cycles);
 	timer_int->update(executed);
+	return false;
 }

@@ -71,7 +71,7 @@ int PageRegistery::load_rom(std::shared_ptr<StorageController> store_ctrl)
 	rom_image.seekg (0, rom_image.end);
 	int length = rom_image.tellg();
 	rom_image.seekg (0, rom_image.beg);
-	int n = length/PAGE_SIZE;
+	int n = (length + 16383)/PAGE_SIZE;
 
 	if (n > 128)
 	{

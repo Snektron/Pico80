@@ -17,7 +17,7 @@ bool check_pin(int pin)
 }
 
 Interrupt::Interrupt(std::shared_ptr<Z80e::CPU> cpu):
-	mask(new Z80e::BasicIODevice()),
+	trig(new Z80e::ReadonlyIODevice()),
 	cpu(cpu)
 {}
 
@@ -26,21 +26,21 @@ void Interrupt::set_enabled(int pin, bool enabled)
 	if (!check_pin(pin))
 		return;
 
-	uint8_t enable_mask = mask->read();
+	uint8_t enable_mask = Z80e::BasicIODevice::read();
 
 	if (enabled)
 		enable_mask |= 1 << pin;
 	else
 		enable_mask &= ~(1 << pin);
 
-	mask->write(enable_mask);
+	Z80e::BasicIODevice::write(enable_mask);
 }
 
 bool Interrupt::is_enabled(int pin)
 {
 	if (!check_pin(pin))
 		return false;
-	return mask->read() & (1 << pin);
+	return Z80e::BasicIODevice::read() & (1 << pin);
 }
 
 void Interrupt::trigger(int pin)
@@ -48,20 +48,22 @@ void Interrupt::trigger(int pin)
 	if (is_enabled(pin))
 	{
 		cpu->set_interrupt();
-		uint8_t trigger_mask = Z80e::BasicIODevice::read();
+		uint8_t trigger_mask = trig->read();
 		trigger_mask |= 1 << pin;
-		Z80e::BasicIODevice::write(trigger_mask);
+		trig->set_value(trigger_mask);
 	}
 }
 
 void Interrupt::write(uint8_t value)
 {
-	if (!value) // if all interrupts are acknowleged, stop interrupting.
+	uint8_t trigger_mask = value & trig->read(); // only disable pins
+	trig->set_value(trigger_mask); // disable interrupt trigs
+	if (!trigger_mask) // if all interrupts are acknowleged, stop interrupting.
 		cpu->reset_interrupt();
 	Z80e::BasicIODevice::write(value);
 }
 
-std::shared_ptr<Z80e::BasicIODevice> Interrupt::get_interrupt_mask()
+std::shared_ptr<Z80e::ReadonlyIODevice> Interrupt::get_interrupt_trig()
 {
-	return mask;
+	return trig;
 }
