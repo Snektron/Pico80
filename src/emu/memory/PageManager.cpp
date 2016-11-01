@@ -65,7 +65,7 @@ int PageRegistery::load_rom(std::shared_ptr<StorageController> store_ctrl)
 	if (!rom_image.is_open())
 	{
 		Logger::error(TAG, "Failed to open rom image");
-		throw new std::runtime_error("Error initializing page manager");
+		throw std::runtime_error("Error initializing page manager");
 	}
 
 	rom_image.seekg (0, rom_image.end);
@@ -73,10 +73,15 @@ int PageRegistery::load_rom(std::shared_ptr<StorageController> store_ctrl)
 	rom_image.seekg (0, rom_image.beg);
 	int n = (length + 16383)/PAGE_SIZE;
 
+	if (n == 0)
+	{
+		throw std::runtime_error("Error initializing page manager");
+	}
+
 	if (n > 128)
 	{
 		Logger::error(TAG) << "Too many rom pages (" << n << ")" << Logger::endl;
-		throw new std::runtime_error("Error initializing page manager");
+		throw std::runtime_error("Error initializing page manager");
 	}
 
 	int i = 0;
