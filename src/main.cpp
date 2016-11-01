@@ -7,6 +7,8 @@
 
 #define TAG "main"
 
+// TODO seperate settings parser
+
 int main(int argc, char* argv[])
 {
 	Logger::init(new Logger::ConsolePolicy());
