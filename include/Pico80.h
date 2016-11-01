@@ -11,8 +11,6 @@ private:
 
 public:
 	Pico80();
-	bool parseArgs(int argc, char* argv[]);
-	void init();
 	void run();
 	bool trigger();
 	~Pico80();

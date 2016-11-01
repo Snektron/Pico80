@@ -17,7 +17,7 @@ namespace Logger
 	}
 
 	FilePolicy::FilePolicy(std::string file):
-		out("file", std::ios_base::app)
+		out(file, std::ios_base::app)
 	{}
 
 	void FilePolicy::write(std::string& line)
@@ -33,6 +33,17 @@ namespace Logger
 	{
 		if (out)
 			out.close();
+	}
+
+	ConsoleFilePolicy::ConsoleFilePolicy(std::string file):
+			filePolicy(file),
+			consolePolicy()
+	{}
+
+	void ConsoleFilePolicy::write(std::string& line)
+	{
+		filePolicy.write(line);
+		consolePolicy.write(line);
 	}
 
 	LogStream::LogStreamBuf::LogStreamBuf(std::shared_ptr<LoggingPolicy> policy):

@@ -40,6 +40,16 @@ namespace Logger
 		~FilePolicy();
 	};
 
+	class ConsoleFilePolicy : public LoggingPolicy
+	{
+	private:
+		FilePolicy filePolicy;
+		ConsolePolicy consolePolicy;
+	public:
+		ConsoleFilePolicy(std::string file);
+		void write(std::string& line);
+	};
+
 	class LogStream: public std::ostream
 	{
 	private:

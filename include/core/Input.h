@@ -34,7 +34,7 @@ namespace Input
 		void handleKeyboardEvent(SDL_Event *event, bool down);
 		uint8_t getLastKey();
 		uint8_t getModifiers();
-		void setF12Handler(std::shared_ptr<F12Handler> handler);
+		void setF12Handler(std::weak_ptr<F12Handler> handler);
 		int mapKey(SDL_Keysym *sym);
 	}
 }

@@ -78,5 +78,5 @@ bool Interrupt::is_interrupting()
 
 std::shared_ptr<TrigIODevice> Interrupt::get_interrupt_trig()
 {
-	return trig; // TODO make thread-safe
+	return trig;
 }

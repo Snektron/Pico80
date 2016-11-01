@@ -11,8 +11,10 @@ namespace Settings
 {
 	namespace
 	{
-		std::string rom = "rom.bin";
-		bool saverom = true;
+		std::string opt_rom = "rom.bin";
+		bool opt_save_rom = true;
+		bool opt_quiet = false;
+		bool opt_log_to_file = false;
 
 		typedef bool (*switch_handler)(char* argv[]);
 		struct switch_t
@@ -30,18 +32,32 @@ namespace Settings
 			std::cout << "-h,--help       - Print this message." << std::endl;
 			std::cout << "-r,--rom <path> - Specify rom file location. (default: rom.bin)" << std::endl;
 			std::cout << "-n,--dont-save  - Do not save changes back to the rom file on quit." << std::endl;
+			std::cout << "-q,--quiet      - Do not output log messages to console." << std::endl;
+			std::cout << "-s,--save-log   - Output log to a file." << std::endl;
 			return false;
 		}
 
 		bool switch_rom(char* argv[])
 		{
-			rom = std::string(argv[1]);
+			opt_rom = std::string(argv[1]);
 			return true;
 		}
 
 		bool switch_dont_save_rom(char* argv[])
 		{
-			saverom = false;
+			opt_save_rom = false;
+			return true;
+		}
+
+		bool switch_quiet(char* argv[])
+		{
+			opt_quiet = true;
+			return true;
+		}
+
+		bool switch_log_to_file(char* argv[])
+		{
+			opt_log_to_file = true;
 			return true;
 		}
 
@@ -50,6 +66,8 @@ namespace Settings
 			SWITCH("--help", "-h", 0, &switch_help),
 			SWITCH("--rom", "-r", 1, &switch_rom),
 			SWITCH("--dont-save", "-n", 0, &switch_dont_save_rom),
+			SWITCH("--quiet", "-q", 0, &switch_quiet),
+			SWITCH("--save-log", "-s", 0, &switch_log_to_file),
 		};
 	}
 
@@ -82,13 +100,23 @@ namespace Settings
 		return true;
 	}
 
-	std::string get_rom()
+	std::string rom()
 	{
-		return rom;
+		return opt_rom;
 	}
 
 	bool save_rom()
 	{
-		return saverom;
+		return opt_save_rom;
+	}
+
+	bool quiet()
+	{
+		return opt_quiet;
+	}
+
+	bool log_to_file()
+	{
+		return opt_log_to_file;
 	}
 }
