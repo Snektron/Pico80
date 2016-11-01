@@ -10,6 +10,7 @@
 #include "emu/device/Screen.h"
 #include "emu/device/Log.h"
 #include "emu/device/Mouse.h"
+#include "emu/device/Keyboard.h"
 #include "emu/device/StorageController.h"
 #include "emu/interrupt/Interrupt.h"
 
@@ -25,11 +26,15 @@ class Asic : public Time::Timer, public Input::Keyboard::F12Handler
 private:
 	Time::point last;
 
-	std::shared_ptr<Memory> memory;
-	std::shared_ptr<Screen> screen;
 	std::shared_ptr<Log> log;
+	std::shared_ptr<Screen> screen;
 	std::shared_ptr<Mouse> mouse;
 	std::shared_ptr<StorageController> storage_controller;
+	std::shared_ptr<Keyboard> keyboard;
+	std::shared_ptr<KeyModifiers> keyModifiers;
+	std::shared_ptr<KeyPad> keypad;
+
+	std::shared_ptr<Memory> memory;
 
 	std::shared_ptr<Interrupt> interrupt;
 	std::shared_ptr<TimerInt> timer_int;

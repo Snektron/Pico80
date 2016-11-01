@@ -19,3 +19,7 @@
 #define PORT_MOUSE_BTN 12
 
 #define PORT_STORAGE_CTRL 13
+
+#define PORT_KEYBOARD 14
+#define PORT_KEYPAD 15
+#define PORT_KEYMOD 16

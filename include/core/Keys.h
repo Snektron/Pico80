@@ -7,6 +7,8 @@
 #define KM_CTRL (1 << 1)
 #define KM_ALT (1 << 2)
 
+#define K_NONE 0x00
+
 #define K_F1 0x01
 #define K_F2 0x02
 #define K_F3 0x03

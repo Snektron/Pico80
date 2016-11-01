@@ -18,9 +18,8 @@ namespace Input
 		std::atomic<int> mouseY(0);
 		std::atomic<int> mouseState(0);
 
-		std::mutex keymutex;
-		std::array<bool, 0x100> keys({0});
 		std::shared_ptr<Keyboard::F12Handler> f12handler;
+		std::atomic<uint8_t> lastkey(0), lastmod(0);
 	}
 
 	void update()
@@ -86,25 +85,34 @@ namespace Input
 	{
 		void handleKeyboardEvent(SDL_Event *event, bool down)
 		{
+			lastmod = 0;
+			if (event->key.keysym.mod & KMOD_CTRL)
+				lastmod |= KM_CTRL;
+			if (event->key.keysym.mod & (KMOD_SHIFT | KMOD_CAPS))
+				lastmod |= KM_SHIFT;
+			if (event->key.keysym.mod & KMOD_ALT)
+				lastmod |= KM_ALT;
+
 			if (event->key.keysym.sym == SDLK_F12)
 			{
 				if (f12handler)
 					f12handler->handle();
 				return;
 			}
-			std::lock_guard<std::mutex> lock(keymutex);
 
 			int key = mapKey(&event->key.keysym);
-			if (key)
-				keys[key] = down;
+			lastkey = down ? key : 0;
 		}
 
-		bool getKeyState(uint8_t key)
+		uint8_t getLastKey()
 		{
-			std::lock_guard<std::mutex> lock(keymutex);
-			return keys[key];
+			return lastkey;
 		}
 
+		uint8_t getModifiers()
+		{
+			return lastmod;
+		}
 
 		void setF12Handler(std::shared_ptr<F12Handler> handler)
 		{

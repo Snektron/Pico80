@@ -2,7 +2,6 @@
 #include <cstdint>
 #include <chrono>
 #include <memory>
-
 #include "emu/Platform.h"
 #include "core/Time.h"
 #include "core/Logger.h"
@@ -11,6 +10,7 @@
 #include "emu/device/Screen.h"
 #include "emu/device/Log.h"
 #include "emu/device/Mouse.h"
+#include "emu/device/Keyboard.h"
 #include "emu/device/StorageController.h"
 #include "emu/interrupt/Interrupt.h"
 
@@ -26,17 +26,19 @@ Asic::Asic():
 	Logger::info(TAG) << "Clock rate: " << CLOCK_RATE/1000000.0 << " Mhz" << Logger::endl;
 	Logger::info(TAG) << "Clock freq: " << CLOCK_FREQ << " hz" << Logger::endl;
 
+	log = std::make_shared<Log>();
+	screen = std::make_shared<Screen>();
+	mouse = std::make_shared<Mouse>();
 	storage_controller = std::make_shared<StorageController>();
+	keyboard = std::make_shared<Keyboard>();
+	keypad = std::make_shared<KeyPad>();
+	keyModifiers = std::make_shared<KeyModifiers>();
 
 	memory = std::make_shared<Memory>(storage_controller);
 	memory->get_bank(BANK_0)->write(0);
 	memory->get_bank(BANK_A)->write(0);
 	memory->get_bank(BANK_B)->write(RAM_PAGE(0));
 	memory->get_bank(BANK_C)->write(RAM_PAGE(1));
-
-	screen = std::make_shared<Screen>();
-	log = std::make_shared<Log>();
-	mouse = std::make_shared<Mouse>();
 
 	interrupt = std::make_shared<Interrupt>();
 	timer_int = std::make_shared<TimerInt>(interrupt, INT_TIMER, INSTRUCTIONS(SECOND_IN_NANOS / TIMER_FREQ));
@@ -63,6 +65,10 @@ Asic::Asic():
 	cpu->add_device(PORT_MOUSE_BTN, mouse->get_mouse_state());
 
 	cpu->add_device(PORT_STORAGE_CTRL, storage_controller);
+
+	cpu->add_device(PORT_KEYBOARD, keyboard);
+	cpu->add_device(PORT_KEYPAD, keypad);
+	cpu->add_device(PORT_KEYMOD, keyModifiers);
 }
 
 void Asic::start()
