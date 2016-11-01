@@ -18,8 +18,9 @@ namespace Input
 		std::atomic<int> mouseY(0);
 		std::atomic<int> mouseState(0);
 
-		std::shared_ptr<Keyboard::F12Handler> f12handler;
+		std::shared_ptr<Keyboard::F12Handler> f12handler(NULL);
 		std::atomic<uint8_t> lastkey(0), lastmod(0);
+		bool f12down(false);
 	}
 
 	void update()
@@ -93,10 +94,16 @@ namespace Input
 			if (event->key.keysym.mod & KMOD_ALT)
 				lastmod |= KM_ALT;
 
-			if (event->key.keysym.sym == SDLK_F12)
+			if (event->key.keysym.sym == SDLK_F12 && f12handler)
 			{
-				if (f12handler)
+				if (down && !f12down)
+				{
+					f12down = true;
 					f12handler->handle();
+				}else if(!down)
+					f12down = false;
+
+
 				return;
 			}
 

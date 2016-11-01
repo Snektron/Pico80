@@ -4,13 +4,18 @@
 #include "core/Time.h"
 #include "emu/Asic.h"
 
-namespace Pico80
+class Pico80 : Time::Timer
 {
-	bool parse_args(int argc, char* argv[]);
+private:
+	std::shared_ptr<Asic> asic;
+
+public:
+	Pico80();
+	bool parseArgs(int argc, char* argv[]);
 	void init();
 	void run();
 	bool trigger();
-	void destroy();
-}
+	~Pico80();
+};
 
 #endif /* INCLUDE_PICO80_H_ */

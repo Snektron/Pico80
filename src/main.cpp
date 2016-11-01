@@ -1,18 +1,24 @@
+#include "Pico80.h"
 #include <cstdlib>
 #include <iostream>
 #include <exception>
 #include <SDL2/SDL.h>
-#include "Pico80.h"
+#include "core/Logger.h"
+
+#define TAG "main"
 
 int main(int argc, char* argv[])
 {
-	if (!Pico80::parse_args(argc, argv))
-		return EXIT_SUCCESS;
+	Logger::init(new Logger::ConsolePolicy());
+	Logger::info(TAG, "Starting");
 
 	try{
-		Pico80::init();
-		Pico80::run();
-		Pico80::destroy();
+		Pico80 *pico = new Pico80();
+		if (!pico->parseArgs(argc, argv))
+			return EXIT_FAILURE;
+		pico->init();
+		pico->run();
+		delete pico;
 	}
 	catch (const std::runtime_error& err)
 	{
@@ -22,6 +28,8 @@ int main(int argc, char* argv[])
 	{
 		Logger::error("Runtime error", err->what());
 	}
+
+	Logger::info(TAG, "Stopped");
 
 	return EXIT_SUCCESS;
 }

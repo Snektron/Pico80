@@ -11,57 +11,50 @@
 
 #define TAG "Pico80"
 #define FPS 60
-#define CFG "config.cfg"
 
-namespace Pico80
+Pico80::Pico80():
+	Time::Timer(Time::nanoseconds(SECOND_IN_NANOS / FPS))
+{}
+
+bool Pico80::parseArgs(int argc, char* argv[])
 {
-	namespace
-	{
-		Time::TimerWrapper timer(trigger, Time::nanoseconds(SECOND_IN_NANOS / FPS));
-		std::shared_ptr<Asic> asic;
-	}
+	return Settings::parse_args(argc, argv);
+}
 
-	bool parse_args(int argc, char* argv[])
-	{
-		return Settings::parse_args(argc, argv);
-	}
+void Pico80::init()
+{
+	Graphics::init("Pico80", 512, 512);
+	Display::init();
 
-	void init()
-	{
-		Logger::init(new Logger::ConsolePolicy());
-		Logger::info(TAG, "Starting");
-		Graphics::init("Pico80", 512, 512);
-		Display::init();
+	asic = std::make_shared<Asic>();
+	Input::Keyboard::setF12Handler(asic);
+	Logger::info(TAG, "Started");
+}
 
-		asic = std::make_shared<Asic>();
-		Input::Keyboard::setF12Handler(asic);
-		Logger::info(TAG, "Started");
-	}
+void Pico80::run()
+{
+	std::thread asic_thread(&Asic::start, asic.get());
 
-	void run()
-	{
-		std::thread asic_thread(&Asic::start, asic.get());
+	start();
 
-		timer.start();
+	asic->stop();
+	asic_thread.join();
+}
 
-		asic->stop();
-		asic_thread.join();
-	}
+bool Pico80::trigger()
+{
+	Graphics::clear();
+	Input::update();
+	Display::render();
+	Graphics::update();
 
-	bool trigger()
-	{
-		Graphics::clear();
-		Input::update();
-		Display::render();
-		Graphics::update();
+	return Input::quit_requested();
+}
 
-		return Input::quit_requested();
-	}
-
-	void destroy()
-	{
-		Logger::info(TAG, "Stopping");
-		Display::destroy();
-		Graphics::destroy();
-	}
+Pico80::~Pico80()
+{
+	Logger::info(TAG, "Stopping");
+	Input::Keyboard::setF12Handler(NULL);
+	Display::destroy();
+	Graphics::destroy();
 }
