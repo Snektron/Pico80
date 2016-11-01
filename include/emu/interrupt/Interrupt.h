@@ -8,11 +8,30 @@
 #include "z80e/z80e.h"
 #include "core/Time.h"
 
+	class TrigIODevice : public Z80e::IODevice
+	{
+	private:
+		std::atomic<uint8_t> portvalue;
+	public:
+		uint8_t read()
+		{
+			return portvalue;
+		}
+
+		void write(uint8_t value)
+		{}
+
+		void set_value(uint8_t value)
+		{
+			portvalue = value;
+		}
+	};
+
 class Interrupt : public Z80e::BasicIODevice, public Z80e::InterruptController
 {
 private:
-	std::shared_ptr<Z80e::ReadonlyIODevice> trig;
-	std::atomic<bool> interrupting;
+	std::shared_ptr<TrigIODevice> trig;
+	bool interrupting;
 	std::mutex lock;
 
 public:
@@ -22,7 +41,7 @@ public:
 	void trigger(int pin);
 	void write(uint8_t value);
 	bool is_interrupting();
-	std::shared_ptr<Z80e::ReadonlyIODevice> get_interrupt_trig();
+	std::shared_ptr<TrigIODevice> get_interrupt_trig();
 };
 
 class InterruptDevice

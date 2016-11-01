@@ -90,3 +90,8 @@ bool Asic::trigger()
 	timer_int->update(executed);
 	return false;
 }
+
+void Asic::handle()
+{
+	f12_int->trigger();
+}

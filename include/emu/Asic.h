@@ -4,6 +4,7 @@
 #include "interrupt/TimerInt.h"
 #include <memory>
 #include "core/Time.h"
+#include "core/Input.h"
 #include "emu/interrupt/TimerInt.h"
 #include "emu/memory/Memory.h"
 #include "emu/device/Screen.h"
@@ -19,7 +20,7 @@
 
 #define TIMER_FREQ 1
 
-class Asic : public Time::Timer
+class Asic : public Time::Timer, public Input::Keyboard::F12Handler
 {
 private:
 	Time::point last;
@@ -40,6 +41,8 @@ public:
 
 	void start();
 	bool trigger();
+
+	void handle();
 };
 
 #endif /* INCLUDE_EMU_ASIC_H_ */

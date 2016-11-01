@@ -19,7 +19,7 @@ bool check_pin(int pin)
 }
 
 Interrupt::Interrupt():
-	trig(new Z80e::ReadonlyIODevice()),
+	trig(new TrigIODevice()),
 	interrupting(false)
 {}
 
@@ -52,7 +52,8 @@ void Interrupt::trigger(int pin)
 	std::lock_guard<std::mutex> lock();
 	if (is_enabled(pin))
 	{
-		interrupting = 1;
+
+		interrupting = true;
 		uint8_t trigger_mask = trig->read();
 		trigger_mask |= 1 << pin;
 		trig->set_value(trigger_mask);
@@ -65,16 +66,17 @@ void Interrupt::write(uint8_t value)
 	uint8_t trigger_mask = value & trig->read(); // only disable pins
 	trig->set_value(trigger_mask); // disable interrupt trigs
 	if (!trigger_mask) // if all interrupts are acknowleged, stop interrupting.
-		interrupting = 0;
+		interrupting = false;
 	Z80e::BasicIODevice::write(value);
 }
 
 bool Interrupt::is_interrupting()
 {
-	return interrupting.load();
+	std::lock_guard<std::mutex> lock();
+	return interrupting;
 }
 
-std::shared_ptr<Z80e::ReadonlyIODevice> Interrupt::get_interrupt_trig()
+std::shared_ptr<TrigIODevice> Interrupt::get_interrupt_trig()
 {
 	return trig; // TODO make thread-safe
 }

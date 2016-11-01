@@ -18,7 +18,7 @@ namespace Pico80
 	namespace
 	{
 		Time::TimerWrapper timer(trigger, Time::nanoseconds(SECOND_IN_NANOS / FPS));
-		std::unique_ptr<Asic> asic;
+		std::shared_ptr<Asic> asic;
 	}
 
 	bool parse_args(int argc, char* argv[])
@@ -33,13 +33,14 @@ namespace Pico80
 		Graphics::init("Pico80", 512, 512);
 		Display::init();
 
-		asic = std::make_unique<Asic>();
+		asic = std::make_shared<Asic>();
+		Input::Keyboard::setF12Handler(asic);
 		Logger::info(TAG, "Started");
 	}
 
 	void run()
 	{
-		std::thread asic_thread(Asic::start, asic.get());
+		std::thread asic_thread(&Asic::start, asic.get());
 
 		timer.start();
 

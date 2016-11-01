@@ -8,108 +8,12 @@ extern "C"
 {
 #include "z80e/cpu.h"
 }
+#include "z80e/Memory.h"
+#include "z80e/Device.h"
+#include "z80e/Interrupt.h"
 
 namespace Z80e
 {
-	uint8_t z80e_io_read(void *device);
-	void z80e_io_write(void *device, uint8_t value);
-
-	class Memory
-	{
-	public:
-		static uint8_t mem_read(void *memptr, uint16_t address)
-		{
-			Memory *memory = (Memory*) memptr;
-			if (memory)
-				return memory->read(address);
-			return 0;
-		}
-
-		static void mem_write(void *memptr, uint16_t address, uint8_t value)
-		{
-			Memory *memory = (Memory*) memptr;
-			if (memory)
-				memory->write(address, value);
-		}
-
-		virtual uint8_t read(uint16_t address) = 0;
-		virtual void write(uint16_t address, uint8_t value) = 0;
-		virtual ~Memory() = default;
-	};
-
-	class IODevice
-	{
-	public:
-		static uint8_t io_read(void *devptr)
-		{
-			IODevice *device = (IODevice*) devptr;
-			if (device)
-				return device->read();
-			return 0;
-		}
-
-		static void io_write(void *devptr, uint8_t value)
-		{
-			IODevice *device = (IODevice*) devptr;
-			if (device)
-				device->write(value);
-		}
-
-		virtual uint8_t read() = 0;
-		virtual void write(uint8_t value) = 0;
-		virtual ~IODevice() = default;
-	};
-
-	class BasicIODevice : public IODevice
-	{
-	private:
-		uint8_t portvalue;
-	public:
-		uint8_t read()
-		{
-			return portvalue;
-		}
-
-		void write(uint8_t value)
-		{
-			portvalue = value;
-		}
-	};
-
-	class ReadonlyIODevice : public IODevice
-	{
-	private:
-		uint8_t portvalue;
-	public:
-		uint8_t read()
-		{
-			return portvalue;
-		}
-
-		void write(uint8_t value)
-		{}
-
-		void set_value(uint8_t value)
-		{
-			portvalue = value;
-		}
-	};
-
-	class InterruptController
-	{
-	public:
-		static int interrupting(void *interrupt)
-		{
-			InterruptController *ictrl = (InterruptController*) interrupt;
-			if (ictrl)
-				return ictrl->is_interrupting();
-			return 0;
-		}
-
-		virtual bool is_interrupting() = 0;
-		virtual ~InterruptController() = default;
-	};
-
 	class CPU
 	{
 	private:

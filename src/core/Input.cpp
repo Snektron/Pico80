@@ -1,6 +1,7 @@
 #include "core/Input.h"
 #include <atomic>
 #include <cstdint>
+#include <memory>
 #include <SDL2/SDL.h>
 #include "core/Logger.h"
 #include "core/Graphics.h"
@@ -8,20 +9,20 @@
 
 #define TAG "Input"
 
-namespace
-{
-	std::atomic<bool> quit(false);
-	std::atomic<int> mouseX(0);
-	std::atomic<int> mouseY(0);
-	std::atomic<int> mouseState(0);
-
-	std::mutex keymutex;
-	std::array<bool, 0x100> keys({0});
-	std::atomic<bool> f12(false);
-}
-
 namespace Input
 {
+	namespace
+	{
+		std::atomic<bool> quit(false);
+		std::atomic<int> mouseX(0);
+		std::atomic<int> mouseY(0);
+		std::atomic<int> mouseState(0);
+
+		std::mutex keymutex;
+		std::array<bool, 0x100> keys({0});
+		std::shared_ptr<Keyboard::F12Handler> f12handler;
+	}
+
 	void update()
 	{
 		SDL_Event event;
@@ -87,7 +88,8 @@ namespace Input
 		{
 			if (event->key.keysym.sym == SDLK_F12)
 			{
-				f12 = true;
+				if (f12handler)
+					f12handler->handle();
 				return;
 			}
 			std::lock_guard<std::mutex> lock(keymutex);
@@ -103,9 +105,10 @@ namespace Input
 			return keys[key];
 		}
 
-		bool getF12State()
+
+		void setF12Handler(std::shared_ptr<F12Handler> handler)
 		{
-			return f12;
+			f12handler = handler;
 		}
 
 		// map sdl key to internal K_* key
@@ -204,7 +207,7 @@ namespace Input
 				return SDLK_QUOTEDBL;
 			}
 
-			if (m & KMOD_ALT)
+			if (m & KMOD_CTRL)
 			{
 				if (k == SDLK_q)
 					return K_QUIT;
