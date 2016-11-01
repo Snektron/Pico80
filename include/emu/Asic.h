@@ -41,6 +41,8 @@ private:
 	std::shared_ptr<InterruptDevice> f12_int;
 
 	std::shared_ptr<Z80e::CPU> cpu;
+
+	uint64_t leftover = 0;
 public:
 	Asic();
 

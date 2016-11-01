@@ -75,6 +75,7 @@ int PageRegistery::load_rom(std::shared_ptr<StorageController> store_ctrl)
 
 	if (n == 0)
 	{
+		Logger::error(TAG) << "Rom length is zero" << Logger::endl;
 		throw std::runtime_error("Error initializing page manager");
 	}
 

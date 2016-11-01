@@ -69,6 +69,8 @@ Asic::Asic():
 	cpu->add_device(PORT_KEYBOARD, keyboard);
 	cpu->add_device(PORT_KEYPAD, keypad);
 	cpu->add_device(PORT_KEYMOD, keyModifiers);
+
+	leftover = 0;
 }
 
 void Asic::start()
@@ -81,7 +83,7 @@ bool Asic::trigger()
 {
 	Time::nanoseconds passed = Time::now() - last;
 	last = Time::now();
-	uint64_t cycles = INSTRUCTIONS(Time::toint(passed));
+	uint64_t cycles = INSTRUCTIONS(Time::toint(passed)) + leftover;
 	uint64_t timer_cycles = timer_int->instructions_to_trigger();
 
 	while (timer_cycles < cycles)
@@ -92,7 +94,8 @@ bool Asic::trigger()
 		timer_cycles = timer_int->instructions_to_trigger();
 	}
 
-	int executed = cycles - cpu->execute(cycles);
+	leftover = cpu->execute(cycles);
+	int executed = cycles - leftover;
 	timer_int->update(executed);
 	return false;
 }
