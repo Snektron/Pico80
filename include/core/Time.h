@@ -2,11 +2,8 @@
 #define INCLUDE_CORE_TIME_H_
 
 #include <cstdint>
-#include <list>
 #include <chrono>
 #include <atomic>
-#include <mutex>
-#include <condition_variable>
 #include <functional>
 
 #define SECOND_IN_NANOS (1000000000ull)
@@ -17,13 +14,10 @@ namespace Time
 
 	typedef std::chrono::time_point<std::chrono::high_resolution_clock> point;
 
-	void init();
-
 	point now();
-
 	nanoseconds duration(point start, point end);
-
 	uint64_t toint(nanoseconds nanos);
+	uint64_t secondsSince1997();
 
 	class Timer
 	{

@@ -11,8 +11,9 @@
 #include "emu/device/Screen.h"
 #include "emu/device/Log.h"
 #include "emu/device/Mouse.h"
-#include "emu/device/Keyboard.h"
 #include "emu/device/StorageController.h"
+#include "emu/device/Keyboard.h"
+#include "emu/device/Clock.h"
 #include "emu/interrupt/Interrupt.h"
 
 #define MHZ(x) (x * 1000000)
@@ -34,6 +35,7 @@ private:
 	std::shared_ptr<Keyboard> keyboard;
 	std::shared_ptr<KeyModifiers> keyModifiers;
 	std::shared_ptr<KeyPad> keypad;
+	std::shared_ptr<ClockReg> clock_regs[4];
 
 	std::shared_ptr<Memory> memory;
 
@@ -44,8 +46,6 @@ private:
 	std::shared_ptr<Z80e::CPU> cpu;
 
 	uint64_t leftover;
-	uint64_t totalcycles;
-	uint64_t totalticks;
 public:
 	Asic();
 

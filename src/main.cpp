@@ -11,11 +11,10 @@
 
 #define TAG "main"
 
-void run()
+void init_logger()
 {
-
-	auto t = std::time(nullptr);
-	auto tm = *std::localtime(&t);
+	auto t = time(nullptr);
+	auto tm = *localtime(&t);
 
 	std::ostringstream oss;
 	oss << std::put_time(&tm, "%Y%m%d-%H%M%S.log");
@@ -29,6 +28,11 @@ void run()
 			Logger::init(new Logger::ConsoleFilePolicy(logfile));
 	}else if (!Settings::quiet())
 		Logger::init(new Logger::ConsolePolicy());
+}
+
+void run()
+{
+	init_logger();
 
 	Logger::info(TAG, "Starting");
 
