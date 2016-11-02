@@ -3,6 +3,7 @@
 
 #include "interrupt/TimerInt.h"
 #include <memory>
+#include <atomic>
 #include "core/Time.h"
 #include "core/Input.h"
 #include "emu/interrupt/TimerInt.h"
@@ -17,9 +18,9 @@
 #define MHZ(x) (x * 1000000)
 
 #define CLOCK_RATE MHZ(50)
-#define CLOCK_FREQ 500
+#define CLOCK_FREQ 1000
 
-#define TIMER_FREQ 1
+#define TIMER_FREQ 200
 
 class Asic : public Time::Timer, public Input::Keyboard::F12Handler
 {
@@ -42,11 +43,14 @@ private:
 
 	std::shared_ptr<Z80e::CPU> cpu;
 
-	uint64_t leftover = 0;
+	uint64_t leftover;
+	uint64_t totalcycles;
+	uint64_t totalticks;
 public:
 	Asic();
 
 	void start();
+	void stop_();
 	bool trigger();
 
 	void handle();

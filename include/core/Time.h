@@ -5,6 +5,8 @@
 #include <list>
 #include <chrono>
 #include <atomic>
+#include <mutex>
+#include <condition_variable>
 #include <functional>
 
 #define SECOND_IN_NANOS (1000000000ull)
@@ -19,6 +21,8 @@ namespace Time
 
 	point now();
 
+	nanoseconds duration(point start, point end);
+
 	uint64_t toint(nanoseconds nanos);
 
 	class Timer
@@ -31,8 +35,6 @@ namespace Time
 		Timer(nanoseconds interval);
 		void start();
 		void stop();
-		void set_interval(nanoseconds interval);
-		nanoseconds get_interval();
 
 		virtual bool trigger() = 0;
 		virtual ~Timer() = default;

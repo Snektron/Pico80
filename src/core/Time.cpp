@@ -2,7 +2,10 @@
 #include <chrono>
 #include <cstdint>
 #include <thread>
+#include <mutex>
+#include <condition_variable>
 #include <atomic>
+#include "core/Logger.h"
 
 using namespace std::chrono;
 
@@ -18,6 +21,11 @@ namespace Time
 		return duration_cast<nanoseconds>(nanos).count();
 	}
 
+	nanoseconds duration(point start, point end)
+	{
+		return duration_cast<nanoseconds>(end - start);
+	}
+
 	Timer::Timer(nanoseconds interval):
 			running(false),
 			interval(interval)
@@ -31,30 +39,19 @@ namespace Time
 		{
 			Time::point start = now();
 			if (trigger())
-			{
-				stop();
 				break;
-			}
 			Time::point stop = now();
 			Time::point next = start + interval;
 			if (next > stop)
 				std::this_thread::sleep_until(next);
 		}
+
+		running = false;
 	}
 
 	void Timer::stop()
 	{
 		running = false;
-	}
-
-	void Timer::set_interval(nanoseconds interval)
-	{
-		this->interval = interval;
-	}
-
-	nanoseconds Timer::get_interval()
-	{
-		return interval;
 	}
 
 	TimerWrapper::TimerWrapper(const std::function<bool()> callback, nanoseconds interval):

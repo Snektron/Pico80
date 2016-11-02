@@ -71,12 +71,24 @@ Asic::Asic():
 	cpu->add_device(PORT_KEYMOD, keyModifiers);
 
 	leftover = 0;
+	totalcycles = 0;
+	totalticks = 0;
 }
 
 void Asic::start()
 {
 	last = Time::now();
+	Time::point begin = last;
+
 	Time::Timer::start();
+
+	Time::point end = Time::now();
+	uint64_t duration = Time::duration(begin, end).count();
+
+	Logger::info(TAG) << "Total cycles: " << totalcycles << Logger::endl;
+	Logger::info(TAG) << "Total ticks: " << totalticks << Logger::endl;
+	Logger::info(TAG) << "Total time: " << duration << " ns" << Logger::endl;
+	Logger::info(TAG) << "Effective speed: " << (totalcycles / (duration / 1000000000.0) / 1000000.0) << " MHz" << Logger::endl;
 }
 
 bool Asic::trigger()
@@ -90,13 +102,16 @@ bool Asic::trigger()
 	{
 		int executed = timer_cycles - cpu->execute(timer_cycles);
 		cycles -= executed;
+		totalcycles += executed;
 		timer_int->trigger();
 		timer_cycles = timer_int->instructions_to_trigger();
 	}
 
 	leftover = cpu->execute(cycles);
 	int executed = cycles - leftover;
+	totalcycles += executed;
 	timer_int->update(executed);
+	totalticks++;
 	return false;
 }
 

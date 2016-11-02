@@ -13,6 +13,7 @@
 
 void run()
 {
+
 	auto t = std::time(nullptr);
 	auto tm = *std::localtime(&t);
 
@@ -30,7 +31,6 @@ void run()
 		Logger::init(new Logger::ConsolePolicy());
 
 	Logger::info(TAG, "Starting");
-	Logger::info(TAG) << "Logfile: " << logfile << Logger::endl;
 
 	try{
 		Pico80 pico;
