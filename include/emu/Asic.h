@@ -19,7 +19,7 @@
 #define MHZ(x) (x * 1000000)
 
 #define CLOCK_RATE MHZ(50)
-#define CLOCK_FREQ 1000
+#define CLOCK_FREQ 500
 
 #define TIMER_FREQ 200
 
@@ -50,7 +50,6 @@ public:
 	Asic();
 
 	void start();
-	void stop_();
 	bool trigger();
 
 	void handle();

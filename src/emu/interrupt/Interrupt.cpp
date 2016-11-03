@@ -52,7 +52,6 @@ void Interrupt::trigger(int pin)
 	std::lock_guard<std::mutex> lock();
 	if (is_enabled(pin))
 	{
-
 		interrupting = true;
 		uint8_t trigger_mask = trig->read();
 		trigger_mask |= 1 << pin;

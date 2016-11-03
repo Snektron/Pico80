@@ -83,12 +83,7 @@ Asic::Asic():
 void Asic::start()
 {
 	last = Time::now();
-	Time::point begin = last;
-
 	Time::Timer::start();
-
-	Time::point end = Time::now();
-	uint64_t duration = Time::duration(begin, end).count();
 }
 
 bool Asic::trigger()

@@ -19,7 +19,7 @@ namespace Input
 		std::atomic<int> mouseState(0);
 
 		std::weak_ptr<Keyboard::F12Handler> f12handler;
-		std::atomic<uint8_t> lastkey(0), lastmod(0);
+		std::atomic<uint8_t> lastkey(K_NONE), lastmod(0);
 		bool f12down(false);
 	}
 
@@ -103,13 +103,14 @@ namespace Input
 						h->handle();
 				}else if(!down)
 					f12down = false;
-
-
 				return;
 			}
 
 			int key = mapKey(&event->key.keysym);
-			lastkey = down ? key : 0;
+			if (!down && key == lastkey)
+				lastkey = K_NONE;
+			else if (down)
+				lastkey = key;
 		}
 
 		uint8_t getLastKey()
