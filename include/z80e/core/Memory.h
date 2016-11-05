@@ -1,5 +1,5 @@
-#ifndef INCLUDE_Z80E_MEMORY_H_
-#define INCLUDE_Z80E_MEMORY_H_
+#ifndef INCLUDE_Z80E_CORE_MEMORY_H_
+#define INCLUDE_Z80E_CORE_MEMORY_H_
 
 #include <cstdint>
 

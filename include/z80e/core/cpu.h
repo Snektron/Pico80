@@ -1,9 +1,9 @@
-#ifndef INCLUDE_Z80E_CPU_H_
-#define INCLUDE_Z80E_CPU_H_
+#ifndef INCLUDE_Z80E_CORE_CPU_H_
+#define INCLUDE_Z80E_CORE_CPU_H_
 
 #include <stdint.h>
 
-#include "z80e/registers.h"
+#include "z80e/core/registers.h"
 
 typedef struct z80cpu z80cpu_t;
 typedef struct z80iodevice z80iodevice_t;

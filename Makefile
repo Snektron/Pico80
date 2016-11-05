@@ -5,7 +5,7 @@ INCLUDE = include
 
 CXX	= g++
 CC = gcc
-FLAGS = -MMD -MP -I $(SRC) -I $(INCLUDE) `sdl2-config --cflags --libs`
+FLAGS = -MMD -MP -I $(SRC) -I $(INCLUDE) -I usr/include `sdl2-config --cflags --libs`
 CXXFLAGS = $(FLAGS) -std=c++14 -lpthread
 CFLAGS = $(FLAGS)
 RM = rm

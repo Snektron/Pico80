@@ -1,5 +1,5 @@
-#ifndef INCLUDE_Z80E_REGISTERS_H_
-#define INCLUDE_Z80E_REGISTERS_H_
+#ifndef INCLUDE_Z80E_CORE_REGISTERS_H_
+#define INCLUDE_Z80E_CORE_REGISTERS_H_
 #include <stdint.h>
 
 typedef struct {

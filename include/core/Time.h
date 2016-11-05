@@ -18,31 +18,6 @@ namespace Time
 	nanoseconds duration(point start, point end);
 	uint64_t toint(nanoseconds nanos);
 	uint64_t secondsSince1997();
-
-	class Timer
-	{
-	private:
-		std::atomic<bool> running;
-		nanoseconds interval;
-
-	public:
-		Timer(nanoseconds interval);
-		void start();
-		void stop();
-
-		virtual bool trigger() = 0;
-		virtual ~Timer() = default;
-	};
-
-	class TimerWrapper : public Timer
-	{
-	private:
-		std::function<bool()> callback;
-
-	public:
-		TimerWrapper(const std::function<bool()> callback, nanoseconds interval);
-		bool trigger();
-	};
 }
 
 #endif /* INCLUDE_CORE_TIME_H_ */

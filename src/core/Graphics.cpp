@@ -25,12 +25,6 @@ void Graphics::init(std::string name, int w, int h)
 {
 	Logger::info(TAG, "Initializing graphics");
 
-	if(SDL_Init(SDL_INIT_VIDEO) < 0)
-	{
-		Logger::error(TAG) << "Failed to initialize SDL: " << SDL_GetError() << Logger::endl;
-		throw std::runtime_error("Failed to initialize graphics");
-	}
-
 	window = create_window(name, w, h, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 
 	if (!window)
@@ -49,7 +43,6 @@ void Graphics::destroy()
 	SDL_FreeSurface(surface.release());
 
 	SDL_DestroyWindow(window);
-	SDL_Quit();
 }
 
 void Graphics::update()

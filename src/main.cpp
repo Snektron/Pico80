@@ -1,10 +1,11 @@
-#include "Pico80.h"
 #include <cstdlib>
+#include <iostream>
 #include <exception>
 #include <sstream>
 #include <ctime>
-#include <SDL2/SDL.h>
 #include <iomanip>
+#include <SDL2/SDL.h>
+#include "Pico80.h"
 #include "core/Logger.h"
 #include "core/Time.h"
 #include "Settings.h"
@@ -36,14 +37,8 @@ void run()
 
 	Logger::info(TAG, "Starting");
 
-	try{
-		Pico80 pico;
-		pico.run();
-	}
-	catch (const std::runtime_error& err)
-	{
-		Logger::error("Runtime error", err.what());
-	}
+	Pico80 pico;
+	pico.start();
 
 	Logger::info(TAG, "Stopped");
 }
@@ -52,5 +47,6 @@ int main(int argc, char* argv[])
 {
 	if (Settings::parse_args(argc, argv))
 		run();
+
 	return EXIT_SUCCESS;
 }

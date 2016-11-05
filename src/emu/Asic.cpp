@@ -16,15 +16,13 @@
 
 #define TAG "Asic"
 
-// calculate instructions executed in a certain time (ns)
-#define INSTRUCTIONS(ns) (CLOCK_RATE * (ns) / SECOND_IN_NANOS)
-
-Asic::Asic():
-	Time::Timer(Time::nanoseconds(SECOND_IN_NANOS/CLOCK_FREQ))
+Asic::Asic(uint64_t clock_rate, uint64_t timer_freq):
+	clock_rate(clock_rate),
+	timer_freq(timer_freq)
 {
 	Logger::info(TAG, "Initializing asic");
-	Logger::info(TAG) << "Clock rate: " << CLOCK_RATE/1000000.0 << " Mhz" << Logger::endl;
-	Logger::info(TAG) << "Clock freq: " << CLOCK_FREQ << " hz" << Logger::endl;
+	Logger::info(TAG) << "Clock rate: " << clock_rate/1000000.0 << " Mhz" << Logger::endl;
+	Logger::info(TAG) << "Clock freq: " << timer_freq << " hz" << Logger::endl;
 
 	log = std::make_shared<Log>();
 	screen = std::make_shared<Screen>();
@@ -43,7 +41,7 @@ Asic::Asic():
 	memory->get_bank(BANK_C)->write(RAM_PAGE(1));
 
 	interrupt = std::make_shared<Interrupt>();
-	timer_int = std::make_shared<TimerInt>(interrupt, INT_TIMER, INSTRUCTIONS(SECOND_IN_NANOS / TIMER_FREQ));
+	timer_int = std::make_shared<TimerInt>(interrupt, INT_TIMER, INSTRUCTIONS(clock_rate, SECOND_IN_NANOS / timer_freq));
 	f12_int = std::make_shared<InterruptDevice>(interrupt, INT_F12);
 
 	cpu = std::make_shared<Z80e::CPU>(memory, interrupt);
@@ -80,17 +78,9 @@ Asic::Asic():
 	leftover = 0;
 }
 
-void Asic::start()
+bool Asic::tick(uint64_t ticks)
 {
-	last = Time::now();
-	Time::Timer::start();
-}
-
-bool Asic::trigger()
-{
-	Time::nanoseconds passed = Time::now() - last;
-	last = Time::now();
-	uint64_t cycles = INSTRUCTIONS(Time::toint(passed)) + leftover;
+	uint64_t cycles = ticks + leftover;
 	uint64_t timer_cycles = timer_int->instructions_to_trigger();
 
 	while (timer_cycles < cycles)
@@ -110,4 +100,9 @@ bool Asic::trigger()
 void Asic::handle()
 {
 	f12_int->trigger();
+}
+
+uint64_t Asic::get_clock_rate()
+{
+	return clock_rate;
 }

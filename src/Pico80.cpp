@@ -1,6 +1,7 @@
 #include "Pico80.h"
 #include <thread>
 #include <memory>
+#include <cstdint>
 #include "Settings.h"
 #include "core/Logger.h"
 #include "core/Graphics.h"
@@ -10,42 +11,51 @@
 #include "emu/Asic.h"
 
 #define TAG "Pico80"
-#define FPS 60
 
 Pico80::Pico80():
-	Time::Timer(Time::nanoseconds(SECOND_IN_NANOS / FPS))
+	Application(FPS, TPS)
+{}
+
+void Pico80::onInitialize()
 {
 	Graphics::init("Pico80", 512, 512);
 	Display::init();
 
-	asic = std::make_shared<Asic>();
+	asic = std::make_shared<Asic>(ASIC_CLOCK, ASIC_TIMER);
 	Input::Keyboard::setF12Handler(asic);
 	Logger::info(TAG, "Started");
+
+	last = Time::now();
 }
 
-void Pico80::run()
+void Pico80::onUpdate()
 {
-	std::thread asic_thread(&Asic::start, asic.get());
-
-	start();
-
-	asic->stop();
-	asic_thread.join();
+	Time::point time = Time::now();
+	Time::nanoseconds passed = time - last;
+	last = time;
+	uint64_t cycles = INSTRUCTIONS(ASIC_CLOCK, Time::toint(passed));
+	asic->tick(cycles);
 }
 
-bool Pico80::trigger()
+void Pico80::onRender()
 {
 	Graphics::clear();
 	Input::update();
 	Display::render();
 	Graphics::update();
 
-	return Input::quit_requested();
+	if (Input::quit_requested())
+		stop();
 }
 
-Pico80::~Pico80()
+void Pico80::onTerminate()
 {
 	Logger::info(TAG, "Stopping");
 	Display::destroy();
 	Graphics::destroy();
+}
+
+void Pico80::onError(const std::runtime_error& error)
+{
+	Logger::error("Runtime error") << error.what() << Logger::endl;
 }

@@ -1,5 +1,5 @@
-#ifndef INCLUDE_Z80E_DEVICE_H_
-#define INCLUDE_Z80E_DEVICE_H_
+#ifndef INCLUDE_Z80E_CORE_DEVICE_H_
+#define INCLUDE_Z80E_CORE_DEVICE_H_
 
 #include <cstdint>
 #include <mutex>
@@ -40,6 +40,24 @@ namespace Z80e
 		}
 
 		void write(uint8_t value)
+		{
+			portvalue = value;
+		}
+	};
+
+	class ReadonlyIODevice : public Z80e::IODevice
+	{
+	private:
+		uint8_t portvalue;
+	public:
+		uint8_t read()
+		{
+			return portvalue;
+		}
+
+		void write(uint8_t value) {}
+
+		void set_value(uint8_t value)
 		{
 			portvalue = value;
 		}

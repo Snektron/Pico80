@@ -6,11 +6,11 @@
 #include <atomic>
 extern "C"
 {
-#include "z80e/cpu.h"
+#include "z80e/core/cpu.h"
 }
-#include "z80e/Memory.h"
-#include "z80e/Device.h"
-#include "z80e/Interrupt.h"
+#include "z80e/core/Memory.h"
+#include "z80e/core/Device.h"
+#include "z80e/core/Interrupt.h"
 
 namespace Z80e
 {

@@ -16,17 +16,15 @@
 #include "emu/device/Clock.h"
 #include "emu/interrupt/Interrupt.h"
 
+// calculate instructions executed in a certain time (ns)
+#define INSTRUCTIONS(clockrate, ns) (clockrate * (ns) / SECOND_IN_NANOS)
 #define MHZ(x) (x * 1000000)
 
-#define CLOCK_RATE MHZ(50)
-#define CLOCK_FREQ 500
-
-#define TIMER_FREQ 200
-
-class Asic : public Time::Timer, public Input::Keyboard::F12Handler
+class Asic : public Input::Keyboard::F12Handler
 {
 private:
-	Time::point last;
+	uint64_t clock_rate;
+	uint64_t timer_freq;
 
 	std::shared_ptr<Log> log;
 	std::shared_ptr<Screen> screen;
@@ -47,12 +45,13 @@ private:
 
 	uint64_t leftover;
 public:
-	Asic();
+	Asic(uint64_t clock_rate, uint64_t timer_freq);
 
-	void start();
-	bool trigger();
+	bool tick(uint64_t ticks);
 
 	void handle();
+
+	uint64_t get_clock_rate();
 };
 
 #endif /* INCLUDE_EMU_ASIC_H_ */
