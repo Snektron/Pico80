@@ -3,9 +3,8 @@
 
 #include <cstdint>
 #include <memory>
-#include <SDL2/SDL.h>
-#include "z80e/z80e.h"
 #include "core/Display.h"
+#include "z80e/z80e.h"
 
 #define SC_SYNC 0
 #define SC_CLEAR 1

@@ -10,6 +10,3 @@ uint8_t ClockReg::read()
 {
 	return (uint8_t) (Time::secondsSince1997() >> byte * 8 & 0xFF);
 }
-
-void ClockReg::write(uint8_t value)
-{}

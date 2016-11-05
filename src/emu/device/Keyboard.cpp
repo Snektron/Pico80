@@ -3,24 +3,15 @@
 #include "core/Input.h"
 #include "core/Keys.h"
 
-void Keyboard::write(uint8_t value)
-{}
-
 uint8_t Keyboard::read()
 {
 	return Input::Keyboard::getLastKey();
 }
 
-void KeyModifiers::write(uint8_t value)
-{}
-
 uint8_t KeyModifiers::read()
 {
 	return Input::Keyboard::getModifiers();
 }
-
-void KeyPad::write(uint8_t value)
-{}
 
 uint8_t KeyPad::read()
 {

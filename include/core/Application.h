@@ -2,7 +2,6 @@
 #define INCLUDE_CORE_APPLICATION_H_
 
 #include <stdexcept>
-#include <string>
 
 #ifndef MAX_FRAMESKIP
 #define MAX_FRAMESKIP 5

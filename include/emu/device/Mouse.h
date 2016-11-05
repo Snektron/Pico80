@@ -4,23 +4,14 @@
 #include <cstdint>
 #include <memory>
 #include "z80e/z80e.h"
-#include "emu/device/Screen.h"
 
-class MouseDevice : public Z80e::IODevice
-{
-public:
-	void write(uint8_t value);
-	virtual uint8_t read() = 0;
-	virtual ~MouseDevice() = default;
-};
-
-class MouseX : public MouseDevice
+class MouseX : public Z80e::ReadonlyIODevice
 {
 public:
 	uint8_t read();
 };
 
-class MouseY : public MouseDevice
+class MouseY : public Z80e::ReadonlyIODevice
 {
 public:
 	uint8_t read();

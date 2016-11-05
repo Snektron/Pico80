@@ -2,7 +2,6 @@
 #define INCLUDE_CORE_GRAPHICS_H_
 
 #include <string>
-#include <memory>
 #include <SDL2/SDL.h>
 
 namespace Graphics

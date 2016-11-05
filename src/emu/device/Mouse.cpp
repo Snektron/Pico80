@@ -7,9 +7,6 @@
 #include "core/Display.h"
 #include "z80e/z80e.h"
 
-void MouseDevice::write(uint8_t value)
-{}
-
 int clamp(int x, int a, int b)
 {
 	return x < a ? a : x > b ? b : x;

@@ -1,6 +1,5 @@
 #include "core/Display.h"
 #include <algorithm>
-#include <mutex>
 #include <memory>
 #include "core/Graphics.h"
 #include "core/Logger.h"
@@ -36,13 +35,10 @@ namespace Display
 	namespace
 	{
 		std::unique_ptr<SDL_Surface> display;
-		std::mutex mutex;
 	}
 
 	void init()
 	{
-		std::lock_guard<std::mutex> lock(mutex);
-
 		Logger::info(TAG, "Initializing display");
 
 		display = std::unique_ptr<SDL_Surface>(SDL_CreateRGBSurface(0, DISPLAY_WIDTH, DISPLAY_HEIGHT, 32, 0, 0, 0, 0));
@@ -56,8 +52,6 @@ namespace Display
 
 	void render()
 	{
-		std::lock_guard<std::mutex> lock(mutex);
-
 		SDL_Rect dst;
 		get_display_rect(dst);
 		Graphics::blit(display.get(), dst);
@@ -65,16 +59,12 @@ namespace Display
 
 	void destroy()
 	{
-		std::lock_guard<std::mutex> lock(mutex);
-
 		Logger::info(TAG, "Destroying display");
 		SDL_FreeSurface(display.release());
 	}
 
 	void write(uint8_t *data)
 	{
-		std::lock_guard<std::mutex> lock(mutex);
-
 		if (!display)
 			return;
 

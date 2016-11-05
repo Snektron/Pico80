@@ -97,7 +97,7 @@ bool Asic::tick(uint64_t ticks)
 	return false;
 }
 
-void Asic::handle()
+void Asic::f12int()
 {
 	f12_int->trigger();
 }

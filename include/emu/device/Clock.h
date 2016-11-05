@@ -3,7 +3,7 @@
 
 #include "z80e/z80e.h"
 
-class ClockReg : public Z80e::IODevice
+class ClockReg : public Z80e::ReadonlyIODevice
 {
 private:
 	int byte;
@@ -11,7 +11,6 @@ private:
 public:
 	ClockReg(int byte);
 	uint8_t read();
-	void write(uint8_t value);
 };
 
 #endif /* INCLUDE_EMU_DEVICE_CLOCK_H_ */

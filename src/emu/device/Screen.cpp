@@ -1,9 +1,7 @@
 #include "emu/device/Screen.h"
 #include <cstdint>
 #include <cstring>
-#include <algorithm>
 #include <memory>
-#include "core/Graphics.h"
 #include "core/Logger.h"
 #include "core/Display.h"
 #include "z80e/z80e.h"

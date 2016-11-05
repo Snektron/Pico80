@@ -4,26 +4,23 @@
 #include <cstdint>
 #include "z80e/z80e.h"
 
-class Keyboard : public Z80e::IODevice
+class Keyboard : public Z80e::ReadonlyIODevice
 {
 public:
-	void write(uint8_t value);
 	uint8_t read();
 };
 
-class KeyModifiers : public Z80e::IODevice
+class KeyModifiers : public Z80e::ReadonlyIODevice
 {
 public:
-	void write(uint8_t value);
 	uint8_t read();
 };
 
-class KeyPad : public Z80e::IODevice
+class KeyPad : public Z80e::ReadonlyIODevice
 {
 private:
 	uint8_t mapKos(uint8_t key, uint8_t mod);
 public:
-	void write(uint8_t value);
 	uint8_t read();
 };
 

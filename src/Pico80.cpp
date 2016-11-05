@@ -2,6 +2,9 @@
 #include <thread>
 #include <memory>
 #include <cstdint>
+#include <sstream>
+#include <ctime>
+#include <iomanip>
 #include "Settings.h"
 #include "core/Logger.h"
 #include "core/Graphics.h"
@@ -14,7 +17,23 @@
 
 Pico80::Pico80():
 	Application(FPS, TPS)
-{}
+{
+	auto t = time(nullptr);
+	auto tm = *localtime(&t);
+
+	std::ostringstream oss;
+	oss << std::put_time(&tm, "%Y%m%d-%H%M%S.log");
+	std::string logfile = oss.str();
+
+	if (Settings::log_to_file())
+	{
+		if (Settings::quiet())
+			Logger::init(new Logger::FilePolicy(logfile));
+		else
+			Logger::init(new Logger::ConsoleFilePolicy(logfile));
+	}else if (!Settings::quiet())
+		Logger::init(new Logger::ConsolePolicy());
+}
 
 void Pico80::onInitialize()
 {
@@ -22,7 +41,6 @@ void Pico80::onInitialize()
 	Display::init();
 
 	asic = std::make_shared<Asic>(ASIC_CLOCK, ASIC_TIMER);
-	Input::Keyboard::setF12Handler(asic);
 	Logger::info(TAG, "Started");
 
 	last = Time::now();
@@ -43,6 +61,9 @@ void Pico80::onRender()
 	Input::update();
 	Display::render();
 	Graphics::update();
+
+	if (Input::Keyboard::wasF12Pressed())
+		asic->f12int();
 
 	if (Input::quit_requested())
 		stop();

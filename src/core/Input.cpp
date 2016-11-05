@@ -1,5 +1,4 @@
 #include "core/Input.h"
-#include <atomic>
 #include <cstdint>
 #include <memory>
 #include <SDL2/SDL.h>
@@ -13,13 +12,9 @@ namespace Input
 {
 	namespace
 	{
-		std::atomic<bool> quit(false);
-		std::atomic<int> mouseX(0);
-		std::atomic<int> mouseY(0);
-		std::atomic<int> mouseState(0);
-
-		std::weak_ptr<Keyboard::F12Handler> f12handler;
-		std::atomic<uint8_t> lastkey(K_NONE), lastmod(0);
+		bool quit(false);
+		int mouseX(0), mouseY(0), mouseState(0);
+		uint8_t lastkey(K_NONE), lastmod(0);
 		bool f12down(false);
 	}
 
@@ -99,8 +94,6 @@ namespace Input
 				if (down && !f12down)
 				{
 					f12down = true;
-					if (auto h = f12handler.lock())
-						h->handle();
 				}else if(!down)
 					f12down = false;
 				return;
@@ -123,9 +116,11 @@ namespace Input
 			return lastmod;
 		}
 
-		void setF12Handler(std::weak_ptr<F12Handler> handler)
+		bool wasF12Pressed()
 		{
-			f12handler = handler;
+			bool down = f12down;
+			f12down = false;
+			return down;
 		}
 
 		// map sdl key to internal K_* key

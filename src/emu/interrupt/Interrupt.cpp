@@ -19,7 +19,7 @@ bool check_pin(int pin)
 }
 
 Interrupt::Interrupt():
-	trig(new TrigIODevice()),
+	trig(new Z80e::ReadonlyIODevice()),
 	interrupting(false)
 {}
 
@@ -75,7 +75,7 @@ bool Interrupt::is_interrupting()
 	return interrupting;
 }
 
-std::shared_ptr<TrigIODevice> Interrupt::get_interrupt_trig()
+std::shared_ptr<Z80e::ReadonlyIODevice> Interrupt::get_interrupt_trig()
 {
 	return trig;
 }

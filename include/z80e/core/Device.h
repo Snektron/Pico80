@@ -34,32 +34,30 @@ namespace Z80e
 	private:
 		uint8_t portvalue;
 	public:
-		uint8_t read()
+		virtual uint8_t read()
 		{
 			return portvalue;
 		}
 
-		void write(uint8_t value)
+		virtual void write(uint8_t value)
 		{
 			portvalue = value;
 		}
 	};
 
-	class ReadonlyIODevice : public Z80e::IODevice
+	class ReadonlyIODevice : public BasicIODevice
 	{
-	private:
-		uint8_t portvalue;
 	public:
-		uint8_t read()
+		virtual uint8_t read()
 		{
-			return portvalue;
+			return BasicIODevice::read();
 		}
 
-		void write(uint8_t value) {}
+		virtual void write(uint8_t value) {}
 
 		void set_value(uint8_t value)
 		{
-			portvalue = value;
+			BasicIODevice::write(value);
 		}
 	};
 }

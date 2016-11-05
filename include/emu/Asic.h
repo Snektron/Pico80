@@ -3,9 +3,7 @@
 
 #include "interrupt/TimerInt.h"
 #include <memory>
-#include <atomic>
 #include "core/Time.h"
-#include "core/Input.h"
 #include "emu/interrupt/TimerInt.h"
 #include "emu/memory/Memory.h"
 #include "emu/device/Screen.h"
@@ -20,7 +18,7 @@
 #define INSTRUCTIONS(clockrate, ns) (clockrate * (ns) / SECOND_IN_NANOS)
 #define MHZ(x) (x * 1000000)
 
-class Asic : public Input::Keyboard::F12Handler
+class Asic
 {
 private:
 	uint64_t clock_rate;
@@ -46,11 +44,8 @@ private:
 	uint64_t leftover;
 public:
 	Asic(uint64_t clock_rate, uint64_t timer_freq);
-
 	bool tick(uint64_t ticks);
-
-	void handle();
-
+	void f12int();
 	uint64_t get_clock_rate();
 };
 
