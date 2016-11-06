@@ -2,85 +2,62 @@
 #include <exception>
 #include <string>
 #include <memory>
-#include <SDL2/SDL.h>
+#include <GLFW/glfw3.h>
+#include "glad/glad.h"
 #include "core/Logger.h"
+#include "core/Display.h"
+#include "core/Input.h"
 
 #define TAG "Graphics"
 
 namespace
 {
-	SDL_Window *window;
-	std::unique_ptr<SDL_Surface> surface;
-}
-
-SDL_Window* create_window(std::string title, int w, int h, uint32_t flags)
-{
-	return SDL_CreateWindow(title.c_str(),
-				SDL_WINDOWPOS_UNDEFINED,
-				SDL_WINDOWPOS_UNDEFINED,
-				w, h, flags);
+	GLFWwindow* window;
 }
 
 void Graphics::init(std::string name, int w, int h)
 {
 	Logger::info(TAG, "Initializing graphics");
 
-	window = create_window(name, w, h, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+	if (!glfwInit())
+		throw std::runtime_error("Failed to initialize GLFW.");
+
+	window = glfwCreateWindow(w, h, name.c_str(), NULL, NULL);
 
 	if (!window)
-	{
-		Logger::error(TAG) << "Failed to create window: " << SDL_GetError() << Logger::endl;
-		throw std::runtime_error("Failed to initialize graphics");
-	}
+		throw std::runtime_error("Failed to create window.");
 
-	refresh_surface();
+	Input::init(window);
+
+	glfwMakeContextCurrent(window);
+	gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
+
+	glViewport(0, 0, w, h);
 }
 
 void Graphics::destroy()
 {
 	Logger::info(TAG, "Destroying graphics");
-
-	SDL_FreeSurface(surface.release());
-
-	SDL_DestroyWindow(window);
+	glfwDestroyWindow(window);
+	glfwTerminate();
 }
 
 void Graphics::update()
 {
-	SDL_UpdateWindowSurface(window);
-}
-
-void Graphics::refresh_surface()
-{
-	if (surface)
-		SDL_FreeSurface(surface.release());
-
-	std::unique_ptr<SDL_Surface> sf(SDL_GetWindowSurface(window));
-	surface = std::move(sf);
-
-	if (!surface)
-	{
-		Logger::error(TAG) << "Failed initialize surface: " << SDL_GetError() << Logger::endl;
-		throw std::runtime_error("Failed to initialize graphics");
-	}
-}
-
-void Graphics::clear()
-{
-	SDL_FillRect(surface.get(), NULL, 0);
-}
-
-void Graphics::blit(SDL_Surface *src, SDL_Rect& dstrect)
-{
-	SDL_BlitScaled(src, NULL, surface.get(), &dstrect);
+	glfwSwapBuffers(window);
+	glfwPollEvents();
 }
 
 int Graphics::get_width()
 {
-	return surface->w;
+	int w;
+	glfwGetFramebufferSize(window, NULL, &w);
+	return w;
 }
 
 int Graphics::get_height()
 {
-	return surface->h;
+	int h;
+	glfwGetFramebufferSize(window, &h, NULL);
+	return h;
 }

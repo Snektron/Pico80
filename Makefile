@@ -1,44 +1,63 @@
-TARGET = Pico80
-SRC	= src
-BUILD = build
-INCLUDE = include
+TARGET := Pico80
+SRC	:= src
+BUILD := build
+INCLUDE := include
+RESOURCES := assets
 
-CXX	= g++
-CC = gcc
-FLAGS = -MMD -MP -I $(SRC) -I $(INCLUDE) -I usr/include `sdl2-config --cflags --libs`
-CXXFLAGS = $(FLAGS) -std=c++14 -lpthread
-CFLAGS = $(FLAGS)
-RM = rm
-MD = mkdir -p
+CXX	?= g++
+CC ?= gcc
+LD ?= ld
+ECHO ?= echo
+CXXLIBS := glfw3 gdi32 opengl32
+FLAGS := -MMD -MP -I $(SRC) -I $(INCLUDE) -I usr/include
+CXXFLAGS := $(FLAGS) -std=c++14 $(CXXLIBS:%=-l%)
+CFLAGS := $(FLAGS)
+RM ?= rm
+MD ?= mkdir -p
 
 rwildcard = $(foreach d, $(wildcard $1*), $(call rwildcard, $d/, $2) $(filter $(subst *, %, $2), $d))
 
 CSRCS = $(patsubst $(SRC)/%, %, $(call rwildcard, $(SRC)/, *.c))
 CXXSRCS = $(patsubst $(SRC)/%, %, $(call rwildcard, $(SRC)/, *.cpp))
+RSRCS = $(call rwildcard, $(RESOURCES)/, *)
 
 OBJECTS = $(CXXSRCS:%.cpp=%.o) $(CSRCS:%.c=%.o)
+RSRCOBJ = $(patsubst $(RESOURCES)/%, %, $(RSRCS:%=%.rs))
 
 -include $(OBJECTS:%.o=%.d)
 
-vpath %.o $(BUILD)
+vpath %.o $(BUILD)/objects
+vpath %.rs $(BUILD)/resources
 vpath %.cpp $(SRC)
 vpath %.c $(SRC)
 
-all: $(TARGET)
+TEST = test|grep -ce "\s"
 
-$(TARGET): $(OBJECTS)
-	$(CXX) $(addprefix $(BUILD)/, $(OBJECTS)) $(CXXFLAGS) -o $@
+all: $(TARGET)
+	@$(ECHO) Done!
+
+$(TARGET): $(OBJECTS) $(RSRCOBJ)
+	@$(ECHO) Compiling $@...
+	@$(CXX) $(addprefix $(BUILD)/objects/, $(OBJECTS)) $(addprefix $(BUILD)/resources/, $(RSRCOBJ)) $(CXXFLAGS) -o $@
 	
 %.o: %.cpp
-	$(MD) $(BUILD)/$(dir $@)
-	$(CXX) $< $(CXXFLAGS) -c -o $(BUILD)/$@
+	@$(ECHO) Compiling $<
+	@$(MD) $(BUILD)/objects/$(dir $@)
+	@$(CXX) $< $(CXXFLAGS) -c -o $(BUILD)/objects/$@
 	
 %.o: %.c
-	$(MD) $(BUILD)/$(dir $@)
-	$(CC) $< $(CFLAGS) -c -o $(BUILD)/$@
+	@$(ECHO) Compiling $<
+	@$(MD) $(BUILD)/objects/$(dir $@)
+	@$(CC) $< $(CFLAGS) -c -o $(BUILD)/objects/$@
+
+%.rs: $(RESOURCES)/%
+	@$(ECHO) Linking resource $<
+	@$(MD) $(BUILD)/resources/$(dir $@)
+	@$(LD) -r -b binary -o $(BUILD)/resources/$@ $<
 
 clean:
-	$(RM) -rf $(BUILD)
-	$(RM) -f $(TARGET)
+	@$(ECHO) Cleaning build files.
+	@$(RM) -rf $(BUILD)
+	@$(RM) -f $(TARGET)
 	
 .PHONY: all clean

@@ -1,9 +1,7 @@
 #include "core/Input.h"
 #include <cstdint>
 #include <memory>
-#include <SDL2/SDL.h>
 #include "core/Logger.h"
-#include "core/Graphics.h"
 #include "core/Keys.h"
 
 #define TAG "Input"
@@ -18,40 +16,46 @@ namespace Input
 		bool f12down(false);
 	}
 
-	void update()
+	void mouseCallback(GLFWwindow* window, double x, double y)
 	{
-		SDL_Event event;
-		while(SDL_PollEvent(&event) != 0)
-			handleEvent(&event);
-		int x, y;
-		uint32_t state = SDL_GetMouseState(&x, &y);
-		mouseX = x;
-		mouseY = y;
-
-		mouseState |= ((state >> (SDL_BUTTON_LEFT - 1)) & 1) << MOUSE_BTN_LEFT;
-		mouseState |= ((state >> (SDL_BUTTON_RIGHT - 1)) & 1) << MOUSE_BTN_RIGHT;
-		mouseState |= ((state >> (SDL_BUTTON_MIDDLE - 1)) & 1) << MOUSE_BTN_MIDDLE;
+		mouseX = (int) x;
+		mouseY = (int) y;
 	}
 
-	void handleEvent(SDL_Event* event)
+	void closeCallback(GLFWwindow* window)
 	{
-		switch(event->type)
+		quit = true;
+	}
+
+	void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+	{
+		lastmod = 0;
+		if (mods & GLFW_MOD_CONTROL)
+			lastmod |= KM_CTRL;
+		if (mods & GLFW_MOD_SHIFT)
+			lastmod |= KM_SHIFT;
+		if (mods & GLFW_MOD_ALT)
+			lastmod |= KM_ALT;
+
+		if (key == GLFW_KEY_F12 && action != GLFW_REPEAT)
 		{
-		case SDL_QUIT:
-			Logger::info(TAG, "Requesting quit");
-			quit = true;
-			break;
-		case SDL_WINDOWEVENT:
-			if (event->window.event == SDL_WINDOWEVENT_RESIZED)
-				Graphics::refresh_surface();
-			break;
-		case SDL_KEYDOWN:
-			Keyboard::handleKeyboardEvent(event, true);
-			break;
-		case SDL_KEYUP:
-			Keyboard::handleKeyboardEvent(event, false);
-			break;
+			f12down = action == GLFW_PRESS;
+			return;
 		}
+
+		int k = Keyboard::mapKey(key, lastmod);
+
+		if (action == GLFW_RELEASE && key == lastkey)
+			lastkey = K_NONE;
+		else if (action == GLFW_PRESS)
+			lastkey = key;
+	}
+
+	void init(GLFWwindow* window)
+	{
+		glfwSetCursorPosCallback(window, mouseCallback);
+		glfwSetWindowCloseCallback(window, closeCallback);
+		glfwSetKeyCallback(window, keyCallback);
 	}
 
 	bool quit_requested()
@@ -71,7 +75,7 @@ namespace Input
 			return mouseY;
 		}
 
-		int State()
+		int state()
 		{
 			return mouseState;
 		}
@@ -79,33 +83,6 @@ namespace Input
 
 	namespace Keyboard
 	{
-		void handleKeyboardEvent(SDL_Event *event, bool down)
-		{
-			lastmod = 0;
-			if (event->key.keysym.mod & KMOD_CTRL)
-				lastmod |= KM_CTRL;
-			if (event->key.keysym.mod & (KMOD_SHIFT | KMOD_CAPS))
-				lastmod |= KM_SHIFT;
-			if (event->key.keysym.mod & KMOD_ALT)
-				lastmod |= KM_ALT;
-
-			if (event->key.keysym.sym == SDLK_F12)
-			{
-				if (down && !f12down)
-				{
-					f12down = true;
-				}else if(!down)
-					f12down = false;
-				return;
-			}
-
-			int key = mapKey(&event->key.keysym);
-			if (!down && key == lastkey)
-				lastkey = K_NONE;
-			else if (down)
-				lastkey = key;
-		}
-
 		uint8_t getLastKey()
 		{
 			return lastkey;
@@ -124,115 +101,132 @@ namespace Input
 		}
 
 		// map sdl key to internal K_* key
-		int mapKey(SDL_Keysym *sym)
+		int mapKey(int k, int m)
 		{
-			const int shift_mask = KMOD_SHIFT | KMOD_CAPS;
-			int k = sym->sym;
-			int m = sym->mod;
-			switch(k)
+			if (m & KM_CTRL)
 			{
-			case SDLK_F1:
-				return K_F1;
-			case SDLK_F2:
-				return K_F2;
-			case SDLK_F3:
-				return K_F3;
-			case SDLK_F4:
-				return K_F4;
-			case SDLK_F5:
-				return K_F5;
-
-			case SDLK_DOWN:
-				return K_DOWN;
-			case SDLK_LEFT:
-				return K_LEFT;
-			case SDLK_RIGHT:
-				return K_RIGHT;
-			case SDLK_UP:
-				return K_UP;
-
-			case SDLK_BACKSPACE:
-				return K_BACKSPACE;
-			case SDLK_ESCAPE:
-				return K_ESC;
-			case SDLK_LSHIFT:
-			case SDLK_RSHIFT:
-				return K_SHIFT;
-			case SDLK_LCTRL:
-			case SDLK_RCTRL:
-				return K_CTRL;
-			case SDLK_SPACE:
-				return K_SPACE;
-			case SDLK_RETURN:
-				return K_ENTER;
-
-			case SDLK_PLUS:
-			case SDLK_KP_PLUS:
-				return K_PLUS;
-			case SDLK_MINUS:
-			case SDLK_KP_MINUS:
-				return m & KMOD_ALT ? K_NEGATIVE : K_MINUS;
-			case SDLK_ASTERISK:
-			case SDLK_KP_MULTIPLY:
-				return K_ASTERISK;
-			case SDLK_SLASH:
-			case SDLK_KP_DIVIDE:
-				return K_SLASH;
-			case SDLK_EQUALS:
-			case SDLK_KP_EQUALS:
-				return K_EQUALS;
-
-			case SDLK_KP_LEFTBRACE:
-				return K_LBRACE;
-			case SDLK_KP_RIGHTBRACE:
-				return K_LBRACE;
-			case SDLK_LEFTBRACKET:
-				return m & shift_mask ? K_LBRACE : K_LBRACKET;
-			case SDLK_RIGHTBRACKET:
-				return m & shift_mask ? K_RBRACE : K_RBRACKET;
-			case SDLK_LEFTPAREN:
-			case SDLK_KP_LEFTPAREN:
-				return K_LPAREN;
-			case SDLK_RIGHTPAREN:
-			case SDLK_KP_RIGHTPAREN:
-				return K_RPAREN;
-
-			case SDLK_UNDERSCORE:
-				return K_UNDERSCORE;
-			case SDLK_QUESTION:
-				return K_QUESTION;
-			case SDLK_PERIOD:
-				return K_PERIOD;
-			case SDLK_COMMA:
-				return K_COMMA;
-			case SDLK_EXCLAIM:
-				return K_EXCLAIM;
-			case SDLK_COLON:
-				return K_COLON;
-			case SDLK_DELETE:
-				return K_DEL;
-			case SDLK_INSERT:
-				return K_INS;
-			case SDLK_QUOTE:
-				return K_QUOTE;
-			case SDLK_QUOTEDBL:
-				return SDLK_QUOTEDBL;
-			}
-
-			if (m & KMOD_CTRL)
-			{
-				if (k == SDLK_q)
+				switch(k)
+				{
+				case GLFW_KEY_Q:
 					return K_QUIT;
-				else if (k == SDLK_m)
+				case GLFW_KEY_M:
 					return K_MODE;
+				case GLFW_KEY_MINUS:
+				case GLFW_KEY_KP_SUBTRACT:
+					return K_NEGATIVE;
+				}
+			}
+			else if (m & KM_SHIFT)
+			{
+				switch(k)
+				{
+				case GLFW_KEY_LEFT_BRACKET:
+					return K_LBRACE;
+				case GLFW_KEY_RIGHT_BRACKET:
+					return K_RBRACE;
+				case GLFW_KEY_9:
+					return K_LPAREN;
+				case GLFW_KEY_0:
+					return K_RPAREN;
+				case GLFW_KEY_MINUS:
+					return K_UNDERSCORE;
+				case GLFW_KEY_EQUAL:
+					return K_PLUS;
+				case GLFW_KEY_8:
+					return K_ASTERISK;
+				case GLFW_KEY_SLASH:
+					return K_QUESTION;
+				case GLFW_KEY_1:
+					return K_EXCLAIM;
+				case GLFW_KEY_SEMICOLON:
+					return K_COLON;
+				case GLFW_KEY_APOSTROPHE:
+					return K_QUOTEDBL;
+				default:
+					if (GLFW_KEY_A <= k && k <= GLFW_KEY_Z)
+						return k - GLFW_KEY_A + K_A;
+				}
+			}
+			else
+			{
+				switch(k)
+				{
+				case GLFW_KEY_F1:
+					return K_F1;
+				case GLFW_KEY_F2:
+					return K_F2;
+				case GLFW_KEY_F3:
+					return K_F3;
+				case GLFW_KEY_F4:
+					return K_F4;
+				case GLFW_KEY_F5:
+					return K_F5;
+
+				case GLFW_KEY_DOWN:
+					return K_DOWN;
+				case GLFW_KEY_LEFT:
+					return K_LEFT;
+				case GLFW_KEY_RIGHT:
+					return K_RIGHT;
+				case GLFW_KEY_UP:
+					return K_UP;
+
+				case GLFW_KEY_BACKSPACE:
+					return K_BACKSPACE;
+				case GLFW_KEY_ESCAPE:
+					return K_ESC;
+				case GLFW_KEY_LEFT_SHIFT:
+				case GLFW_KEY_RIGHT_SHIFT:
+					return K_SHIFT;
+				case GLFW_KEY_LEFT_CONTROL:
+				case GLFW_KEY_RIGHT_CONTROL:
+					return K_CTRL;
+				case GLFW_KEY_SPACE:
+					return K_SPACE;
+				case GLFW_KEY_ENTER:
+				case GLFW_KEY_KP_ENTER:
+					return K_ENTER;
+
+				case GLFW_KEY_KP_ADD:
+					return K_PLUS;
+				case GLFW_KEY_MINUS:
+				case GLFW_KEY_KP_SUBTRACT:
+					return K_MINUS;
+				case GLFW_KEY_KP_MULTIPLY:
+					return K_ASTERISK;
+				case GLFW_KEY_SLASH:
+				case GLFW_KEY_KP_DIVIDE:
+					return K_SLASH;
+				case GLFW_KEY_EQUAL:
+				case GLFW_KEY_KP_EQUAL:
+					return K_EQUALS;
+
+				case GLFW_KEY_LEFT_BRACKET:
+					return K_LBRACKET;
+				case GLFW_KEY_RIGHT_BRACKET:
+					return K_RBRACKET;
+
+				case GLFW_KEY_PERIOD:
+					return K_PERIOD;
+				case GLFW_KEY_COMMA:
+					return K_COMMA;
+				case GLFW_KEY_DELETE:
+					return K_DEL;
+				case GLFW_KEY_INSERT:
+					return K_INS;
+				case GLFW_KEY_APOSTROPHE:
+					return K_QUOTE;
+				default:
+					if (GLFW_KEY_A <= k && k <= GLFW_KEY_Z)
+						return k - GLFW_KEY_A + K_a;
+					else if (GLFW_KEY_0 <= k && k <= GLFW_KEY_9)
+						return k - GLFW_KEY_0 + K_0;
+					else
+						return K_NONE;
+				}
 			}
 
-			if (SDLK_a <= k && k <= SDLK_z)
-				return k - SDLK_a + (m & shift_mask ? K_A : K_a);
-			else if (SDLK_0 <= k && k <= SDLK_9)
-				return k - SDLK_0 + K_0;
-
-			return 0;
+			return K_NONE;
 		}
 	}
 }

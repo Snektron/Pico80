@@ -5,13 +5,14 @@
 #include <sstream>
 #include <ctime>
 #include <iomanip>
-#include "Settings.h"
-#include "core/Logger.h"
+#include "glad/glad.h"
 #include "core/Graphics.h"
+#include "core/Logger.h"
 #include "core/Input.h"
 #include "core/Time.h"
 #include "core/Display.h"
 #include "emu/Asic.h"
+#include "Settings.h"
 
 #define TAG "Pico80"
 
@@ -43,6 +44,8 @@ void Pico80::onInitialize()
 	asic = std::make_shared<Asic>(ASIC_CLOCK, ASIC_TIMER);
 	Logger::info(TAG, "Started");
 
+	glClearColor(0.95, 0.95, 0.95, 1);
+
 	last = Time::now();
 }
 
@@ -57,9 +60,10 @@ void Pico80::onUpdate()
 
 void Pico80::onRender()
 {
-	Graphics::clear();
-	Input::update();
+	glClear(GL_COLOR_BUFFER_BIT);
+
 	Display::render();
+
 	Graphics::update();
 
 	if (Input::Keyboard::wasF12Pressed())

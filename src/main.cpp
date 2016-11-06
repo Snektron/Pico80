@@ -1,5 +1,5 @@
 #include <cstdlib>
-#include <SDL2/SDL.h>
+#include <memory>
 #include "Pico80.h"
 #include "Settings.h"
 

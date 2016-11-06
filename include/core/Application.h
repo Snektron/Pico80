@@ -2,6 +2,7 @@
 #define INCLUDE_CORE_APPLICATION_H_
 
 #include <stdexcept>
+#include "core/Time.h"
 
 #ifndef MAX_FRAMESKIP
 #define MAX_FRAMESKIP 5
@@ -14,7 +15,7 @@
 class Application
 {
 private:
-	int fint, tint;
+	Time::nanoseconds fint, tint;
 	bool running;
 
 public:

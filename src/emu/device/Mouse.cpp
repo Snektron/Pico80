@@ -1,7 +1,6 @@
 #include "emu/device/Mouse.h"
 #include <cstdint>
 #include <memory>
-#include <SDL2/SDL.h>
 #include "core/Logger.h"
 #include "core/Input.h"
 #include "core/Display.h"
@@ -14,7 +13,7 @@ int clamp(int x, int a, int b)
 
 uint8_t MouseX::read()
 {
-	SDL_Rect dst;
+	Display::rect_t dst;
 	Display::get_display_rect(dst);
 	int x = Input::Mouse::X();
 	return (uint8_t) clamp((x - dst.x) * DISPLAY_WIDTH / dst.w, 0, DISPLAY_WIDTH);
@@ -22,7 +21,7 @@ uint8_t MouseX::read()
 
 uint8_t MouseY::read()
 {
-	SDL_Rect dst;
+	Display::rect_t dst;
 	Display::get_display_rect(dst);
 	int y = Input::Mouse::Y();
 	return (uint8_t) clamp((y - dst.y) * DISPLAY_HEIGHT / dst.h, 0, DISPLAY_HEIGHT);
@@ -30,7 +29,7 @@ uint8_t MouseY::read()
 
 uint8_t MouseState::read()
 {
-	return (uint8_t) Input::Mouse::State();
+	return (uint8_t) Input::Mouse::state();
 }
 
 void MouseState::write(uint8_t value)

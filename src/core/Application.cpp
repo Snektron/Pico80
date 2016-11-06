@@ -2,7 +2,6 @@
 #include <thread>
 #include <algorithm>
 #include <exception>
-#include <SDL2/SDL.h>
 #include "core/Time.h"
 
 Application::Application(int fps, int tps):
@@ -31,9 +30,6 @@ void Application::stop()
 
 void Application::initialize()
 {
-	if(SDL_Init(SDL_INIT_VIDEO) < 0)
-		throw std::runtime_error("Failed to initialize graphics");
-
 	onInitialize();
 
 	running = true;
@@ -55,13 +51,13 @@ void Application::loop()
 
 		while (time >= nextUpdate)
 		{
-			nextUpdate += Time::nanoseconds(tint);
+			nextUpdate += tint;
 			onUpdate();
 		}
 
 		while (time >= nextRender)
 		{
-			nextRender += Time::nanoseconds(fint);
+			nextRender += fint;
 			onRender();
 		}
 
@@ -73,5 +69,4 @@ void Application::loop()
 void Application::terminate()
 {
 	onTerminate();
-	SDL_Quit();
 }

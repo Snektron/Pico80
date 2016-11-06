@@ -68,9 +68,9 @@ int PageRegistery::load_rom(std::shared_ptr<StorageController> store_ctrl)
 		throw std::runtime_error("Error initializing page manager");
 	}
 
-	rom_image.seekg (0, rom_image.end);
+	rom_image.seekg(0, rom_image.end);
 	int length = rom_image.tellg();
-	rom_image.seekg (0, rom_image.beg);
+	rom_image.seekg(0, rom_image.beg);
 	int n = (length + 16383)/PAGE_SIZE;
 
 	if (n == 0)
