@@ -1,30 +1,29 @@
-#ifndef INCLUDE_CORE_SHADER_H_
-#define INCLUDE_CORE_SHADER_H_
+#ifndef INCLUDE_CORE_GFX_SHADER_H_
+#define INCLUDE_CORE_GFX_SHADER_H_
 
 #include <string>
-#include <memory>
 #include <vector>
 #include "glad/glad.h"
 
-class Shader
+namespace Shader
 {
-private:
-	GLuint program;
+	class Program
+	{
 
-public:
-	Shader(GLuint program);
-	~Shader();
-};
+	};
 
-class ShaderBuilder
-{
-private:
-	std::vector<GLuint> shaders;
+	class Builder
+	{
+	private:
+		std::vector<int> shaders;
 
-public:
-	ShaderBuilder& withShaderFile(GLuint type, std::string file);
-	ShaderBuilder& withShaderSource(GLuint type, std::string source);
-	std::shared_ptr<Shader> build();
-};
+	public:
+		Builder& withShader(GLuint type, std::string source);
+		GLuint build();
 
-#endif /* INCLUDE_CORE_SHADER_H_ */
+	private:
+		std::string getShaderInfoLog(GLuint shader);
+		std::string getProgramInfoLog(GLuint program);
+	};
+}
+#endif /* INCLUDE_CORE_GFX_SHADER_H_ */

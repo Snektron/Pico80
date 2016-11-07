@@ -36,9 +36,10 @@ TEST = test|grep -ce "\s"
 all: $(TARGET)
 	@$(ECHO) Done!
 
-$(TARGET): $(OBJECTS) $(RSRCOBJ)
+$(TARGET): $(RSRCOBJ) $(OBJECTS)
 	@$(ECHO) Compiling $@...
-	@$(CXX) $(addprefix $(BUILD)/objects/, $(OBJECTS)) $(addprefix $(BUILD)/resources/, $(RSRCOBJ)) $(CXXFLAGS) -o $@
+	@$(CXX) $(addprefix $(BUILD)/objects/, $(OBJECTS)) $(CXXFLAGS) -o $@
+# 	$(addprefix $(BUILD)/resources/, $(RSRCOBJ))
 	
 %.o: %.cpp
 	@$(ECHO) Compiling $<
