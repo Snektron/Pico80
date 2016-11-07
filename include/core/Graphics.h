@@ -11,6 +11,8 @@ namespace Graphics
 
 	int get_width();
 	int get_height();
+
+	bool wasResized();
 }
 
 #endif /* INCLUDE_CORE_GRAPHICS_H___ */

@@ -26,6 +26,8 @@ namespace Shader
 		GLuint getAttribLocation(std::string name);
 
 		void vertexAttribPointer(std::string name, GLuint size, GLuint type, GLuint normalize, GLsizei stride, const void* data);
+		void enableVertexAttrib(std::string name);
+		void disableVertexAttrib(std::string name);
 
 		~ShaderProgram();
 	};

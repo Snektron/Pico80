@@ -1,5 +1,6 @@
 #include <cstdlib>
 #include <memory>
+#include "core/Engine.h"
 #include "Pico80.h"
 #include "Settings.h"
 
@@ -7,8 +8,9 @@
 
 void run()
 {
-	Pico80 pico;
-	pico.start();
+	std::shared_ptr<Pico80> pico = std::make_shared<Pico80>();
+	Engine::setApplication(pico);
+	Engine::start();
 }
 
 int main(int argc, char* argv[])

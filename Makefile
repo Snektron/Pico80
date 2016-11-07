@@ -9,12 +9,12 @@ CC ?= gcc
 LD ?= ld
 ECHO ?= echo
 
+CXXLIBS := glfw3
 ifeq ($(OS),Windows_NT)
-	CXXLIBS := gdi32 opengl32
+	CXXLIBS += gdi32 opengl32
 else
-    CXXLIBS := GL X11 dl Xxf86vm pthread Xrandr Xcursor Xinerama
+    CXXLIBS += GL X11 dl Xxf86vm pthread Xrandr Xcursor Xinerama
 endif
-CXXLIBS += glfw3
 
 FLAGS := -MMD -MP -I $(SRC) -I $(INCLUDE) -I usr/include
 CXXFLAGS := $(FLAGS) -std=c++14 $(CXXLIBS:%=-l%)

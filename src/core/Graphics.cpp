@@ -13,6 +13,12 @@
 namespace
 {
 	GLFWwindow* window;
+	bool resized(true);
+}
+
+void resizeCallback(GLFWwindow* window, int width, int height)
+{
+	resized = true;
 }
 
 void Graphics::init(std::string name, int w, int h)
@@ -32,7 +38,7 @@ void Graphics::init(std::string name, int w, int h)
 	glfwMakeContextCurrent(window);
 	gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
 
-	glViewport(0, 0, w, h);
+	glfwSetFramebufferSizeCallback(window, resizeCallback);
 }
 
 void Graphics::destroy()
@@ -60,4 +66,11 @@ int Graphics::get_height()
 	int h;
 	glfwGetFramebufferSize(window, &h, NULL);
 	return h;
+}
+
+bool Graphics::wasResized()
+{
+	bool _resized = resized;
+	resized = false;
+	return _resized;
 }

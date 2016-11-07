@@ -9,5 +9,5 @@ varying vec2 uv;
 void main()
 {
 	uv = aPosition.xy / 2.0 + 0.5;
-	gl_Position = vec4(aPosition.xy/1.1, 0.0, 1.0);
+	gl_Position = uMVPMatrix * (aPosition * vec4(0.95, 0.95, 1.0, 1.0));
 }

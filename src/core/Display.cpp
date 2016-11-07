@@ -7,6 +7,7 @@
 #include "core/Graphics.h"
 #include "core/Logger.h"
 #include "core/gl/Shader.h"
+#include "core/gl/Util.h"
 
 #define TAG "Display"
 #define SCREEN_INDEX(x, y) (SCREEN_WIDTH * (y & 0x7F) + (x & 0x7F))
@@ -46,7 +47,7 @@ namespace Display
 		GLuint texture;
 		color_t pixels[DISPLAY_WIDTH * DISPLAY_HEIGHT] = {0};
 		Shader::Program shader;
-		Eigen::Matrix<float, 4, 4> ortho;
+		Eigen::Matrix4f matrix;
 		GLuint vbo;
 	}
 
@@ -60,6 +61,7 @@ namespace Display
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, DISPLAY_WIDTH, DISPLAY_HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
 
 		shader = Shader::Builder()
@@ -67,33 +69,17 @@ namespace Display
 				.withFile(GL_FRAGMENT_SHADER, "assets/display.fsh")
 				.build();
 
-		float right = 1.0;
-		float left = 0.0;
-		float top = 1.0;
-		float bottom = 0.0;
-		float ffar = 1.0;
-		float fnear = -1.0;
-
-		ortho.setZero();
-		ortho(0, 0) = 2 / (right - left);
-		ortho(1, 1) = 2 / (top - bottom);
-		ortho(2, 2) = -2 / (ffar - fnear);
-		ortho(3, 3) = 1;
-
-		ortho(3, 0) = -(right + left) / (right - left);
-		ortho(3, 1) = -(top + bottom) / (top - bottom);
-		ortho(3, 2) = -(ffar + fnear) / (ffar - fnear);
-		ortho(3, 3) = 1;
+		Util::ortho(matrix, -1, 1, -1, 1, 100, -1);
 
 		float vertices[] =
 		{
 			-1, -1,
-			-1, 1,
-			1, 1,
+			-1,  1,
+			 1,  1,
 
 			-1, -1,
-			1, 1,
-			1, -1
+			 1,  1,
+			 1, -1
 		};
 
 		shader->bind();
@@ -104,25 +90,18 @@ namespace Display
 		shader->vertexAttribPointer("aPosition", 2, GL_FLOAT, GL_FALSE, 0, 0);
 		glUniform1i(shader->getUniformLocation("uTex"), 0);
 		shader->release();
-
 	}
 
 	void render()
 	{
-		rect_t dst;
-		get_display_rect(dst);
-
 		glEnable(GL_TEXTURE);
 		shader->bind();
-		glEnableVertexAttribArray(shader->getAttribLocation("aPosition"));
-		glUniformMatrix4fv(shader->getUniformLocation("uMVPMatrix"), 1, GL_FALSE, ortho.data());
+		shader->enableVertexAttrib("aPosition");
 
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texture);
-
+		glUniformMatrix4fv(shader->getUniformLocation("uMVPMatrix"), 1, GL_FALSE, matrix.data());
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 
-		glDisableVertexAttribArray(shader->getAttribLocation("aPosition"));
+		shader->disableVertexAttrib("aPosition");
 		shader->release();
 		glDisable(GL_TEXTURE);
 	}

@@ -55,11 +55,20 @@ namespace Shader
 		glVertexAttribPointer(getAttribLocation(name), size, type, normalize, stride, data);
 	}
 
+	void ShaderProgram::enableVertexAttrib(std::string name)
+	{
+		glEnableVertexAttribArray(getAttribLocation(name));
+	}
+
+	void ShaderProgram::disableVertexAttrib(std::string name)
+	{
+		glDisableVertexAttribArray(getAttribLocation(name));
+	}
+
 	ShaderProgram::~ShaderProgram()
 	{
 		glDeleteProgram(program);
 	}
-
 
 	Builder& Builder::withFile(GLuint type, std::string path)
 	{

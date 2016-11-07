@@ -1,23 +1,20 @@
 #include "Pico80.h"
-#include <thread>
 #include <memory>
-#include <cstdint>
 #include <sstream>
 #include <ctime>
 #include <iomanip>
 #include "glad/glad.h"
-#include "core/Graphics.h"
 #include "core/Logger.h"
 #include "core/Input.h"
-#include "core/Time.h"
-#include "core/Display.h"
-#include "emu/Asic.h"
+#include "core/view/View.h"
+#include "core/Engine.h"
+#include "emu/EmulatorView.h"
 #include "Settings.h"
 
 #define TAG "Pico80"
 
 Pico80::Pico80():
-	Application(FPS, TPS)
+	Application(FPS, TPS, {"Pico80", 512, 512})
 {
 	auto t = time(nullptr);
 	auto tm = *localtime(&t);
@@ -38,46 +35,30 @@ Pico80::Pico80():
 
 void Pico80::onInitialize()
 {
-	Graphics::init("Pico80", 512, 512);
-	Display::init();
-
-	asic = std::make_shared<Asic>(ASIC_CLOCK, ASIC_TIMER);
 	Logger::info(TAG, "Started");
 
-	glClearColor(0.95, 0.95, 0.95, 1);
+	emulator = std::make_shared<EmulatorView>();
+	viewRoot = emulator;
 
-	last = Time::now();
+	viewRoot->resize(0, 0, 512, 512);
+
+	glClearColor(0.95, 0.95, 0.95, 1);
 }
 
 void Pico80::onUpdate()
 {
-	Time::point time = Time::now();
-	Time::nanoseconds passed = time - last;
-	last = time;
-	uint64_t cycles = INSTRUCTIONS(ASIC_CLOCK, Time::toint(passed));
-	asic->tick(cycles);
+	emulator->onTick();
 }
 
 void Pico80::onRender()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	Display::render();
-
-	Graphics::update();
-
-	if (Input::Keyboard::wasF12Pressed())
-		asic->f12int();
+	viewRoot->update();
+	viewRoot->render();
 
 	if (Input::quit_requested())
-		stop();
-}
-
-void Pico80::onTerminate()
-{
-	Logger::info(TAG, "Stopping");
-	Display::destroy();
-	Graphics::destroy();
+		Engine::stop();
 }
 
 void Pico80::onError(const std::runtime_error& error)
