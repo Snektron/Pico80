@@ -3,7 +3,6 @@
 #include <memory>
 #include "core/Logger.h"
 #include "core/Input.h"
-#include "core/Display.h"
 #include "z80e/z80e.h"
 
 int clamp(int x, int a, int b)
@@ -13,18 +12,20 @@ int clamp(int x, int a, int b)
 
 uint8_t MouseX::read()
 {
-	Display::rect_t dst;
-	Display::get_display_rect(dst);
-	int x = Input::Mouse::X();
-	return (uint8_t) clamp((x - dst.x) * DISPLAY_WIDTH / dst.w, 0, DISPLAY_WIDTH);
+//	Display::rect_t dst;
+//	Display::get_display_rect(dst);
+//	int x = Input::Mouse::X();
+//	return (uint8_t) clamp((x - dst.x) * DISPLAY_WIDTH / dst.w, 0, DISPLAY_WIDTH);
+	return 0;
 }
 
 uint8_t MouseY::read()
 {
-	Display::rect_t dst;
-	Display::get_display_rect(dst);
-	int y = Input::Mouse::Y();
-	return (uint8_t) clamp((y - dst.y) * DISPLAY_HEIGHT / dst.h, 0, DISPLAY_HEIGHT);
+//	Display::rect_t dst;
+//	Display::get_display_rect(dst);
+//	int y = Input::Mouse::Y();
+//	return (uint8_t) clamp((y - dst.y) * DISPLAY_HEIGHT / dst.h, 0, DISPLAY_HEIGHT);
+	return 0;
 }
 
 uint8_t MouseState::read()

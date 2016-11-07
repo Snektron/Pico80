@@ -34,11 +34,12 @@ public:
 		running(false)
 	{}
 
-	virtual void onInitialize() {};
-	virtual void onUpdate() {};
-	virtual void onRender() {};
-	virtual void onTerminate() {};
-	virtual void onError(const std::runtime_error& error) {};
+	virtual void onInitialize(){};
+	virtual void onUpdate(){};
+	virtual void onRender(){};
+	virtual void onTerminate(){};
+	virtual void onResize(int width, int height){};
+	virtual void onError(const std::runtime_error& error){};
 
 	virtual ~Application() = default;
 

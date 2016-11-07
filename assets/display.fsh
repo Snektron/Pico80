@@ -2,7 +2,7 @@
 
 uniform sampler2D uTex;
 
-varying vec2 uv;
+in vec2 uv;
 
 void main()
 {

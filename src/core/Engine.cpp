@@ -17,6 +17,7 @@ namespace Engine
 		Graphics::init(wconf.name, wconf.width, wconf.height);
 
 		app->onInitialize();
+		resize(wconf.width, wconf.height);
 
 		running = true;
 	}
@@ -88,5 +89,10 @@ namespace Engine
 	void stop()
 	{
 		running = false;
+	}
+
+	void resize(int width, int height)
+	{
+		app->onResize(width, height);
 	}
 }

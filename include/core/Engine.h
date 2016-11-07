@@ -9,6 +9,7 @@ namespace Engine
 	void setApplication(std::shared_ptr<Application> application);
 	void start();
 	void stop();
+	void resize(int width, int height);
 }
 
 #endif /* INCLUDE_CORE_ENGINE_H_ */

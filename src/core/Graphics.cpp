@@ -5,20 +5,19 @@
 #include <GLFW/glfw3.h>
 #include "glad/glad.h"
 #include "core/Logger.h"
-#include "core/Display.h"
 #include "core/Input.h"
+#include "core/Engine.h"
 
 #define TAG "Graphics"
 
 namespace
 {
 	GLFWwindow* window;
-	bool resized(true);
 }
 
 void resizeCallback(GLFWwindow* window, int width, int height)
 {
-	resized = true;
+	Engine::resize(width, height);
 }
 
 void Graphics::init(std::string name, int w, int h)
@@ -54,23 +53,16 @@ void Graphics::update()
 	glfwPollEvents();
 }
 
-int Graphics::get_width()
+int Graphics::getWidth()
 {
 	int w;
-	glfwGetFramebufferSize(window, NULL, &w);
+	glfwGetFramebufferSize(window, &w, NULL);
 	return w;
 }
 
-int Graphics::get_height()
+int Graphics::getHeight()
 {
 	int h;
-	glfwGetFramebufferSize(window, &h, NULL);
+	glfwGetFramebufferSize(window, NULL, &h);
 	return h;
-}
-
-bool Graphics::wasResized()
-{
-	bool _resized = resized;
-	resized = false;
-	return _resized;
 }

@@ -1,13 +1,14 @@
 #include "emu/EmulatorView.h"
 #include <memory>
-#include "core/Display.h"
+#include <eigen3/Eigen/Core>
+#include "emu/Display.h"
 #include "emu/Asic.h"
+#include "emu/device/Screen.h"
 
 #define TAG "EmulatorView"
 
 EmulatorView::EmulatorView()
 {
-	Display::init();
 	asic = std::make_shared<Asic>(ASIC_CLOCK, ASIC_TIMER);
 	last = Time::now();
 }
@@ -21,12 +22,19 @@ void EmulatorView::onTick()
 //TODO	asic->tick(cycles);
 }
 
-void EmulatorView::onRender(Eigen::Matrix4f matrix)
+void EmulatorView::onRender(Eigen::Matrix4f& mv, Eigen::Matrix4f& p)
 {
-	Display::render();
+	std::shared_ptr<Screen> screen = asic->getScreen();
+	if (!screen->isValid())
+	{
+		display.write(screen->getVram());
+		screen->validate();
+	}
+
+	display.render(mv, p);
 }
 
-void EmulatorView::onResize(float width, float height)
+void EmulatorView::onResize(int width, int height)
 {
-
+	display.resize(width, height);
 }

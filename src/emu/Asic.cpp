@@ -106,3 +106,8 @@ uint64_t Asic::get_clock_rate()
 {
 	return clock_rate;
 }
+
+std::shared_ptr<Screen> Asic::getScreen()
+{
+	return screen;
+}

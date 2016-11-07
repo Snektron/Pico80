@@ -1,5 +1,5 @@
-#ifndef INCLUDE_CORE_GRAPHICS_H___
-#define INCLUDE_CORE_GRAPHICS_H___
+#ifndef INCLUDE_CORE_GRAPHICS_H_
+#define INCLUDE_CORE_GRAPHICS_H_
 
 #include <string>
 
@@ -9,10 +9,8 @@ namespace Graphics
 	void destroy();
 	void update();
 
-	int get_width();
-	int get_height();
-
-	bool wasResized();
+	int getWidth();
+	int getHeight();
 }
 
-#endif /* INCLUDE_CORE_GRAPHICS_H___ */
+#endif /* INCLUDE_CORE_GRAPHICS_H_ */

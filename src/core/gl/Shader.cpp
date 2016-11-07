@@ -115,7 +115,7 @@ namespace Shader
 			glAttachShader(program, *i);
 
 		glLinkProgram(program);
-		glGetProgramiv(program, GL_COMPILE_STATUS, &status);
+		glGetProgramiv(program, GL_LINK_STATUS, &status);
 
 		for (auto i = shaders.begin(); i != shaders.end(); i++)
 		{

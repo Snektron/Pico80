@@ -12,7 +12,7 @@
 class Pico80 : public Application
 {
 private:
-	std::shared_ptr<View> viewRoot;
+	ViewPtr root;
 	std::shared_ptr<EmulatorView> emulator;
 
 public:
@@ -20,6 +20,7 @@ public:
 	void onInitialize();
 	void onUpdate();
 	void onRender();
+	void onResize(int width, int height);
 	void onError(const std::runtime_error& error);
 };
 

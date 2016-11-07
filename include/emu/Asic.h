@@ -47,6 +47,7 @@ public:
 	bool tick(uint64_t ticks);
 	void f12int();
 	uint64_t get_clock_rate();
+	std::shared_ptr<Screen> getScreen();
 };
 
 #endif /* INCLUDE_EMU_ASIC_H_ */
