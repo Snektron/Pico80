@@ -1,10 +1,10 @@
-#version 150
+#version 130
 
 uniform sampler2D uTex;
-uniform vec2 uResolution;
+
+varying vec2 uv;
 
 void main()
 {
-	vec2 uv = gl_FragCoord.xy/uResolution;
-	gl_FragColor = vec4(texture(uTex, uv).xyz, 1);
+	gl_FragColor = vec4(texture(uTex, vec2(uv.x, 1-uv.y)).xyz, 1.0);
 }
