@@ -3,7 +3,7 @@
 #include <sstream>
 #include <ctime>
 #include <iomanip>
-#include <eigen3/Eigen/Core>
+#include <nanovg.h>
 #include "glad/glad.h"
 #include "core/Logger.h"
 #include "core/Input.h"
@@ -11,9 +11,9 @@
 #include "core/view/RatioView.h"
 #include "core/view/MarginView.h"
 #include "core/view/SideView.h"
+#include "emu/DropdownView.h"
 #include "core/Engine.h"
 #include "core/Graphics.h"
-#include "core/gl/Util.h"
 #include "emu/EmulatorView.h"
 #include "Settings.h"
 
@@ -44,7 +44,8 @@ void Pico80::onInitialize()
 	Logger::info(TAG, "Started");
 
 	emulator = std::make_shared<EmulatorView>();
-	ViewPtr ratio = std::make_shared<RatioView>(1, emulator);
+	ViewPtr dd = std::make_shared<DropdownView>(emulator);
+	ViewPtr ratio = std::make_shared<RatioView>(1, dd);
 	ViewPtr margin = std::make_shared<MarginView>(0.9, ratio);
 	root = margin;
 
@@ -60,12 +61,12 @@ void Pico80::onRender()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
+	nvgBeginFrame(Graphics::nvg(), Graphics::getWidth(), Graphics::getHeight(), Graphics::getPixelRatio());
+
 	root->update();
+	root->render();
 
-	Eigen::Matrix4f mv = Eigen::Matrix4f::Identity();
-	Eigen::Matrix4f p = Util::ortho(0, Graphics::getWidth(), 0, Graphics::getHeight(), -1, 1);
-
-	root->render(mv, p);
+	nvgEndFrame(Graphics::nvg());
 
 	if (Input::quit_requested())
 		Engine::stop();

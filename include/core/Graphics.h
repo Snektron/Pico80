@@ -1,6 +1,7 @@
 #ifndef INCLUDE_CORE_GRAPHICS_H_
 #define INCLUDE_CORE_GRAPHICS_H_
 
+#include <nanovg.h>
 #include <string>
 
 namespace Graphics
@@ -11,6 +12,9 @@ namespace Graphics
 
 	int getWidth();
 	int getHeight();
+	float getPixelRatio();
+
+	NVGcontext* nvg();
 }
 
 #endif /* INCLUDE_CORE_GRAPHICS_H_ */

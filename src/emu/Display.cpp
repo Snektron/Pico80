@@ -1,13 +1,8 @@
 #include "emu/Display.h"
-#include <algorithm>
-#include <memory>
 #include <cstdint>
-#include <eigen3/Eigen/Core>
-#include "glad/glad.h"
+#include <nanovg.h>
 #include "core/Graphics.h"
 #include "core/Logger.h"
-#include "core/gl/Shader.h"
-
 #define TAG "Display"
 
 const color_t palette[16] =
@@ -47,51 +42,22 @@ Display::Display():
 	renderHeight(0)
 {
 	Logger::info(TAG, "Initializing display");
-
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, DISPLAY_WIDTH, DISPLAY_HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
-
-	shader = Shader::Builder()
-			.withFile(GL_VERTEX_SHADER, "assets/display.vsh")
-			.withFile(GL_FRAGMENT_SHADER, "assets/display.fsh")
-			.build();
-
-	shader->bind();
-
-	glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-	shader->vertexAttribPointer("aPosition", 2, GL_FLOAT, GL_FALSE, 0, 0);
-	glUniform1i(shader->getUniformLocation("uTex"), 0);
-	shader->release();
+	image = nvgCreateImageRGBA(Graphics::nvg(), DISPLAY_WIDTH, DISPLAY_HEIGHT, 0, (unsigned char*) pixels);
 }
 
-void Display::render(Eigen::Matrix4f& mv, Eigen::Matrix4f& p)
+void Display::onRender()
 {
-	shader->bind();
-	shader->enableVertexAttrib("aPosition");
-
-	Eigen::Matrix4f mvp = p * mv;
-
-	glUniformMatrix4fv(shader->getUniformLocation("uMVPMatrix"), 1, GL_FALSE, mvp.data());
-	glUniform2f(shader->getUniformLocation("uSize"), renderWidth, renderHeight);
-
-	glDrawArrays(GL_TRIANGLES, 0, 6);
-
-	shader->disableVertexAttrib("aPosition");
-	shader->release();
+	NVGcontext *vg = Graphics::nvg();
+	NVGpaint paint = nvgImagePattern(vg, x, y, width, height, 0, image, 1);
+	nvgBeginPath(vg);
+	nvgRect(vg, x, y, width, height);
+	nvgFillPaint(vg, paint);
+	nvgFill(vg);
 }
 
-void Display::resize(int width, int height)
+Display::~Display()
 {
-	renderWidth = width;
-	renderHeight = height;
+	nvgDeleteImage(Graphics::nvg(), image);
 }
 
 void Display::write(uint8_t *data)
@@ -99,12 +65,5 @@ void Display::write(uint8_t *data)
 	for (int i = 0; i < DISPLAY_WIDTH * DISPLAY_HEIGHT; i++)
 		pixels[i] = palette[data[i] & 0xF];
 
-	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
-}
-
-Display::~Display()
-{
-	Logger::info(TAG, "Destroying display");
-	glDeleteBuffers(1, &vbo);
-	glDeleteTextures(1, &texture);
+	nvgUpdateImage(Graphics::nvg(), image, (unsigned char*) pixels);
 }

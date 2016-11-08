@@ -2,68 +2,102 @@
 #include <exception>
 #include <string>
 #include <memory>
-#include <GLFW/glfw3.h>
 #include "glad/glad.h"
+#include <GLFW/glfw3.h>
+#include <nanovg.h>
+#define NANOVG_GL3_IMPLEMENTATION
+#include <nanovg_gl.h>
 #include "core/Logger.h"
 #include "core/Input.h"
 #include "core/Engine.h"
 
 #define TAG "Graphics"
 
-namespace
+namespace Graphics
 {
-	GLFWwindow* window;
-	struct NVGcontext* vg;
-}
+	namespace
+	{
+		GLFWwindow* window;
+		NVGcontext* vg;
+	}
 
-void resizeCallback(GLFWwindow* window, int width, int height)
-{
-	Engine::resize(width, height);
-}
+	void resizeCallback(GLFWwindow* window, int width, int height)
+	{
+		Engine::resize(width, height);
+	}
 
-void Graphics::init(std::string name, int w, int h)
-{
-	Logger::info(TAG, "Initializing graphics");
+	void init(std::string name, int w, int h)
+	{
+		Logger::info(TAG, "Initializing graphics");
 
-	if (!glfwInit())
-		throw std::runtime_error("Failed to initialize GLFW.");
+		if (!glfwInit())
+			throw std::runtime_error("Failed to initialize GLFW.");
 
-	window = glfwCreateWindow(w, h, name.c_str(), NULL, NULL);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
 
-	if (!window)
-		throw std::runtime_error("Failed to create window.");
+		glfwWindowHint(GLFW_SAMPLES, 0);
+		glfwWindowHint(GLFW_RED_BITS, 8);
+		glfwWindowHint(GLFW_GREEN_BITS, 8);
+		glfwWindowHint(GLFW_BLUE_BITS, 8);
+		glfwWindowHint(GLFW_ALPHA_BITS, 8);
+		glfwWindowHint(GLFW_STENCIL_BITS, 8);
+		glfwWindowHint(GLFW_DEPTH_BITS, 24);
 
-	Input::init(window);
+		window = glfwCreateWindow(w, h, name.c_str(), NULL, NULL);
 
-	glfwMakeContextCurrent(window);
-	gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
+		if (!window)
+			throw std::runtime_error("Failed to create window.");
 
-	glfwSetFramebufferSizeCallback(window, resizeCallback);
-}
+		Input::init(window);
 
-void Graphics::destroy()
-{
-	Logger::info(TAG, "Destroying graphics");
-	glfwDestroyWindow(window);
-	glfwTerminate();
-}
+		glfwMakeContextCurrent(window);
+		gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
 
-void Graphics::update()
-{
-	glfwSwapBuffers(window);
-	glfwPollEvents();
-}
+		glfwSetFramebufferSizeCallback(window, resizeCallback);
 
-int Graphics::getWidth()
-{
-	int w;
-	glfwGetFramebufferSize(window, &w, NULL);
-	return w;
-}
+		vg = nvgCreateGL3(NVG_ANTIALIAS | NVG_STENCIL_STROKES);
+	}
 
-int Graphics::getHeight()
-{
-	int h;
-	glfwGetFramebufferSize(window, NULL, &h);
-	return h;
+	void destroy()
+	{
+		Logger::info(TAG, "Destroying graphics");
+		glfwDestroyWindow(window);
+		glfwTerminate();
+	}
+
+	void update()
+	{
+		glfwSwapBuffers(window);
+		glfwPollEvents();
+	}
+
+	int getWidth()
+	{
+		int w;
+		glfwGetFramebufferSize(window, &w, NULL);
+		return w;
+	}
+
+	int getHeight()
+	{
+		int h;
+		glfwGetFramebufferSize(window, NULL, &h);
+		return h;
+	}
+
+	float getPixelRatio()
+	{
+		int fw, ww;
+		glfwGetFramebufferSize(window, &fw, NULL);
+		glfwGetWindowSize(window, &ww, NULL);
+		return (float) fw / (float) ww;
+	}
+
+	NVGcontext* nvg()
+	{
+		return vg;
+	}
 }

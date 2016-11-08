@@ -20,11 +20,11 @@ public:
 		b->update();
 	}
 
-	virtual void render(Eigen::Matrix4f& mv, Eigen::Matrix4f& p)
+	virtual void render()
 	{
-		View::render(mv, p);
-		a->render(mv, p);
-		b->render(mv, p);
+		View::render();
+		a->render();
+		b->render();
 	}
 
 	virtual void resize(int x, int y, int width, int height)

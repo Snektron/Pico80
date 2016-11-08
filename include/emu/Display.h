@@ -6,9 +6,7 @@
 #define DISPLAY_INDEX(x, y) (DISPLAY_WIDTH * (y & 0x7F) + (x & 0x7F))
 
 #include <cstdint>
-#include <eigen3/Eigen/Core>
-#include "glad/glad.h"
-#include "core/gl/Shader.h"
+#include "core/view/View.h"
 
 #define COLOR(r, g, b) {r, g, b, 0xFF}
 
@@ -18,19 +16,16 @@ typedef union
 	uint32_t rgba;
 } color_t;
 
-class Display
+class Display : public View
 {
 private:
-	GLuint texture;
 	color_t pixels[DISPLAY_WIDTH * DISPLAY_HEIGHT];
-	Shader::Program shader;
-	GLuint vbo;
+	int image;
 	int renderWidth, renderHeight;
 
 public:
 	Display();
-	void render(Eigen::Matrix4f& mv, Eigen::Matrix4f& p);
-	void resize(int width, int height);
+	void onRender();
 	void write(uint8_t *data);
 	~Display();
 };

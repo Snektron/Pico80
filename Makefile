@@ -1,13 +1,12 @@
 TARGET := Pico80
-SRC	:= src
+SRC := src
 BUILD := build
-INCLUDE := include
-RESOURCES := assets
+INCLUDES := include
 
-CXX	?= g++
 CC ?= gcc
-LD ?= ld
-ECHO ?= echo
+CXX ?= g++
+RM ?= rm
+MD ?= mkdir -p
 
 CXXLIBS := glfw3 nanovg
 ifeq ($(OS),Windows_NT)
@@ -16,56 +15,56 @@ else
     CXXLIBS += GL X11 dl Xxf86vm pthread Xrandr Xcursor Xinerama
 endif
 
-FLAGS := -MMD -MP -I $(SRC) -I $(INCLUDE) -I usr/include
+FLAGS := -MMD -MP -I$(SRC) $(INCLUDES:%=-I%)
 CXXFLAGS := $(FLAGS) -std=c++14 $(CXXLIBS:%=-l%)
 CFLAGS := $(FLAGS)
-RM ?= rm
-MD ?= mkdir -p
 
 rwildcard = $(foreach d, $(wildcard $1*), $(call rwildcard, $d/, $2) $(filter $(subst *, %, $2), $d))
 
 CSRCS = $(patsubst $(SRC)/%, %, $(call rwildcard, $(SRC)/, *.c))
 CXXSRCS = $(patsubst $(SRC)/%, %, $(call rwildcard, $(SRC)/, *.cpp))
-RSRCS = $(call rwildcard, $(RESOURCES)/, *)
 
 OBJECTS = $(CXXSRCS:%.cpp=%.o) $(CSRCS:%.c=%.o)
-RSRCOBJ = $(patsubst $(RESOURCES)/%, %, $(RSRCS:%=%.rs))
 
 -include $(OBJECTS:%.o=%.d)
 
 vpath %.o $(BUILD)/objects
-vpath %.rs $(BUILD)/resources
 vpath %.cpp $(SRC)
 vpath %.c $(SRC)
 
-TEST = test|grep -ce "\s"
-
 all: $(TARGET)
-	@$(ECHO) Done!
 
-$(TARGET): $(RSRCOBJ) $(OBJECTS)
-	@$(ECHO) Compiling $@...
+test:
+	@echo $(OBJECTS)
+
+$(TARGET): $(OBJECTS)
+	@echo Compiling $@...
 	@$(CXX) $(addprefix $(BUILD)/objects/, $(OBJECTS)) $(CXXFLAGS) -o $@
-# 	$(addprefix $(BUILD)/resources/, $(RSRCOBJ))
 	
 %.o: %.cpp
-	@$(ECHO) Compiling $<
+	@echo Compiling $<
 	@$(MD) $(BUILD)/objects/$(dir $@)
 	@$(CXX) $< $(CXXFLAGS) -c -o $(BUILD)/objects/$@
 	
 %.o: %.c
-	@$(ECHO) Compiling $<
+	@echo Compiling $<
 	@$(MD) $(BUILD)/objects/$(dir $@)
 	@$(CC) $< $(CFLAGS) -c -o $(BUILD)/objects/$@
 
-%.rs: $(RESOURCES)/%
-	@$(ECHO) Linking resource $<
-	@$(MD) $(BUILD)/resources/$(dir $@)
-	@$(LD) -r -b binary -o $(BUILD)/resources/$@ $<
-
+glad:
+	@echo Updating glad...
+	@glad --generator="c" --out-path="." --profile="core" --api="gl=3.3" --spec="gl" --no-loader --extensions="" --omit-khrplatform 2> /dev/null
+	
 clean:
-	@$(ECHO) Cleaning build files.
+	@echo Cleaning build files...
 	@$(RM) -rf $(BUILD)
 	@$(RM) -f $(TARGET)
 	
-.PHONY: all clean
+help:
+	@echo Possible options:
+	@echo make Pico80 - Compile the main project.
+	@echo make help - Display this message.
+	@echo make glad - Update glad. Requires glad installed, see https://github.com/Dav1dde/glad.
+	@echo make clean - Remove build directory.
+	
+.PHONY: all glad clean help

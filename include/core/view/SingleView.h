@@ -2,6 +2,7 @@
 #define INCLUDE_CORE_VIEW_SINGLEVIEW_H_
 
 #include "core/view/View.h"
+#include "core/Logger.h"
 
 class SingleView : public View
 {
@@ -19,10 +20,10 @@ public:
 		child->update();
 	}
 
-	virtual void render(Eigen::Matrix4f& mv, Eigen::Matrix4f& p)
+	virtual void render()
 	{
-		View::render(mv, p);
-		child->render(mv, p);
+		View::render();
+		child->render();
 	}
 
 	virtual void resize(int x, int y, int width, int height)

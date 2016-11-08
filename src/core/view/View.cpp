@@ -1,7 +1,4 @@
 #include "core/view/View.h"
-#include <eigen3/Eigen/Core>
-#include "core/Graphics.h"
-#include "core/Logger.h"
 
 View::View():
 	View(100, -1)
@@ -18,12 +15,9 @@ void View::update()
 	onUpdate();
 }
 
-void View::render(Eigen::Matrix4f& mv, Eigen::Matrix4f& p)
+void View::render()
 {
-	Eigen::Matrix4f mv2 = mv;
-	mv2(0, 3) += x;
-	mv2(1, 3) += y;
-	onRender(mv2, p);
+	onRender();
 }
 
 void View::resize(int x, int y, int width, int height)

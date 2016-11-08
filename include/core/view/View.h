@@ -2,7 +2,6 @@
 #define INCLUDE_CORE_VIEW_VIEW_H_
 
 #include <memory>
-#include <eigen3/Eigen/Core>
 
 class View
 {
@@ -15,7 +14,7 @@ public:
 	View(float far, float near);
 
 	virtual void update();
-	virtual void render(Eigen::Matrix4f& mv, Eigen::Matrix4f& p);
+	virtual void render();
 	virtual void resize(int x, int y, int width, int height);
 
 	float getWidth();
@@ -25,7 +24,7 @@ public:
 
 protected:
 	virtual void onUpdate(){};
-	virtual void onRender(Eigen::Matrix4f& mv, Eigen::Matrix4f& p){};
+	virtual void onRender(){};
 	virtual void onResize(int width, int height){};
 };
 
