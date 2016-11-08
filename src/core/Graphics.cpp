@@ -13,6 +13,7 @@
 namespace
 {
 	GLFWwindow* window;
+	struct NVGcontext* vg;
 }
 
 void resizeCallback(GLFWwindow* window, int width, int height)

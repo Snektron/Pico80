@@ -9,7 +9,7 @@ CC ?= gcc
 LD ?= ld
 ECHO ?= echo
 
-CXXLIBS := glfw3
+CXXLIBS := glfw3 nanovg
 ifeq ($(OS),Windows_NT)
 	CXXLIBS += gdi32 opengl32
 else

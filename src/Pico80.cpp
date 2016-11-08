@@ -10,6 +10,7 @@
 #include "core/view/View.h"
 #include "core/view/RatioView.h"
 #include "core/view/MarginView.h"
+#include "core/view/SideView.h"
 #include "core/Engine.h"
 #include "core/Graphics.h"
 #include "core/gl/Util.h"
@@ -44,7 +45,8 @@ void Pico80::onInitialize()
 
 	emulator = std::make_shared<EmulatorView>();
 	ViewPtr ratio = std::make_shared<RatioView>(1, emulator);
-	root = std::make_shared<MarginView>(0.1, ratio);
+	ViewPtr margin = std::make_shared<MarginView>(0.9, ratio);
+	root = margin;
 
 	glClearColor(0.95, 0.95, 0.95, 1);
 }
@@ -56,7 +58,7 @@ void Pico80::onUpdate()
 
 void Pico80::onRender()
 {
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
 	root->update();
 

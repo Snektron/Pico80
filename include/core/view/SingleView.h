@@ -1,15 +1,15 @@
-#ifndef INCLUDE_CORE_VIEW_SINGLECHILDVIEW_H_
-#define INCLUDE_CORE_VIEW_SINGLECHILDVIEW_H_
+#ifndef INCLUDE_CORE_VIEW_SINGLEVIEW_H_
+#define INCLUDE_CORE_VIEW_SINGLEVIEW_H_
 
 #include "core/view/View.h"
 
-class SingleChildView : public View
+class SingleView : public View
 {
 protected:
 	ViewPtr child;
 
 public:
-	SingleChildView(ViewPtr child):
+	SingleView(ViewPtr child):
 		child(child)
 	{}
 
@@ -31,7 +31,12 @@ public:
 		child->resize(x, y, width, height);
 	}
 
-	virtual ~SingleChildView() = default;
+	ViewPtr getChild()
+	{
+		return child;
+	}
+
+	virtual ~SingleView() = default;
 };
 
-#endif /* INCLUDE_CORE_VIEW_SINGLECHILDVIEW_H_ */
+#endif /* INCLUDE_CORE_VIEW_SINGLEVIEW_H_ */

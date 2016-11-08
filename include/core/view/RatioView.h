@@ -1,9 +1,9 @@
 #ifndef INCLUDE_CORE_VIEW_RATIOVIEW_H_
 #define INCLUDE_CORE_VIEW_RATIOVIEW_H_
 
-#include "core/view/SingleChildView.h"
+#include "core/view/SingleView.h"
 
-class RatioView : public SingleChildView
+class RatioView : public SingleView
 {
 protected:
 	float ratio;
@@ -11,7 +11,7 @@ protected:
 public:
 	RatioView(float ratio, ViewPtr child):
 		ratio(ratio),
-		SingleChildView(child)
+		SingleView(child)
 	{}
 
 	virtual void resize(int x, int y, int width, int height)
@@ -28,7 +28,7 @@ public:
 		{
 			int newHeight = width / ratio;
 			int diff = height - newHeight;
-			child->resize(x, y - diff / 2, width, newHeight);
+			child->resize(x, y + diff / 2, width, newHeight);
 		}
 	}
 

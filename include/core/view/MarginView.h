@@ -1,9 +1,9 @@
 #ifndef INCLUDE_CORE_VIEW_MARGINVIEW_H_
 #define INCLUDE_CORE_VIEW_MARGINVIEW_H_
 
-#include "core/view/SingleChildView.h"
+#include "core/view/SingleView.h"
 
-class MarginView : public SingleChildView
+class MarginView : public SingleView
 {
 protected:
 	float w;
@@ -11,7 +11,7 @@ protected:
 public:
 	MarginView(float w, ViewPtr child):
 		w(w),
-		SingleChildView(child)
+		SingleView(child)
 	{}
 
 	virtual void resize(int x, int y, int width, int height)
