@@ -1,9 +1,9 @@
 #ifndef INCLUDE_CORE_VIEW_RATIOVIEW_H_
 #define INCLUDE_CORE_VIEW_RATIOVIEW_H_
 
-#include "core/view/SingleView.h"
+#include "core/view/UnaryView.h"
 
-class RatioView : public SingleView
+class RatioView : public UnaryView
 {
 protected:
 	float ratio;
@@ -11,24 +11,24 @@ protected:
 public:
 	RatioView(float ratio, ViewPtr child):
 		ratio(ratio),
-		SingleView(child)
+		UnaryView(child)
 	{}
 
-	virtual void resize(int x, int y, int width, int height)
+	virtual void onLayout(int x, int y, int width, int height)
 	{
-		View::resize(x, y, width, height);
+		UnaryView::onLayout(x, y, width, height);
 
 		if ((float) width / (float) height > ratio)
 		{
 			int newWidth = height * ratio;
 			int diff = width - newWidth;
-			child->resize(x + diff / 2, y, newWidth, height);
+			child->onLayout(x + diff / 2, y, newWidth, height);
 		}
 		else
 		{
 			int newHeight = width / ratio;
 			int diff = height - newHeight;
-			child->resize(x, y + diff / 2, width, newHeight);
+			child->onLayout(x, y + diff / 2, width, newHeight);
 		}
 	}
 

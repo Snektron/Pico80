@@ -1,41 +1,45 @@
 #include "core/view/View.h"
 
 View::View():
-	View(100, -1)
-{}
-
-View::View(float far, float near):
-	f(far), n(near),
 	x(0), y(0),
-	width(0), height(0)
+	width(0), height(0),
+	focussed(false)
 {}
 
-void View::update()
-{
-	onUpdate();
-}
-
-void View::render()
-{
-	onRender();
-}
-
-void View::resize(int x, int y, int width, int height)
+void View::onLayout(int x, int y, int width, int height)
 {
 	this->x = x;
 	this->y = y;
 	this->width = width;
 	this->height = height;
-
-	onResize(width, height);
 }
 
-float View::getWidth()
+int View::getX()
+{
+	return x;
+}
+
+int View::getY()
+{
+	return y;
+}
+
+int View::getWidth()
 {
 	return width;
 }
 
-float View::getHeight()
+int View::getHeight()
 {
 	return height;
+}
+
+bool View::isFocussed()
+{
+	return focussed;
+}
+
+bool View::isInside(int x, int y)
+{
+	return x >= getX() && y >= getY() && x < getX() + getWidth() && y < getY() + getHeight();
 }

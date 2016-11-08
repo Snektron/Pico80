@@ -30,7 +30,8 @@ uint8_t MouseY::read()
 
 uint8_t MouseState::read()
 {
-	return (uint8_t) Input::Mouse::state();
+//	return (uint8_t) Input::Mouse::state();
+	return 0;
 }
 
 void MouseState::write(uint8_t value)

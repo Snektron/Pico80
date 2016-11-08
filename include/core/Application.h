@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <string>
 #include "core/Time.h"
+#include "core/Event.h"
 
 #ifndef MAX_FRAMESKIP
 #define MAX_FRAMESKIP 5
@@ -39,6 +40,8 @@ public:
 	virtual void onRender(){};
 	virtual void onTerminate(){};
 	virtual void onResize(int width, int height){};
+	virtual void onMouseEvent(MouseEvent& event){};
+	virtual void onKeyEvent(KeyEvent& event){};
 	virtual void onError(const std::runtime_error& error){};
 
 	virtual ~Application() = default;

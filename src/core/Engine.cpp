@@ -95,4 +95,14 @@ namespace Engine
 	{
 		app->onResize(width, height);
 	}
+
+	void mouseEvent(MouseEvent& event)
+	{
+		app->onMouseEvent(event);
+	}
+
+	void keyEvent(KeyEvent& event)
+	{
+		app->onKeyEvent(event);
+	}
 }

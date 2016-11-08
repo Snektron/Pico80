@@ -55,6 +55,12 @@ void Display::onRender()
 	nvgFill(vg);
 }
 
+void Display::onMouseEvent(MouseEvent& event)
+{
+	if (event.action == MOUSE_PRESS)
+		Logger::info(TAG) << event.x << ", " << event.y << Logger::endl;
+}
+
 Display::~Display()
 {
 	nvgDeleteImage(Graphics::nvg(), image);

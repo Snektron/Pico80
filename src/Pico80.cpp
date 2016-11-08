@@ -10,7 +10,6 @@
 #include "core/view/View.h"
 #include "core/view/RatioView.h"
 #include "core/view/MarginView.h"
-#include "core/view/SideView.h"
 #include "emu/DropdownView.h"
 #include "core/Engine.h"
 #include "core/Graphics.h"
@@ -63,19 +62,26 @@ void Pico80::onRender()
 
 	nvgBeginFrame(Graphics::nvg(), Graphics::getWidth(), Graphics::getHeight(), Graphics::getPixelRatio());
 
-	root->update();
-	root->render();
+	root->onUpdate();
+	root->onRender();
 
 	nvgEndFrame(Graphics::nvg());
-
-	if (Input::quit_requested())
-		Engine::stop();
 }
 
 void Pico80::onResize(int width, int height)
 {
 	glViewport(0, 0, width, height);
-	root->resize(0, 0, width, height);
+	root->onLayout(0, 0, width, height);
+}
+
+void Pico80::onMouseEvent(MouseEvent& event)
+{
+	root->onMouseEvent(event);
+}
+
+void Pico80::onKeyEvent(KeyEvent& event)
+{
+	root->onKeyEvent(event);
 }
 
 void Pico80::onError(const std::runtime_error& error)

@@ -2,30 +2,31 @@
 #define INCLUDE_CORE_VIEW_VIEW_H_
 
 #include <memory>
+#include "core/Event.h"
 
 class View
 {
 protected:
-	float f, n;
 	int x, y, width, height;
+	bool focussed;
 
 public:
 	View();
-	View(float far, float near);
 
-	virtual void update();
-	virtual void render();
-	virtual void resize(int x, int y, int width, int height);
-
-	float getWidth();
-	float getHeight();
-
-	virtual ~View() = default;
-
-protected:
 	virtual void onUpdate(){};
 	virtual void onRender(){};
-	virtual void onResize(int width, int height){};
+	virtual void onLayout(int x, int y, int width, int height);
+	virtual void onMouseEvent(MouseEvent& event){};
+	virtual void onKeyEvent(KeyEvent& event){};
+
+	int getX();
+	int getY();
+	int getWidth();
+	int getHeight();
+	bool isFocussed();
+	bool isInside(int x, int y);
+
+	virtual ~View() = default;
 };
 
 typedef std::shared_ptr<View> ViewPtr;

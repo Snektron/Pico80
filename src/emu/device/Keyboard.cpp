@@ -1,21 +1,20 @@
 #include "emu/device/Keyboard.h"
 #include "emu/device/Keys.h"
-#include "core/Input.h"
 #include "core/Keys.h"
 
 uint8_t Keyboard::read()
 {
-	return Input::Keyboard::getLastKey();
+	return 0;
 }
 
 uint8_t KeyModifiers::read()
 {
-	return Input::Keyboard::getModifiers();
+	return 0;
 }
 
 uint8_t KeyPad::read()
 {
-	return mapKos(Input::Keyboard::getLastKey(), Input::Keyboard::getModifiers());
+	return mapKos(0, 0);
 }
 
 uint8_t KeyPad::mapKos(uint8_t key, uint8_t mod)

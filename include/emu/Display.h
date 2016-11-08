@@ -27,6 +27,7 @@ public:
 	Display();
 	void onRender();
 	void write(uint8_t *data);
+	void onMouseEvent(MouseEvent& event);
 	~Display();
 };
 

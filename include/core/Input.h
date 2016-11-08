@@ -12,20 +12,8 @@ namespace Input
 	void init(GLFWwindow* window);
 	bool quit_requested();
 
-	namespace Mouse
-	{
-		int X();
-		int Y();
-		int state();
-	}
-
-	namespace Keyboard
-	{
-		uint8_t getLastKey();
-		uint8_t getModifiers();
-		bool wasF12Pressed();
-		int mapKey(int k, int m);
-	}
+	bool wasF12Pressed();
+	int mapKey(int k, int m);
 }
 
 #endif /* INCLUDE_CORE_INPUT_H_ */

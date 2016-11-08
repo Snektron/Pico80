@@ -2,15 +2,16 @@
 #define INCLUDE_EMU_DROPDOWNVIEW_H_
 
 #include <nanovg.h>
-#include "core/view/SingleView.h"
+
+#include "core/view/UnaryView.h"
 #include "core/Graphics.h"
 #include "core/Logger.h"
 
-class DropdownView : public SingleView
+class DropdownView : public UnaryView
 {
 public:
 	DropdownView(ViewPtr child):
-		SingleView(child)
+		UnaryView(child)
 	{}
 
 	virtual void onRender()
@@ -23,6 +24,8 @@ public:
 		nvgPathWinding(vg, NVG_HOLE);
 		nvgFillPaint(vg, shadowPaint);
 		nvgFill(vg);
+
+		UnaryView::onRender();
 	}
 };
 

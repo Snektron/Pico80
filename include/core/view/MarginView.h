@@ -1,9 +1,9 @@
 #ifndef INCLUDE_CORE_VIEW_MARGINVIEW_H_
 #define INCLUDE_CORE_VIEW_MARGINVIEW_H_
 
-#include "core/view/SingleView.h"
+#include "core/view/UnaryView.h"
 
-class MarginView : public SingleView
+class MarginView : public UnaryView
 {
 protected:
 	float w;
@@ -11,12 +11,12 @@ protected:
 public:
 	MarginView(float w, ViewPtr child):
 		w(w),
-		SingleView(child)
+		UnaryView(child)
 	{}
 
-	virtual void resize(int x, int y, int width, int height)
+	virtual void onLayout(int x, int y, int width, int height)
 	{
-		View::resize(x, y, width, height);
+		UnaryView::onLayout(x, y, width, height);
 
 		int newWidth = (int) width * w;
 		int newHeight = (int) height * w;
@@ -24,7 +24,7 @@ public:
 		int xdiff = width - newWidth;
 		int ydiff = height - newHeight;
 
-		child->resize(x + xdiff / 2, y + ydiff / 2, newWidth, newHeight);
+		child->onLayout(x + xdiff / 2, y + ydiff / 2, newWidth, newHeight);
 	}
 
 	virtual ~MarginView() = default;
