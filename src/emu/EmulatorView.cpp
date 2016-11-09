@@ -7,10 +7,10 @@
 
 #define TAG "EmulatorView"
 
-EmulatorView::EmulatorView():
-	UnaryView(std::make_shared<Display>())
+EmulatorView::EmulatorView()
 {
-	display = std::dynamic_pointer_cast<Display>(getChild());
+	display = std::make_shared<Display>();
+	addChild(display);
 	asic = std::make_shared<Asic>(ASIC_CLOCK, ASIC_TIMER);
 	last = Time::now();
 }
@@ -24,7 +24,7 @@ void EmulatorView::onTick()
 //FIXME	asic->tick(cycles);
 }
 
-void EmulatorView::onRender()
+void EmulatorView::onRender(NVGcontext *vg)
 {
 	std::shared_ptr<Screen> screen = asic->getScreen();
 	if (!screen->isValid())
@@ -33,5 +33,5 @@ void EmulatorView::onRender()
 		screen->validate();
 	}
 
-	UnaryView::onRender();
+	ViewGroup::onRender(vg);
 }

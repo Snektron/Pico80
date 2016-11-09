@@ -45,20 +45,20 @@ Display::Display():
 	image = nvgCreateImageRGBA(Graphics::nvg(), DISPLAY_WIDTH, DISPLAY_HEIGHT, 0, (unsigned char*) pixels);
 }
 
-void Display::onRender()
+void Display::onRender(NVGcontext *vg)
 {
-	NVGcontext *vg = Graphics::nvg();
-	NVGpaint paint = nvgImagePattern(vg, x, y, width, height, 0, image, 1);
+	NVGpaint paint = nvgImagePattern(vg, getLeft(), getTop(), getWidth(), getHeight(), 0, image, 1);
 	nvgBeginPath(vg);
-	nvgRect(vg, x, y, width, height);
+	nvgRect(vg, getLeft(), getTop(), getWidth(), getHeight());
 	nvgFillPaint(vg, paint);
 	nvgFill(vg);
 }
 
-void Display::onMouseEvent(MouseEvent& event)
+bool Display::onMouseButtonEvent(MouseButtonEvent& event)
 {
 	if (event.action == MOUSE_PRESS)
-		Logger::info(TAG) << event.x << ", " << event.y << Logger::endl;
+		Logger::debug(TAG) << event.x << " x " << event.y << Logger::endl;
+	return true;
 }
 
 Display::~Display()

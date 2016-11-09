@@ -2,33 +2,43 @@
 #define INCLUDE_CORE_VIEW_VIEW_H_
 
 #include <memory>
+#include <nanovg.h>
 #include "core/Event.h"
+
+class View;
+
+typedef std::shared_ptr<View> ViewPtr;
 
 class View
 {
 protected:
-	int x, y, width, height;
+	int x, y, w, h;
 	bool focussed;
 
 public:
 	View();
 
 	virtual void onUpdate(){};
-	virtual void onRender(){};
-	virtual void onLayout(int x, int y, int width, int height);
-	virtual void onMouseEvent(MouseEvent& event){};
-	virtual void onKeyEvent(KeyEvent& event){};
+	virtual void onRender(NVGcontext *vg){};
+	virtual void onLayout(int x, int y, int w, int h);
 
-	int getX();
-	int getY();
+	virtual void onMouseMoveEvent(MouseMoveEvent& event){};
+	virtual bool onMouseButtonEvent(MouseButtonEvent& event){ return false; };
+	virtual void onKeyEvent(KeyEvent& event){};
+	virtual void onFocusEvent(bool focus){};
+
+	int getLeft();
+	int getTop();
+	int getRight();
+	int getBottom();
 	int getWidth();
 	int getHeight();
+	bool contains(int x, int y);
+
 	bool isFocussed();
-	bool isInside(int x, int y);
+	void setFocussed(bool focussed);
 
 	virtual ~View() = default;
 };
-
-typedef std::shared_ptr<View> ViewPtr;
 
 #endif /* INCLUDE_CORE_VIEW_VIEW_H_ */

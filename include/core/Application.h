@@ -40,7 +40,8 @@ public:
 	virtual void onRender(){};
 	virtual void onTerminate(){};
 	virtual void onResize(int width, int height){};
-	virtual void onMouseEvent(MouseEvent& event){};
+	virtual void onMouseMoveEvent(MouseMoveEvent& event){};
+	virtual void onMouseButtonEvent(MouseButtonEvent& event){};
 	virtual void onKeyEvent(KeyEvent& event){};
 	virtual void onError(const std::runtime_error& error){};
 

@@ -1,20 +1,32 @@
 #ifndef INCLUDE_CORE_EVENT_H_
 #define INCLUDE_CORE_EVENT_H_
 
-enum MouseAction
+enum MouseButtonAction
 {
 	MOUSE_PRESS,
-	MOUSE_RELEASE,
-	MOUSE_MOVE
+	MOUSE_RELEASE
 };
 
 typedef struct
 {
-	MouseAction action;
+	MouseButtonAction action;
 	int button;
 	int gx, gy; // global mouse position
 	int x, y; // localized mouse position
-} MouseEvent;
+} MouseButtonEvent;
+
+enum MouseMoveAction
+{
+	MOUSE_MOVE,
+	MOUSE_DRAG
+};
+
+typedef struct
+{
+	MouseMoveAction action;
+	int gx, gy; // global mouse position
+	int x, y; // localized mouse position
+} MouseMoveEvent;
 
 enum KeyAction
 {

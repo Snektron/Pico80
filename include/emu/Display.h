@@ -25,9 +25,9 @@ private:
 
 public:
 	Display();
-	void onRender();
+	void onRender(NVGcontext *vg);
 	void write(uint8_t *data);
-	void onMouseEvent(MouseEvent& event);
+	bool onMouseButtonEvent(MouseButtonEvent& event);
 	~Display();
 };
 

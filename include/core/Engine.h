@@ -11,7 +11,8 @@ namespace Engine
 	void start();
 	void stop();
 	void resize(int width, int height);
-	void mouseEvent(MouseEvent& event);
+	void mouseMoveEvent(MouseMoveEvent& event);
+	void mouseButtonEvent(MouseButtonEvent& event);
 	void keyEvent(KeyEvent& event);
 }
 

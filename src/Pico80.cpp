@@ -58,14 +58,14 @@ void Pico80::onUpdate()
 
 void Pico80::onRender()
 {
+	root->onUpdate();
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-	nvgBeginFrame(Graphics::nvg(), Graphics::getWidth(), Graphics::getHeight(), Graphics::getPixelRatio());
-
-	root->onUpdate();
-	root->onRender();
-
-	nvgEndFrame(Graphics::nvg());
+	NVGcontext *vg = Graphics::nvg();
+	nvgBeginFrame(vg, Graphics::getWidth(), Graphics::getHeight(), Graphics::getPixelRatio());
+	root->onRender(vg);
+	nvgEndFrame(vg);
 }
 
 void Pico80::onResize(int width, int height)
@@ -74,9 +74,14 @@ void Pico80::onResize(int width, int height)
 	root->onLayout(0, 0, width, height);
 }
 
-void Pico80::onMouseEvent(MouseEvent& event)
+void Pico80::onMouseMoveEvent(MouseMoveEvent& event)
 {
-	root->onMouseEvent(event);
+	root->onMouseMoveEvent(event);
+}
+
+void Pico80::onMouseButtonEvent(MouseButtonEvent& event)
+{
+	root->onMouseButtonEvent(event);
 }
 
 void Pico80::onKeyEvent(KeyEvent& event)

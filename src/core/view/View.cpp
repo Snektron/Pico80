@@ -2,36 +2,51 @@
 
 View::View():
 	x(0), y(0),
-	width(0), height(0),
+	w(0), h(0),
 	focussed(false)
 {}
 
-void View::onLayout(int x, int y, int width, int height)
+void View::onLayout(int x, int y, int w, int h)
 {
 	this->x = x;
 	this->y = y;
-	this->width = width;
-	this->height = height;
+	this->w = w;
+	this->h = h;
 }
 
-int View::getX()
+int View::getLeft()
 {
 	return x;
 }
 
-int View::getY()
+int View::getTop()
 {
 	return y;
 }
 
+int View::getRight()
+{
+	return x + w;
+}
+
+int View::getBottom()
+{
+	return y + h;
+}
+
 int View::getWidth()
 {
-	return width;
+	return w;
 }
 
 int View::getHeight()
 {
-	return height;
+	return h;
+}
+
+bool View::contains(int x, int y)
+{
+	return x >= getLeft() && y >= getTop() && x < getRight() && y < getBottom();
 }
 
 bool View::isFocussed()
@@ -39,7 +54,7 @@ bool View::isFocussed()
 	return focussed;
 }
 
-bool View::isInside(int x, int y)
+void View::setFocussed(bool focussed)
 {
-	return x >= getX() && y >= getY() && x < getX() + getWidth() && y < getY() + getHeight();
+	this->focussed = focussed;
 }

@@ -1,34 +1,39 @@
 #ifndef INCLUDE_CORE_VIEW_RATIOVIEW_H_
 #define INCLUDE_CORE_VIEW_RATIOVIEW_H_
 
-#include "core/view/UnaryView.h"
+#include "core/view/ViewGroup.h"
+#include "core/Logger.h"
 
-class RatioView : public UnaryView
+class RatioView : public ViewGroup
 {
 protected:
 	float ratio;
 
 public:
 	RatioView(float ratio, ViewPtr child):
-		ratio(ratio),
-		UnaryView(child)
-	{}
-
-	virtual void onLayout(int x, int y, int width, int height)
+		ratio(ratio)
 	{
-		UnaryView::onLayout(x, y, width, height);
+		addChild(child);
+	}
 
-		if ((float) width / (float) height > ratio)
+	virtual void onLayout(int x, int y, int w, int h)
+	{
+		View::onLayout(x, y, w, h);
+
+		if (!hasChildren())
+			return;
+
+		if ((float) w / (float) h > ratio)
 		{
-			int newWidth = height * ratio;
-			int diff = width - newWidth;
-			child->onLayout(x + diff / 2, y, newWidth, height);
+			int newWidth = h * ratio;
+			int diff = w - newWidth;
+			getChild(0)->onLayout(diff / 2, 0, newWidth, h);
 		}
 		else
 		{
-			int newHeight = width / ratio;
-			int diff = height - newHeight;
-			child->onLayout(x, y + diff / 2, width, newHeight);
+			int newHeight = w / ratio;
+			int diff = h - newHeight;
+			getChild(0)->onLayout(0, diff / 2, w, newHeight);
 		}
 	}
 

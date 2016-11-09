@@ -12,16 +12,17 @@ namespace Input
 {
 	void mouseMoveCallback(GLFWwindow* window, double x, double y)
 	{
-		MouseEvent event = {MOUSE_MOVE, 0, (int) x, (int) y, (int) x, (int) y};
-		Engine::mouseEvent(event);
+		int down = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
+		MouseMoveEvent event = {down == GLFW_PRESS ? MOUSE_DRAG : MOUSE_MOVE, (int) x, (int) y, (int) x, (int) y};
+		Engine::mouseMoveEvent(event);
 	}
 
 	void mouseClickCallback(GLFWwindow* window, int button, int action, int mods)
 	{
 		double x, y;
 		glfwGetCursorPos(window, &x, &y);
-		MouseEvent event = {action == GLFW_PRESS ? MOUSE_PRESS : MOUSE_RELEASE, button, (int) x, (int) y, (int) x, (int) y};
-		Engine::mouseEvent(event);
+		MouseButtonEvent event = {action == GLFW_PRESS ? MOUSE_PRESS : MOUSE_RELEASE, button, (int) x, (int) y, (int) x, (int) y};
+		Engine::mouseButtonEvent(event);
 	}
 
 	void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)

@@ -21,7 +21,8 @@ public:
 	void onUpdate();
 	void onRender();
 	void onResize(int width, int height);
-	void onMouseEvent(MouseEvent& event);
+	void onMouseMoveEvent(MouseMoveEvent& event);
+	void onMouseButtonEvent(MouseButtonEvent& event);
 	void onKeyEvent(KeyEvent& event);
 	void onError(const std::runtime_error& error);
 };
