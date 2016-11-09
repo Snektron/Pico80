@@ -6,7 +6,7 @@
 
 class ViewGroup : public View
 {
-private:
+protected:
 	std::vector<ViewPtr> children;
 	ViewPtr focus;
 

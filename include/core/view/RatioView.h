@@ -2,7 +2,6 @@
 #define INCLUDE_CORE_VIEW_RATIOVIEW_H_
 
 #include "core/view/ViewGroup.h"
-#include "core/Logger.h"
 
 class RatioView : public ViewGroup
 {

@@ -45,8 +45,7 @@ void Pico80::onInitialize()
 	emulator = std::make_shared<EmulatorView>();
 	ViewPtr dd = std::make_shared<DropdownView>(emulator);
 	ViewPtr ratio = std::make_shared<RatioView>(1, dd);
-	ViewPtr margin = std::make_shared<MarginView>(0.9, ratio);
-	root = margin;
+	root = std::make_shared<MarginView>(0.9, ratio);
 
 	glClearColor(0.95, 0.95, 0.95, 1);
 }
