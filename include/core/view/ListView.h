@@ -6,9 +6,9 @@
 class ListView : public ViewGroup
 {
 public:
-	virtual void onLayout(int x, int y, int w, int h)
+	virtual void onLayout(Vector2i& pos, Vector2i& size)
 	{
-		View::onLayout(x, y, w, h);
+		View::onLayout(pos, size);
 
 		if (!hasChildren())
 			return;
@@ -17,9 +17,9 @@ public:
 
 		for (auto child : children)
 		{
-			int nt = i * h / n;
-			int nb = (i + 1) * h / n;
-			child->onLayout(0, nt, w, nb - nt);
+			int nt = i * size.y() / n;
+			int nb = (i + 1) * size.y() / n;
+			child->onLayout(Vector2i(0, nt), Vector2i(size.x(), nb - nt));
 			i++;
 		}
 	}

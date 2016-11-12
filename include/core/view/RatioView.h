@@ -9,30 +9,30 @@ protected:
 	float ratio;
 
 public:
-	RatioView(float ratio, ViewPtr child):
+	RatioView(float ratio, View::Ptr child):
 		ratio(ratio)
 	{
 		addChild(child);
 	}
 
-	virtual void onLayout(int x, int y, int w, int h)
+	virtual void onLayout(const Vector2i& pos, const Vector2i& size)
 	{
-		View::onLayout(x, y, w, h);
+		View::onLayout(pos, size);
 
 		if (!hasChildren())
 			return;
 
-		if ((float) w / (float) h > ratio)
+		if ((float) size.x() / (float) size.y() > ratio)
 		{
-			int newWidth = h * ratio;
-			int diff = w - newWidth;
-			getChild(0)->onLayout(diff / 2, 0, newWidth, h);
+			int newWidth = size.y() * ratio;
+			int diff = size.x() - newWidth;
+			getChild(0)->onLayout(Vector2i(diff / 2, 0), Vector2i(newWidth, size.y()));
 		}
 		else
 		{
-			int newHeight = w / ratio;
-			int diff = h - newHeight;
-			getChild(0)->onLayout(0, diff / 2, w, newHeight);
+			int newHeight = size.x() / ratio;
+			int diff = size.y() - newHeight;
+			getChild(0)->onLayout(Vector2i(0, diff / 2), Vector2i(size.x(), newHeight));
 		}
 	}
 

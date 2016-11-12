@@ -4,7 +4,7 @@
 #include <memory>
 #include "core/Application.h"
 #include "core/view/View.h"
-#include "emu/EmulatorView.h"
+#include "PicoView.h"
 
 #define FPS 60
 #define TPS 1000
@@ -12,8 +12,8 @@
 class Pico80 : public Application
 {
 private:
-	ViewPtr root;
-	std::shared_ptr<EmulatorView> emulator;
+	View::Ptr root;
+	std::shared_ptr<PicoView> pico;
 
 public:
 	Pico80();

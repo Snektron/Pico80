@@ -9,26 +9,23 @@ protected:
 	float mid;
 
 public:
-	MarginView(float mid, ViewPtr child):
+	MarginView(float mid, View::Ptr child):
 		mid(mid)
 	{
 		addChild(child);
 	}
 
-	virtual void onLayout(int x, int y, int w, int h)
+	virtual void onLayout(const Vector2i& pos, const Vector2i& size)
 	{
-		View::onLayout(x, y, w, h);
+		View::onLayout(pos, size);
 
 		if (!hasChildren())
 			return;
 
-		int newWidth = (int) w * mid;
-		int newHeight = (int) h * mid;
+		Vector2i newSize = (size.cast<float>() * mid).cast<int>();
+		Vector2i diff = size - newSize;
 
-		int xdiff = w - newWidth;
-		int ydiff = h - newHeight;
-
-		getChild(0)->onLayout(xdiff / 2, ydiff / 2, newWidth, newHeight);
+		getChild(0)->onLayout(diff / 2, newSize);
 	}
 
 	virtual ~MarginView() = default;

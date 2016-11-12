@@ -7,13 +7,8 @@
 #include "glad/glad.h"
 #include "core/Logger.h"
 #include "core/Input.h"
-#include "core/view/View.h"
-#include "core/view/RatioView.h"
-#include "core/view/MarginView.h"
-#include "emu/DropdownView.h"
 #include "core/Engine.h"
 #include "core/Graphics.h"
-#include "emu/EmulatorView.h"
 #include "Settings.h"
 
 #define TAG "Pico80"
@@ -42,17 +37,15 @@ void Pico80::onInitialize()
 {
 	Logger::info(TAG, "Started");
 
-	emulator = std::make_shared<EmulatorView>();
-	ViewPtr dd = std::make_shared<DropdownView>(emulator);
-	ViewPtr ratio = std::make_shared<RatioView>(1, dd);
-	root = std::make_shared<MarginView>(0.9, ratio);
+	pico = std::make_shared<PicoView>();
+	root = pico;
 
-	glClearColor(0.95, 0.95, 0.95, 1);
+	glClearColor(0.92, 0.92, 0.92, 1);
 }
 
 void Pico80::onUpdate()
 {
-	emulator->onTick();
+	pico->onTick();
 }
 
 void Pico80::onRender()
@@ -70,7 +63,7 @@ void Pico80::onRender()
 void Pico80::onResize(int width, int height)
 {
 	glViewport(0, 0, width, height);
-	root->onLayout(0, 0, width, height);
+	root->onLayout(Vector2i::Zero(), Vector2i(width, height));
 }
 
 void Pico80::onMouseMoveEvent(MouseMoveEvent& event)

@@ -1,47 +1,44 @@
 #include "core/view/View.h"
-
 View::View():
-	x(0), y(0),
-	w(0), h(0),
-	focussed(false)
+	preferredSize(Vector2i::Zero()),
+	size(Vector2i::Zero()),
+	pos(Vector2i::Zero())
 {}
 
-void View::onLayout(int x, int y, int w, int h)
+void View::onLayout(const Vector2i& pos, const Vector2i& size)
 {
-	this->x = x;
-	this->y = y;
-	this->w = w;
-	this->h = h;
+	this->pos = pos;
+	this->size = size;
 }
 
 int View::getLeft()
 {
-	return x;
+	return pos.x();
 }
 
 int View::getTop()
 {
-	return y;
+	return pos.y();
 }
 
 int View::getRight()
 {
-	return x + w;
+	return pos.x() + size.x();
 }
 
 int View::getBottom()
 {
-	return y + h;
+	return pos.y() + size.y();
 }
 
 int View::getWidth()
 {
-	return w;
+	return size.x();
 }
 
 int View::getHeight()
 {
-	return h;
+	return size.y();
 }
 
 bool View::contains(int x, int y)
@@ -49,12 +46,7 @@ bool View::contains(int x, int y)
 	return x >= getLeft() && y >= getTop() && x < getRight() && y < getBottom();
 }
 
-bool View::isFocussed()
+bool View::contains(Vector2i& coord)
 {
-	return focussed;
-}
-
-void View::setFocussed(bool focussed)
-{
-	this->focussed = focussed;
+	return contains(coord.x(), coord.y());
 }

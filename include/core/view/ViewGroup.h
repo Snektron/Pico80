@@ -3,30 +3,36 @@
 
 #include "core/view/View.h"
 #include <vector>
+#include "core/view/Layout.h"
 
 class ViewGroup : public View
 {
 protected:
-	std::vector<ViewPtr> children;
-	ViewPtr focus;
+	std::vector<View::Ptr> children;
+	Layout::Ptr layout;
 
 public:
 	virtual void onUpdate();
 	virtual void onRender(NVGcontext *vg);
-	virtual void onLayout(int x, int y, int w, int h);
+	virtual void onLayout(const Vector2i& pos, const Vector2i& size);
 	virtual bool onMouseButtonEvent(MouseButtonEvent& event);
 	virtual void onMouseMoveEvent(MouseMoveEvent& event);
-	virtual void onKeyEvent(KeyEvent& event);
-	virtual void onFocusEvent(bool focus);
 
-	void addChild(ViewPtr child);
-	void setChild(int index, ViewPtr child);
-	void removeChild(ViewPtr child);
+	void setLayout(Layout::Ptr layout) { this->layout = layout; }
+	Layout::Ptr getLayout() { return layout; }
+
+	virtual Vector2i measure(Vector2i& parentSize);
+
+	void addChild(View::Ptr child);
+	void setChild(int index, View::Ptr child);
+	void removeChild(View::Ptr child);
 	void removeChild(int index);
-	ViewPtr getChild(int index);
+	View::Ptr getChild(int index);
 	int getChildCount();
 	bool hasChildren();
-	bool hasChild(ViewPtr child);
+	bool hasChild(View::Ptr child);
+
+	typedef std::shared_ptr<ViewGroup> Ptr;
 };
 
 #endif /* INCLUDE_CORE_VIEW_VIEWGROUP_H_ */

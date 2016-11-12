@@ -29,17 +29,19 @@ void ViewGroup::onRender(NVGcontext *vg)
 	nvgRestore(vg);
 }
 
-void ViewGroup::onLayout(int x, int y, int w, int h)
+void ViewGroup::onLayout(const Vector2i& pos, const Vector2i& size)
 {
-	View::onLayout(x, y, w, h);
-	for (auto child : children)
-		child->onLayout(0, 0, w, h);
+	View::onLayout(pos, size);
+
+	if (layout)
+		layout->onLayout(pos, size, this);
+	else
+		for (auto child : children)
+			child->onLayout(Vector2i::Zero(), size);
 }
 
 bool ViewGroup::onMouseButtonEvent(MouseButtonEvent& event)
 {
-	ViewPtr toFocus(nullptr);
-
 	for (auto child : children)
 	{
 		MouseButtonEvent childEvent =
@@ -52,22 +54,11 @@ bool ViewGroup::onMouseButtonEvent(MouseButtonEvent& event)
 			event.y - getTop()
 		};
 
-		if (child->contains(childEvent.x, childEvent.y) &&
-			child->onMouseButtonEvent(childEvent))
-			focus = child;
+		if (child->contains(childEvent.x, childEvent.y))
+			child->onMouseButtonEvent(childEvent);
 	}
 
-	bool focusChanged = toFocus != focus;
-
-	if (focus && focus->isFocussed())
-		focus->onFocusEvent(false);
-
-	focus = toFocus;
-
-	if (focus && !focus->isFocussed())
-		toFocus->onFocusEvent(true);
-
-	return focusChanged;
+	return false;
 }
 
 void ViewGroup::onMouseMoveEvent(MouseMoveEvent& event)
@@ -85,49 +76,31 @@ void ViewGroup::onMouseMoveEvent(MouseMoveEvent& event)
 			event.y - getTop()
 		};
 
-		if (child->isFocussed() && child->contains(childEvent.x, childEvent.y))
+		if (child->contains(childEvent.x, childEvent.y))
 			child->onMouseMoveEvent(childEvent);
 	}
 }
 
-void ViewGroup::onKeyEvent(KeyEvent& event)
+Vector2i ViewGroup::measure(Vector2i& parentSize)
 {
-	View::onKeyEvent(event);
-
-	for (auto child : children)
-	{
-		if (child->isFocussed())
-			child->onKeyEvent(event);
-	}
+	if (layout)
+		return layout->measure(parentSize, this);
+	return Vector2i(MATCH_PARENT, MATCH_PARENT);
 }
 
-void ViewGroup::onFocusEvent(bool focus)
-{
-	View::setFocussed(focus);
-
-	if (focus)
-		return;
-
-	for (auto child : children)
-	{
-		if (child->isFocussed())
-			child->onFocusEvent(false);
-	}
-}
-
-void ViewGroup::addChild(ViewPtr child)
+void ViewGroup::addChild(View::Ptr child)
 {
 	if (child)
 		children.push_back(child);
 }
 
-void ViewGroup::setChild(int index, ViewPtr child)
+void ViewGroup::setChild(int index, View::Ptr child)
 {
 	if (index < getChildCount() && child)
 		children[index] = child;
 }
 
-void ViewGroup::removeChild(ViewPtr child)
+void ViewGroup::removeChild(View::Ptr child)
 {
 	if (child)
 		children.erase(std::remove(children.begin(), children.end(), child));
@@ -138,7 +111,7 @@ void ViewGroup::removeChild(int index)
 	children.erase(children.begin() + index);
 }
 
-ViewPtr ViewGroup::getChild(int index)
+View::Ptr ViewGroup::getChild(int index)
 {
 	return children[index];
 }
@@ -153,7 +126,7 @@ bool ViewGroup::hasChildren()
 	return !children.empty();
 }
 
-bool ViewGroup::hasChild(ViewPtr child)
+bool ViewGroup::hasChild(View::Ptr child)
 {
 	return std::find(children.begin(), children.end(), child) != children.end();
 }

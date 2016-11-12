@@ -3,29 +3,38 @@
 
 #include <memory>
 #include <nanovg.h>
+#include <Eigen/Core>
 #include "core/Event.h"
 
-class View;
-
-typedef std::shared_ptr<View> ViewPtr;
+using Eigen::Vector2i;
 
 class View
 {
 protected:
-	int x, y, w, h;
-	bool focussed;
+	Vector2i preferredSize;
+	Vector2i size;
+	Vector2i pos;
 
 public:
 	View();
 
 	virtual void onUpdate(){};
 	virtual void onRender(NVGcontext *vg){};
-	virtual void onLayout(int x, int y, int w, int h);
+	virtual void onLayout(const Vector2i& pos, const Vector2i& size);
 
 	virtual void onMouseMoveEvent(MouseMoveEvent& event){};
 	virtual bool onMouseButtonEvent(MouseButtonEvent& event){ return false; };
 	virtual void onKeyEvent(KeyEvent& event){};
 	virtual void onFocusEvent(bool focus){};
+
+	virtual Vector2i measure(Vector2i& parentSize) { return preferredSize; }
+
+	Vector2i getPreferredSize() { return preferredSize; }
+	void setPreferredSize(Vector2i& v) { preferredSize = v; }
+	Vector2i getSize() { return size; }
+	void setSize(Vector2i& v) { size = v; }
+	Vector2i getPos() { return pos; }
+	void setPos(Vector2i& v) { pos = v; }
 
 	int getLeft();
 	int getTop();
@@ -34,11 +43,11 @@ public:
 	int getWidth();
 	int getHeight();
 	bool contains(int x, int y);
-
-	bool isFocussed();
-	void setFocussed(bool focussed);
+	bool contains(Vector2i& coord);
 
 	virtual ~View() = default;
+
+	typedef std::shared_ptr<View> Ptr;
 };
 
 #endif /* INCLUDE_CORE_VIEW_VIEW_H_ */
