@@ -2,6 +2,7 @@
 #define DISPLAY_H
 
 #include <QQuickFramebufferObject>
+#include <QKeyEvent>
 #include "emu/device/Screen.h"
 
 class Display : public QQuickFramebufferObject
@@ -15,6 +16,8 @@ public:
 	QQuickFramebufferObject::Renderer* createRenderer() const;
 	Vram* getVram();
 	bool isDirty();
+
+	void keyReleaseEvent(QKeyEvent *event);
 
 public slots:
 	void invalidate(Vram *vram);

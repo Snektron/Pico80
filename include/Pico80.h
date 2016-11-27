@@ -3,8 +3,6 @@
 
 #include <QObject>
 #include "emu/AsicThread.h"
-#include "gui/Display.h"
-
 class Pico80 : public QObject
 {
 	Q_OBJECT
@@ -12,7 +10,7 @@ private:
 	AsicThread asicthread;
 
 public:
-	Pico80(Display* display);
+	Pico80(QObject* root);
 	~Pico80();
 
 public slots:

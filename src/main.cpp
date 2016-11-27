@@ -75,14 +75,7 @@ int main(int argc, char *argv[])
 	QQmlApplicationEngine engine;
 	engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
 
-	Display *display = engine.rootObjects()[0]->findChild<Display*>("Display");
-	if (!display)
-	{
-		Logger::error(TAG, "Display object not found!");
-		return EXIT_FAILURE;
-	}
-
-	Pico80 pico(display);
+	Pico80 pico(engine.rootObjects()[0]);
 	QObject::connect(&app, SIGNAL(aboutToQuit()), &pico, SLOT(quit()));
 	pico.start();
 

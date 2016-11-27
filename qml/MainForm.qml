@@ -230,22 +230,8 @@ Rectangle {
 						anchors.leftMargin: 0
 						anchors.rightMargin: 0
 						anchors.fill: parent
+						focus: true
 					}
-
-				 /*   Image {
-                        id: placeholder
-                        x: 315
-                        y: 0
-                        anchors.topMargin: 0
-                        anchors.bottomMargin: 0
-                        anchors.leftMargin: 0
-                        anchors.rightMargin: 0
-                        antialiasing: false
-                        transformOrigin: Item.Center
-                        anchors.fill: parent
-                        fillMode: Image.PreserveAspectFit
-                        source: "/images/placeholder.png"
-					} */
                 }
             }
         }
