@@ -24,7 +24,7 @@ const float texcoords[] =
 	1, 1
 };
 
-const color_t palette[16] =
+const color_t palette_[16] =
 {
 	COLOR( 20,  12,  28), // 0 black
 	COLOR( 68,  36,  52), // 1 plum
@@ -85,7 +85,9 @@ void DisplayRenderer::render()
 	shader->enableAttributeArray(1);
 	shader->setAttributeArray(1, GL_FLOAT, texcoords, 2);
 	shader->setUniformValue("uScale", scale);
+
 	texture->bind(0);
+	palette->bind(1);
 
 	glDisable(GL_DEPTH_TEST);
 
@@ -122,17 +124,19 @@ void DisplayRenderer::initialize()
 	texture->setFormat(QOpenGLTexture::RGBA8_UNorm);
 	texture->allocateStorage(QOpenGLTexture::RGBA, QOpenGLTexture::UInt32);
 
+	palette = new QOpenGLTexture(QImage(":/textures/palette.png").mirrored());
+	palette->setMinificationFilter(QOpenGLTexture::Nearest);
+	palette->setMagnificationFilter(QOpenGLTexture::Nearest);
+
 	shader->bind();
 	shader->setUniformValue("uTexture", 0);
+	shader->setUniformValue("uPalette", 1);
 }
 
 void DisplayRenderer::updateTexture()
 {
-	color_t pixels[SCREEN_WIDTH * SCREEN_HEIGHT];
 	uint8_t *data = display->getVram()->rawData();
-	for (int i = 0; i < SCREEN_WIDTH * SCREEN_HEIGHT; i++)
-		pixels[i] = palette[data[i] & 0xF];
-	texture->setData(QOpenGLTexture::RGBA, QOpenGLTexture::UInt8, pixels);
+	texture->setData(QOpenGLTexture::Red, QOpenGLTexture::UInt8, data);
 }
 
 DisplayRenderer::~DisplayRenderer()
@@ -141,4 +145,6 @@ DisplayRenderer::~DisplayRenderer()
 		delete shader;
 	if (texture)
 		delete texture;
+	if (palette)
+		delete palette;
 }

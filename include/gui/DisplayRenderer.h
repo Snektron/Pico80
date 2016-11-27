@@ -22,6 +22,7 @@ private:
 	Display *display;
 	QOpenGLShaderProgram *shader;
 	QOpenGLTexture *texture;
+	QOpenGLTexture *palette;
 
 public:
 	DisplayRenderer();
