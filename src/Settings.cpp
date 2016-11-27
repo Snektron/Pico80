@@ -1,122 +1,59 @@
 #include "Settings.h"
-#include <string>
-#include <map>
-#include <iostream>
-
-#define TAG "Settings"
-
-#define SWITCH(name, _short, nargs, handler) {(name), {(nargs), (handler)}}, {(_short), {(nargs), (handler)}}
+#include <QStringList>
+#include <QGuiApplication>
 
 namespace Settings
 {
 	namespace
 	{
-		std::string opt_rom = "rom.bin";
-		bool opt_save_rom = true;
-		bool opt_quiet = false;
-		bool opt_log_to_file = false;
-
-		typedef bool (*switch_handler)(char* argv[]);
-		struct switch_t
+		Settings settings
 		{
-			int arguments;
-			switch_handler handler;
-		};
-
-		bool switch_help(char* argv[])
-		{
-			std::cout << "Pico80 fantasy emulator" << std::endl;
-			std::cout << "Usage: Pico80 [arguments]" << std::endl;
-			std::cout << std::endl;
-			std::cout << "Available arguments:" << std::endl;
-			std::cout << "-h,--help       - Print this message." << std::endl;
-			std::cout << "-r,--rom <path> - Specify rom file location. (default: rom.bin)" << std::endl;
-			std::cout << "-n,--dont-save  - Do not save changes back to the rom file on quit." << std::endl;
-			std::cout << "-q,--quiet      - Do not output log messages to console." << std::endl;
-			std::cout << "-s,--save-log   - Output log to a file." << std::endl;
-			return false;
-		}
-
-		bool switch_rom(char* argv[])
-		{
-			opt_rom = std::string(argv[1]);
-			return true;
-		}
-
-		bool switch_dont_save_rom(char* argv[])
-		{
-			opt_save_rom = false;
-			return true;
-		}
-
-		bool switch_quiet(char* argv[])
-		{
-			opt_quiet = true;
-			return true;
-		}
-
-		bool switch_log_to_file(char* argv[])
-		{
-			opt_log_to_file = true;
-			return true;
-		}
-
-		std::map<std::string, switch_t> switches =
-		{
-			SWITCH("--help", "-h", 0, &switch_help),
-			SWITCH("--rom", "-r", 1, &switch_rom),
-			SWITCH("--dont-save", "-n", 0, &switch_dont_save_rom),
-			SWITCH("--quiet", "-q", 0, &switch_quiet),
-			SWITCH("--save-log", "-s", 0, &switch_log_to_file),
+			"rom.bin",
+			true,
+			false,
+			false
 		};
 	}
 
-	bool parse_args(int argc, char* argv[])
+	ParseResult parse(QCommandLineParser& parser)
 	{
-		for (int i=1; i<argc; i++)
-		{
-			std::string sw = std::string(argv[i]);
-			if (switches.find(sw) == switches.end())
-			{
-				std::cout << "Error: Unknown switch " << sw << std::endl;
-				switch_help(NULL);
-				return false;
-			}
+		parser.setApplicationDescription("Pico80 fantasy console");
+		QCommandLineOption romOption(QStringList() << "r" << "rom",
+									 "Rom file path.",
+									 "path",
+									 "rom.bin");
+		parser.addOption(romOption);
+		QCommandLineOption dsrOption(QStringList() << "n" << "dont-save",
+									 "Do not save changes back to the rom file.");
+		parser.addOption(dsrOption);
+		QCommandLineOption quietOption(QStringList() << "q" << "quiet",
+									 "Do not output log messages to console.");
+		parser.addOption(quietOption);
+		QCommandLineOption slOption(QStringList() << "s" << "save-log",
+									 "Output log to a file.");
+		parser.addOption(slOption);
+		QCommandLineOption helpOption = parser.addHelpOption();
+		QCommandLineOption versionOption = parser.addVersionOption();
 
-			switch_t& s = switches[sw];
+		if (!parser.parse(QGuiApplication::arguments()))
+			return ParseResult::PR_ERROR;
 
-			if (i + s.arguments >= argc)
-			{
-				std::cout << "Error: Missing arguments for switch " << argv[i] << std::endl;
-				switch_help(NULL);
-				return false;
-			}
+		if (parser.isSet(versionOption))
+			return ParseResult::PR_VERSION;
 
-			if (!s.handler(&argv[i]))
-				return false;
-			i += s.arguments;
-		}
+		if (parser.isSet(helpOption))
+			return ParseResult::PR_HELP;
 
-		return true;
+		settings.rom = parser.value(romOption).toStdString();
+		settings.saveRom = !parser.isSet(dsrOption);
+		settings.quiet = parser.isSet(quietOption);
+		settings.saveLog = parser.isSet(slOption);
+
+		return ParseResult::PR_OK;
 	}
 
-	std::string rom()
+	Settings* get()
 	{
-		return opt_rom;
-	}
-
-	bool save_rom()
-	{
-		return opt_save_rom;
-	}
-
-	bool quiet()
-	{
-		return opt_quiet;
-	}
-
-	bool log_to_file()
-	{
-		return opt_log_to_file;
+		return &settings;
 	}
 }

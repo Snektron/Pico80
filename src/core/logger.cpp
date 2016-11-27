@@ -51,6 +51,7 @@ namespace Logger
 	{}
 
 	LogStream::LogStreamBuf::LogStreamBuf(const LogStreamBuf& copy):
+		std::stringbuf(copy.str()),
 		policy(copy.policy)
 	{}
 
@@ -69,6 +70,7 @@ namespace Logger
 
 	LogStream::LogStream(const LogStream& copy):
 		buf(copy.buf),
+		std::basic_ios<char>(&buf),
 		std::ostream(&buf)
 	{}
 

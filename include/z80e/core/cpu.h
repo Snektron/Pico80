@@ -2,8 +2,11 @@
 #define INCLUDE_Z80E_CORE_CPU_H_
 
 #include <stdint.h>
-
 #include "z80e/core/registers.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 typedef struct z80cpu z80cpu_t;
 typedef struct z80iodevice z80iodevice_t;
@@ -49,4 +52,7 @@ uint16_t cpu_read_word(z80cpu_t *cpu, uint16_t address);
 void cpu_write_word(z80cpu_t *cpu, uint16_t address, uint16_t value);
 int cpu_execute(z80cpu_t *cpu, int cycles);
 
+#ifdef __cplusplus
+}
+#endif
 #endif

@@ -1,0 +1,36 @@
+#ifndef ASICTHREAD_H
+#define ASICTHREAD_H
+
+#include <QThread>
+#include <memory>
+#include <atomic>
+#include "emu/Asic.h"
+#include "core/Time.h"
+
+#define ASIC_CLOCK MHZ(50)
+#define ASIC_TIMER 200
+#define THREAD_INTERVAL 1
+
+class AsicWorker : public QObject
+{
+	Q_OBJECT
+private:
+	Asic asic;
+
+public:
+	AsicWorker();
+
+private slots:
+	void tick();
+	void quit();
+};
+
+class AsicThread : public QThread
+{
+	Q_OBJECT
+public:
+	void run();
+
+};
+
+#endif // ASICTHREAD_H

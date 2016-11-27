@@ -13,6 +13,8 @@
 #define PORT_SCRN_ARG0 7
 #define PORT_SCRN_ARG1 8
 #define PORT_SCRN_ARG2 9
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 128
 
 #define PORT_MOUSE_X 10
 #define PORT_MOUSE_Y 11

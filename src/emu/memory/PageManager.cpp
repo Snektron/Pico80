@@ -52,13 +52,13 @@ std::shared_ptr<Page> PageRegistery::get_page(uint8_t page)
 
 PageRegistery::~PageRegistery()
 {
-	if (Settings::save_rom())
+	if (Settings::get()->saveRom)
 		save_rom();
 }
 
 int PageRegistery::load_rom(std::shared_ptr<StorageController> store_ctrl)
 {
-	std::string rom_location = Settings::rom();
+	std::string rom_location = Settings::get()->rom;
 	std::ifstream rom_image(rom_location, std::ios::binary);
 
 	Logger::info(TAG) << "Loading rom image " << rom_location << Logger::endl;
@@ -101,7 +101,7 @@ int PageRegistery::load_rom(std::shared_ptr<StorageController> store_ctrl)
 void PageRegistery::save_rom()
 {
 	Logger::info(TAG, "Saving rom");
-	std::ofstream rom_image(Settings::rom(), std::ios::binary);
+	std::ofstream rom_image(Settings::get()->rom, std::ios::binary);
 
 	if (!rom_image)
 	{

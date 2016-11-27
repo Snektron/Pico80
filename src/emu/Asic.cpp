@@ -3,16 +3,7 @@
 #include <chrono>
 #include <memory>
 #include "emu/Platform.h"
-#include "core/Time.h"
 #include "core/Logger.h"
-#include "emu/interrupt/TimerInt.h"
-#include "emu/memory/Memory.h"
-#include "emu/device/Screen.h"
-#include "emu/device/Log.h"
-#include "emu/device/Mouse.h"
-#include "emu/device/Keyboard.h"
-#include "emu/device/StorageController.h"
-#include "emu/interrupt/Interrupt.h"
 
 #define TAG "Asic"
 
@@ -75,12 +66,14 @@ Asic::Asic(uint64_t clock_rate, uint64_t timer_freq):
 	cpu->add_device(PORT_CLOCKREG3, clock_regs[2]);
 	cpu->add_device(PORT_CLOCKREG4, clock_regs[3]);
 
+	connect(screen.get(), SIGNAL(invalidate(Vram*)), this, SLOT(invalidate(Vram*)));
+
 	leftover = 0;
 }
 
-bool Asic::tick(uint64_t ticks)
+void Asic::tick(uint64_t states)
 {
-	uint64_t cycles = ticks + leftover;
+	uint64_t cycles = states + leftover;
 	uint64_t timer_cycles = timer_int->instructions_to_trigger();
 
 	while (timer_cycles < cycles)
@@ -94,20 +87,34 @@ bool Asic::tick(uint64_t ticks)
 	leftover = cpu->execute(cycles);
 	int executed = cycles - leftover;
 	timer_int->update(executed);
-	return false;
 }
 
-void Asic::f12int()
+void Asic::pressKey(uint8_t key)
 {
-	f12_int->trigger();
+
 }
 
-uint64_t Asic::get_clock_rate()
+void Asic::releaseKey(uint8_t key)
 {
-	return clock_rate;
+
 }
 
-std::shared_ptr<Screen> Asic::getScreen()
+void Asic::moveMouse(uint8_t x, uint8_t y)
 {
-	return screen;
+
+}
+
+void Asic::pressMouseButton(uint8_t button)
+{
+
+}
+
+void Asic::releaseMouseButton(uint8_t button)
+{
+
+}
+
+void Asic::invalidate(Vram *vram)
+{
+	emit screenDirty(vram);
 }

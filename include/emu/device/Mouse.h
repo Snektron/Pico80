@@ -17,10 +17,9 @@ public:
 	uint8_t read();
 };
 
-class MouseState : public Z80e::IODevice
+class MouseState : public Z80e::ReadonlyIODevice
 {
 public:
-	void write(uint8_t value);
 	uint8_t read();
 };
 

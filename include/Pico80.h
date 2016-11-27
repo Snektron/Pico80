@@ -1,30 +1,26 @@
-#ifndef INCLUDE_PICO80_H_
-#define INCLUDE_PICO80_H_
+#ifndef PICO80_H
+#define PICO80_H
 
-#include <memory>
-#include "core/Application.h"
-#include "core/view/View.h"
-#include "PicoView.h"
+#include <QObject>
+#include "emu/AsicThread.h"
+#include "gui/Display.h"
 
-#define FPS 60
-#define TPS 1000
-
-class Pico80 : public Application
+class Pico80 : public QObject
 {
+	Q_OBJECT
 private:
-	View::Ptr root;
-	std::shared_ptr<PicoView> pico;
+	AsicThread asicthread;
 
 public:
-	Pico80();
-	void onInitialize();
-	void onUpdate();
-	void onRender();
-	void onResize(int width, int height);
-	void onMouseMoveEvent(MouseMoveEvent& event);
-	void onMouseButtonEvent(MouseButtonEvent& event);
-	void onKeyEvent(KeyEvent& event);
-	void onError(const std::runtime_error& error);
+	Pico80(Display* display);
+	~Pico80();
+
+public slots:
+	void start();
+	void quit();
+
+signals:
+	void onQuit();
 };
 
-#endif /* INCLUDE_PICO80_H_ */
+#endif // PICO80_H

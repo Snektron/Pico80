@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/main.qml</file>
+        <file>qml/MainForm.qml</file>
+        <file>qml/SidebarButton.qml</file>
+        <file>images/placeholder.png</file>
+        <file>fonts/Roboto-Regular.ttf</file>
+        <file>fonts/fontawesome-webfont.ttf</file>
+        <file>shader/Display.fsh</file>
+        <file>shader/Display.vsh</file>
+    </qresource>
+</RCC>

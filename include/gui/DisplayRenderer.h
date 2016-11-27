@@ -1,0 +1,36 @@
+#ifndef DISPLAYRENDERER_H
+#define DISPLAYRENDERER_H
+
+#include <QSize>
+#include <QOpenGLFunctions>
+#include <QOpenGLFramebufferObject>
+#include <QQuickFramebufferObject>
+#include <QOpenGLShaderProgram>
+#include <QOpenGLTexture>
+#include "gui/Display.h"
+
+typedef union
+{
+	struct { uint8_t r, g, b, a; };
+	uint32_t rgba;
+} color_t;
+
+class DisplayRenderer : public QQuickFramebufferObject::Renderer, public QOpenGLFunctions
+{
+private:
+	QSize viewport;
+	Display *display;
+	QOpenGLShaderProgram *shader;
+	QOpenGLTexture *texture;
+
+public:
+	DisplayRenderer();
+	QOpenGLFramebufferObject* createFramebufferObject(const QSize &size);
+	void synchronize(QQuickFramebufferObject *item);
+	void render();
+	void initialize();
+	void updateTexture();
+	~DisplayRenderer();
+};
+
+#endif // DISPLAYRENDERER_H

@@ -1,10 +1,10 @@
 #ifndef INCLUDE_EMU_ASIC_H_
 #define INCLUDE_EMU_ASIC_H_
 
-#include "interrupt/TimerInt.h"
 #include <memory>
+#include <cstdint>
+#include <QObject>
 #include "core/Time.h"
-#include "emu/interrupt/TimerInt.h"
 #include "emu/memory/Memory.h"
 #include "emu/device/Screen.h"
 #include "emu/device/Log.h"
@@ -13,13 +13,15 @@
 #include "emu/device/Keyboard.h"
 #include "emu/device/Clock.h"
 #include "emu/interrupt/Interrupt.h"
+#include "emu/interrupt/TimerInt.h"
 
 // calculate instructions executed in a certain time (ns)
 #define INSTRUCTIONS(clockrate, ns) (clockrate * (ns) / SECOND_IN_NANOS)
 #define MHZ(x) (x * 1000000)
 
-class Asic
+class Asic : public QObject
 {
+	Q_OBJECT
 private:
 	uint64_t clock_rate;
 	uint64_t timer_freq;
@@ -44,10 +46,20 @@ private:
 	uint64_t leftover;
 public:
 	Asic(uint64_t clock_rate, uint64_t timer_freq);
-	bool tick(uint64_t ticks);
-	void f12int();
-	uint64_t get_clock_rate();
-	std::shared_ptr<Screen> getScreen();
+	void tick(uint64_t states);
+
+public slots:
+	void pressKey(uint8_t key);
+	void releaseKey(uint8_t key);
+	void moveMouse(uint8_t x, uint8_t y);
+	void pressMouseButton(uint8_t button);
+	void releaseMouseButton(uint8_t button);
+
+private slots:
+	void invalidate(Vram *vram);
+
+signals:
+	void screenDirty(Vram *vram);
 };
 
 #endif /* INCLUDE_EMU_ASIC_H_ */

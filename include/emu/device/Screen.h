@@ -3,8 +3,11 @@
 
 #include <cstdint>
 #include <memory>
-#include "emu/Display.h"
+#include <QObject>
 #include "z80e/z80e.h"
+#include "emu/Platform.h"
+
+#define SCREEN_INDEX(x, y) (SCREEN_WIDTH * (y & 0x7F) + (x & 0x7F))
 
 #define SC_SYNC 0
 #define SC_INVALIDATE 0
@@ -12,31 +15,36 @@
 #define SC_SET_PIXEL 2
 #define SC_GET_PIXEL 3
 
-class Screen : public Z80e::IODevice
+class Vram
 {
 private:
-	std::shared_ptr<Z80e::BasicIODevice> arg0, arg1, arg2;
-	uint8_t vram[DISPLAY_WIDTH * DISPLAY_HEIGHT];
-	bool valid;
+	uint8_t data[SCREEN_WIDTH * SCREEN_HEIGHT];
+public:
+	void clear(uint8_t color);
+	void setPixel(uint8_t x, uint8_t y, uint8_t color);
+	uint8_t getPixel(uint8_t x, uint8_t y);
+	uint8_t* rawData();
+};
 
+class Screen: public QObject, public Z80e::IODevice
+{
+	Q_OBJECT
+private:
+	std::shared_ptr<Z80e::BasicIODevice> arg0, arg1, arg2;
+	Vram *vram;
 public:
 	Screen();
+	~Screen();
 
 	void write(uint8_t value); // screen command port
 	uint8_t read();
 
-	void clear(uint8_t color);
-	void set_pixel(uint8_t x, uint8_t y, uint8_t color);
-	uint8_t get_pixel(uint8_t x, uint8_t y);
-
-	void invalidate();
-	void validate();
-	bool isValid();
-	uint8_t* getVram();
-
 	std::shared_ptr<Z80e::BasicIODevice> get_arg0();
 	std::shared_ptr<Z80e::BasicIODevice> get_arg1();
 	std::shared_ptr<Z80e::BasicIODevice> get_arg2();
+
+signals:
+	void invalidate(Vram *vram);
 };
 
 #endif /* INCLUDE_EMU_DEVICE_SCREEN_H_ */

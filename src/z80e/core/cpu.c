@@ -595,7 +595,7 @@ void execute_rot(int y, int z, int switch_opcode_data, struct ExecutionContext *
 		context->cpu->registers.PC--;
 	}
 
-	uint8_t old_r = r;
+//	uint8_t old_r = r;
 	uint8_t old_7 = (r & 0x80) > 0;
 	uint8_t old_0 = (r & 1) > 0;
 	uint8_t old_c = context->cpu->registers.flags.C > 0;
@@ -909,7 +909,8 @@ int cpu_execute(z80cpu_t *cpu, int cycles) {
 		int8_t d; uint16_t nn;
 		uint8_t old; uint16_t old16;
 		uint8_t new; uint16_t new16;
-		uint8_t op; uint16_t op16;
+        //uint8_t op;
+        uint16_t op16;
 		int reset_prefix = 1;
 
 		z80registers_t *r = &cpu->registers;

@@ -1,17 +1,30 @@
-#ifndef INCLUDE_SETTINGS_H_
-#define INCLUDE_SETTINGS_H_
+#ifndef SETTINGS_H
+#define SETTINGS_H
 
 #include <string>
+#include <QCommandLineParser>
 
 namespace Settings
 {
-	bool parse_args(int argc, char* argv[]);
+	typedef struct Settings
+	{
+		std::string rom;
+		bool saveRom;
+		bool quiet;
+		bool saveLog;
+	} Settings;
 
-	std::string rom();
-	bool save_rom();
-	bool quiet();
-	bool log_to_file();
-};
+	enum class ParseResult
+	{
+		PR_OK,
+		PR_ERROR,
+		PR_VERSION,
+		PR_HELP
+	};
 
+	ParseResult parse(QCommandLineParser& parser);
 
-#endif /* INCLUDE_SETTINGS_H_ */
+	Settings* get();
+}
+
+#endif // SETTINGS_H
