@@ -128,6 +128,6 @@
 #define K_QUIT 0x64
 #define K_MODE 0x65
 
-uint8_t mapQTKey(Qt::Key key, Qt::KeyboardModifier mod);
+uint8_t mapQTKey(Qt::Key key, Qt::KeyboardModifiers mod);
 
 #endif /* INCLUDE_CORE_KEYS_H_ */

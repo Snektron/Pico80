@@ -2,6 +2,7 @@
 #include <sstream>
 #include <ctime>
 #include <iomanip>
+#include <cstdint>
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QObject>
@@ -55,6 +56,8 @@ bool parseArgs()
 void registerTypes()
 {
 	qmlRegisterType<Display>("Pico80", 1, 0, "Display");
+
+	qRegisterMetaType<uint8_t>("uint8_t");
 }
 
 int main(int argc, char *argv[])

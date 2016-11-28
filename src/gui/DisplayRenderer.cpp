@@ -31,7 +31,6 @@ DisplayRenderer::DisplayRenderer():
 
 QOpenGLFramebufferObject* DisplayRenderer::createFramebufferObject(const QSize &size)
 {
-	viewport = size;
 	QOpenGLFramebufferObjectFormat format;
 	format.setAttachment(QOpenGLFramebufferObject::CombinedDepthStencil);
 	return new QOpenGLFramebufferObject(size, format);
@@ -52,19 +51,10 @@ void DisplayRenderer::render()
 	if (display && display->isDirty())
 		updateTexture();
 
-	float aspect = (float) viewport.width() / (float) viewport.height();
-	QVector2D scale(1, 1);
-
-	if (aspect > 1.f)
-		scale.setX(1.f/aspect);
-	else
-		scale.setY(aspect);
-
 	shader->enableAttributeArray(0);
 	shader->setAttributeArray(0, GL_FLOAT, vertices, 2);
 	shader->enableAttributeArray(1);
 	shader->setAttributeArray(1, GL_FLOAT, texcoords, 2);
-	shader->setUniformValue("uScale", scale);
 
 	texture->bind(0);
 	palette->bind(1);

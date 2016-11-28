@@ -16,16 +16,13 @@
 #include "emu/interrupt/TimerInt.h"
 
 // calculate instructions executed in a certain time (ns)
-#define INSTRUCTIONS(clockrate, ns) (clockrate * (ns) / SECOND_IN_NANOS)
+#define INSTRUCTIONS(clockrate, ns) ((clockrate) * (ns) / SECOND_IN_NANOS)
 #define MHZ(x) (x * 1000000)
 
 class Asic : public QObject
 {
 	Q_OBJECT
 private:
-	uint64_t clock_rate;
-	uint64_t timer_freq;
-
 	std::shared_ptr<Log> log;
 	std::shared_ptr<Screen> screen;
 	std::shared_ptr<Mouse> mouse;
@@ -43,18 +40,18 @@ private:
 
 	std::shared_ptr<Z80e::CPU> cpu;
 
-	uint64_t leftover;
+	int leftover;
 public:
-	Asic(uint64_t clock_rate, uint64_t timer_freq);
-	void tick(uint64_t states);
+	Asic(int asic_clock, int timer_freq);
+	void tick(int states);
 
 public slots:
 	void intOn();
-	void pressKey(uint8_t key);
-	void releaseKey(uint8_t key);
-	void moveMouse(uint8_t x, uint8_t y);
-	void pressMouseButton(uint8_t button);
-	void releaseMouseButton(uint8_t button);
+	void keyPress(uint8_t key);
+	void keyRelease(uint8_t key);
+	void mousePress(uint8_t button);
+	void mouseRelease(uint8_t button);
+	void mouseMove(uint8_t x, uint8_t y);
 
 private slots:
 	void invalidate(Vram *vram);

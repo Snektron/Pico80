@@ -12,7 +12,6 @@
 class DisplayRenderer : public QQuickFramebufferObject::Renderer, public QOpenGLFunctions
 {
 private:
-	QSize viewport;
 	Display *display;
 	QOpenGLShaderProgram *shader;
 	QOpenGLTexture *texture;

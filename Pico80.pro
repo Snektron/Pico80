@@ -21,7 +21,7 @@ SOURCES += src/main.cpp \
     src/emu/AsicThread.cpp \
     src/Pico80.cpp \
     src/gui/Display.cpp \
-    src/core/Keys.cpp
+    src/emu/Keys.cpp
 
 RESOURCES += qml.qrc
 
@@ -44,7 +44,6 @@ HEADERS += \
     include/z80e/z80e.h \
     include/emu/device/Clock.h \
     include/emu/device/Keyboard.h \
-    include/emu/device/Keys.h \
     include/emu/device/Log.h \
     include/emu/device/Mouse.h \
     include/emu/device/Screen.h \
@@ -56,14 +55,15 @@ HEADERS += \
     include/emu/memory/Page.h \
     include/emu/memory/PageManager.h \
     include/emu/Asic.h \
+    include/emu/AsicThread.h \
+    include/emu/Keys.h \
     include/emu/Platform.h \
+    include/emu/TIKeys.h \
     include/core/Logger.h \
     include/core/Time.h \
-    include/Settings.h \
-    include/core/Keys.h \
     include/gui/Display.h \
     include/gui/DisplayRenderer.h \
-    include/emu/AsicThread.h \
-    include/Pico80.h
+    include/Pico80.h \
+    include/Settings.h \
 
 DISTFILES +=

@@ -7,9 +7,9 @@
 #include "emu/Asic.h"
 #include "core/Time.h"
 
-#define ASIC_CLOCK MHZ(1)
+#define ASIC_CLOCK MHZ(50)
 #define ASIC_TIMER 200
-#define THREAD_INTERVAL 50
+#define THREAD_INTERVAL 1
 
 class AsicWorker : public QObject
 {
@@ -34,6 +34,9 @@ private:
 public:
 	void run();
 	Asic* getAsic();
+
+public slots:
+	void quit();
 };
 
 #endif // ASICTHREAD_H

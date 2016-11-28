@@ -1,6 +1,6 @@
 #include "emu/device/Keyboard.h"
-#include "emu/device/Keys.h"
-#include "core/Keys.h"
+#include "emu/TIKeys.h"
+#include "emu/Keys.h"
 
 uint8_t Keyboard::read()
 {

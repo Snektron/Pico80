@@ -5,11 +5,6 @@
 #include "z80e/z80e.h"
 #include "emu/Platform.h"
 
-int clamp(int x, int a, int b)
-{
-	return x < a ? a : x > b ? b : x;
-}
-
 uint8_t MouseX::read()
 {
 	return 0;

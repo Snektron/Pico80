@@ -4,6 +4,8 @@
 #include <QObject>
 #include "core/Logger.h"
 
+#define TAG "AsicThread"
+
 AsicWorker::AsicWorker():
 	asic(ASIC_CLOCK, ASIC_TIMER)
 {
@@ -15,12 +17,8 @@ void AsicWorker::tick()
 	Time::point time = Time::now();
 	Time::nanoseconds passed = time - last;
 	last = time;
-	uint64_t cycles = INSTRUCTIONS(ASIC_CLOCK, Time::toint(passed));
-	if (cycles > 0)
-	{
-		Logger::info("AsicWorker") << cycles << Logger::endl;
-		asic.tick(cycles);
-	}
+	int cycles = INSTRUCTIONS(ASIC_CLOCK, Time::toint(passed));
+	asic.tick(cycles);
 }
 
 Asic* AsicWorker::getAsic()
@@ -31,6 +29,7 @@ Asic* AsicWorker::getAsic()
 void AsicThread::run()
 {
 	QTimer timer;
+	timer.setTimerType(Qt::PreciseTimer);
 
 	connect(&timer, SIGNAL(timeout()), &asicworker, SLOT(tick()));
 	timer.start(THREAD_INTERVAL);
@@ -43,4 +42,9 @@ Asic* AsicThread::getAsic()
 	if (isRunning())
 		throw std::runtime_error("Unsafely tried to access asic.");
 	return asicworker.getAsic();
+}
+
+void AsicThread::quit()
+{
+	QThread::quit();
 }

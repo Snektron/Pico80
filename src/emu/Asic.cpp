@@ -7,13 +7,12 @@
 
 #define TAG "Asic"
 
-Asic::Asic(uint64_t clock_rate, uint64_t timer_freq):
-	clock_rate(clock_rate),
-	timer_freq(timer_freq)
+Asic::Asic(int clock_rate, int timer_freq):
+	leftover(0)
 {
 	Logger::info(TAG, "Initializing asic");
-	Logger::info(TAG) << "Clock rate: " << clock_rate/1000000.0 << " Mhz" << Logger::endl;
-	Logger::info(TAG) << "Clock freq: " << timer_freq << " hz" << Logger::endl;
+	Logger::info(TAG) << "Asic clock: " << (clock_rate / 1000000.0) << " hz" << Logger::endl;
+	Logger::info(TAG) << "Timer freq: " << timer_freq << " hz" << Logger::endl;
 
 	log = std::make_shared<Log>();
 	screen = std::make_shared<Screen>();
@@ -67,14 +66,16 @@ Asic::Asic(uint64_t clock_rate, uint64_t timer_freq):
 	cpu->add_device(PORT_CLOCKREG4, clock_regs[3]);
 
 	connect(screen.get(), SIGNAL(invalidate(Vram*)), this, SLOT(invalidate(Vram*)));
-
-	leftover = 0;
 }
 
-void Asic::tick(uint64_t states)
+void Asic::tick(int states)
 {
-	uint64_t cycles = states + leftover;
-	uint64_t timer_cycles = timer_int->instructions_to_trigger();
+	int cycles = states + leftover;
+
+	if (cycles < 0)
+		return;
+
+	int timer_cycles = timer_int->instructions_to_trigger();
 
 	while (timer_cycles < cycles)
 	{
@@ -94,27 +95,27 @@ void Asic::intOn()
 	int_on->trigger();
 }
 
-void Asic::pressKey(uint8_t key)
+void Asic::keyPress(uint8_t key)
 {
 
 }
 
-void Asic::releaseKey(uint8_t key)
+void Asic::keyRelease(uint8_t key)
 {
 
 }
 
-void Asic::moveMouse(uint8_t x, uint8_t y)
+void Asic::mousePress(uint8_t button)
 {
 
 }
 
-void Asic::pressMouseButton(uint8_t button)
+void Asic::mouseRelease(uint8_t button)
 {
 
 }
 
-void Asic::releaseMouseButton(uint8_t button)
+void Asic::mouseMove(uint8_t x, uint8_t y)
 {
 
 }

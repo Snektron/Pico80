@@ -1,5 +1,4 @@
-#include "core/Keys.h"
-
+#include "emu/Keys.h"
 
 uint8_t mapQTkeyAlt(Qt::Key key)
 {
@@ -117,7 +116,7 @@ uint8_t mapQTkeyNone(Qt::Key key)
 	}
 }
 
-uint8_t mapQTKey(Qt::Key key, Qt::KeyboardModifier mod)
+uint8_t mapQTKey(Qt::Key key, Qt::KeyboardModifiers mod)
 {
 	uint8_t k = K_NONE;
 	if (mod & Qt::AltModifier)

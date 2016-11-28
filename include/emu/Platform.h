@@ -19,6 +19,9 @@
 #define PORT_MOUSE_X 10
 #define PORT_MOUSE_Y 11
 #define PORT_MOUSE_BTN 12
+#define MOUSE_BTN_LEFT 0
+#define MOUSE_BTN_RIGHT 1
+#define MOUSE_MASK(btn) (1 << (btn))
 
 #define PORT_STORAGE_CTRL 13
 

@@ -215,10 +215,18 @@ Rectangle {
                     anchors.leftMargin: 10
                     anchors.rightMargin: 10
 
+					onWidthChanged: display.setDimensions(width, height);
+					onHeightChanged: display.setDimensions(width, height);
+
 					Display {
 						id: display
 						objectName: "Display"
-						anchors.fill: parent
+						anchors.horizontalCenter: parent.horizontalCenter
+						anchors.verticalCenter: parent.verticalCenter
+						function setDimensions(parentWidth, parentHeight)
+						{
+							width = height = Math.min(parentWidth, parentHeight);
+						}
 					}
                 }
             }

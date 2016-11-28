@@ -1,7 +1,6 @@
 #ifndef INCLUDE_EMU_INTERRUPT_TIMERINT_H_
 #define INCLUDE_EMU_INTERRUPT_TIMERINT_H_
 
-#include <cstdint>
 #include <memory>
 #include "emu/interrupt/Interrupt.h"
 #include "core/Logger.h"
@@ -9,24 +8,24 @@
 class TimerInt : public InterruptDevice
 {
 private:
-	uint64_t interval; // trigger interval, in instructions
-	uint64_t left;
+	int interval; // trigger interval, in instructions
+	int left;
 
 public:
-	TimerInt(std::shared_ptr<Interrupt> interrupt, int index, uint64_t interval):
+	TimerInt(std::shared_ptr<Interrupt> interrupt, int index, int interval):
 		InterruptDevice(interrupt, index),
 		interval(interval),
 		left(interval)
 	{}
 
-	void update(uint64_t executed)
+	void update(int executed)
 	{
 		left -= executed <= left ? executed : 0;
 	}
 
 	// return number of instructions left until
 	// the timer should trigger
-	uint64_t instructions_to_trigger()
+	int instructions_to_trigger()
 	{
 		return left;
 	}

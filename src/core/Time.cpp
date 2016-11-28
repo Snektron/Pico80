@@ -11,7 +11,11 @@ namespace Time
 {
 	namespace
 	{
-        struct tm tm_epoch = {0, 0, 0, 0, 0, 97, 0, 0, 0, 0, 0};
+#ifdef WIN32
+		struct tm tm_epoch = {0, 0, 0, 0, 0, 97, 0, 0, 0};
+#else
+		struct tm tm_epoch = {0, 0, 0, 0, 0, 97, 0, 0, 0, 0, 0};
+#endif
 		time_t epoch = mktime(&tm_epoch);
 	}
 
