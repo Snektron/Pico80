@@ -3,14 +3,14 @@ import QtQuick.Controls.Material 2.0
 import QtQuick.Controls 2.0
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
-import QtPositioning 5.7
+import QtGraphicalEffects 1.0
 import Pico80 1.0
 
 Rectangle {
     id: base
     width: 640
     height: 480
-    color: "#DEDEDE"
+	color: "#F1F1F1"
 
     FontLoader { source: "/fonts/Roboto-Regular.ttf" }
     FontLoader { source: "/fonts/fontawesome-webfont.ttf"}
@@ -20,101 +20,129 @@ Rectangle {
         spacing: 0
         anchors.fill: parent
 
-        Rectangle {
-            id: toolbar
-            width: 200
-            height: 200
-            color: "#2D313F"
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
-            Layout.minimumWidth: 80
-            Layout.maximumWidth: 80
-            Layout.preferredWidth: 80
-            Layout.fillHeight: true
-            Layout.fillWidth: true
+		Rectangle {
+			id: toolbar
+			width: 200
+			height: 200
+			color: "#2D313F"
+			Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
+			Layout.minimumWidth: 80
+			Layout.maximumWidth: 80
+			Layout.preferredWidth: 80
+			Layout.fillHeight: true
+			Layout.fillWidth: true
 
-            ColumnLayout {
-                id: columnLayout2
-                spacing: 0
-                anchors.bottom: parent.bottom
-                anchors.right: parent.right
-                anchors.left: parent.left
-                anchors.top: parent.top
+			ColumnLayout {
+				id: columnLayout2
+				spacing: 0
+				anchors.bottom: parent.bottom
+				anchors.right: parent.right
+				anchors.left: parent.left
+				anchors.top: parent.top
 
-                SidebarButton {
-                    id: button1
-                    caption: "Dashboard"
-                    icon: "\uF0e4"
-                    checked: true
-                    Layout.alignment: Qt.AlignLeft | Qt.AlignTop
-                    Layout.minimumHeight: 64
-                    Layout.maximumHeight: 64
-                    Layout.preferredHeight: 64
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
+				SidebarButton {
+					id: button1
+					caption: "Dashboard"
+					icon: "\uF0e4"
+					checked: true
+					Layout.alignment: Qt.AlignLeft | Qt.AlignTop
+					Layout.minimumHeight: 64
+					Layout.maximumHeight: 64
+					Layout.preferredHeight: 64
+					Layout.fillWidth: true
+					Layout.fillHeight: true
 
-                    onActivated: {
-                        button2.checked = false
-                        button3.checked = false
+					onActivated: {
+						button2.checked = false
+						button3.checked = false
+						button4.checked = false
+						menuview.state = ""
+						menuview.currentIndex = 0
+					}
 
-                        menuview.state = ""
-                        menuview.currentIndex = 0
-                    }
+					onDeactivated: {
+						menuview.state = 'hidden'
+						menuview.currentIndex = -1
+					}
+				}
 
-                    onDeactivated: {
-                        menuview.state = 'hidden'
-                        menuview.currentIndex = -1
-                    }
-                }
+				SidebarButton {
+					id: button2
+					caption: "Debug"
+					icon: "\uF188"
+					anchors.top: button1.bottom
+					Layout.alignment: Qt.AlignLeft | Qt.AlignTop
+					Layout.minimumHeight: 64
+					Layout.maximumHeight: 64
+					Layout.preferredHeight: 64
+					Layout.fillWidth: true
+					Layout.fillHeight: true
 
-                SidebarButton {
-                    id: button2
-                    caption: "Debug"
-                    icon: "\uF188"
-                    anchors.top: button1.bottom
-                    Layout.alignment: Qt.AlignLeft | Qt.AlignTop
-                    Layout.minimumHeight: 64
-                    Layout.maximumHeight: 64
-                    Layout.preferredHeight: 64
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
+					onActivated: {
+						button1.checked = false
+						button3.checked = false
+						button4.checked = false
+						menuview.state = ""
+						menuview.currentIndex = 1
+					}
 
-                    onActivated: {
-                        button1.checked = false
-                        button3.checked = false
-                        menuview.state = ""
-                        menuview.currentIndex = 1
-                    }
+					onDeactivated: {
+						menuview.state = 'hidden'
+						menuview.currentIndex = -1
+					}
+				}
 
-                    onDeactivated: {
-                        menuview.state = 'hidden'
-                        menuview.currentIndex = -1
-                    }
-                }
+				SidebarButton {
+					id: button3
+					caption: "Console"
+					icon: "\uF120"
+					anchors.top: button2.bottom
+					Layout.alignment: Qt.AlignLeft | Qt.AlignTop
+					Layout.minimumHeight: 64
+					Layout.maximumHeight: 64
+					Layout.preferredHeight: 64
+					Layout.fillWidth: true
+					Layout.fillHeight: true
 
-                SidebarButton {
-                    id: button3
-                    caption: "Settings"
-                    icon: "\uF085"
-                    anchors.top: button2.bottom
-                    Layout.alignment: Qt.AlignLeft | Qt.AlignTop
-                    Layout.minimumHeight: 64
-                    Layout.maximumHeight: 64
-                    Layout.preferredHeight: 64
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
+					onActivated: {
+						button1.checked = false
+						button2.checked = false
+						button4.checked = false
+						menuview.state = ""
+						menuview.currentIndex = 2
+					}
 
-                    onActivated: {
-                        button1.checked = false
-                        button2.checked = false
-                        menuview.state = ""
-                        menuview.currentIndex = 2
-                    }
+					onDeactivated: {
+						menuview.state = 'hidden'
+						menuview.currentIndex = -1
+					}
+				}
 
-                    onDeactivated: {
-                        menuview.state = 'hidden'
-                        menuview.currentIndex = -1
-                    }
-                }
+				SidebarButton {
+					id: button4
+					caption: "Settings"
+					icon: "\uF085"
+					anchors.top: button3.bottom
+					Layout.alignment: Qt.AlignLeft | Qt.AlignTop
+					Layout.minimumHeight: 64
+					Layout.maximumHeight: 64
+					Layout.preferredHeight: 64
+					Layout.fillWidth: true
+					Layout.fillHeight: true
+
+					onActivated: {
+						button1.checked = false
+						button2.checked = false
+						button3.checked = false
+						menuview.state = ""
+						menuview.currentIndex = 3
+					}
+
+					onDeactivated: {
+						menuview.state = 'hidden'
+						menuview.currentIndex = -1
+					}
+				}
             }
         }
 
@@ -152,7 +180,7 @@ Rectangle {
                         width: 200
                         height: 200
                         anchors.fill: parent
-                        currentIndex: 0
+						currentIndex: 0
 
                         states: [
                             State {
@@ -165,37 +193,16 @@ Rectangle {
                             }
                         ]
 
-                        Rectangle {
-                            id: rectangle1
-                            width: 200
-                            height: 200
-                            color: "#ff0000"
-                            radius: 8
-                            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                            Layout.fillHeight: true
-                            Layout.fillWidth: true
-                        }
+						Rectangle {
+							color: "#ff0000"
+						}
+
+						DebugView {}
+
+						ConsoleView {}
 
                         Rectangle {
-                            id: rectangle2
-                            width: 200
-                            height: 200
-                            color: "#ff00ff"
-                            radius: 8
-                            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                            Layout.fillHeight: true
-                            Layout.fillWidth: true
-                        }
-
-                        Rectangle {
-                            id: rectangle3
-                            width: 200
-                            height: 200
                             color: "#ffff00"
-                            radius: 8
-                            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                            Layout.fillHeight: true
-                            Layout.fillWidth: true
                         }
                     }
                 }
@@ -205,8 +212,6 @@ Rectangle {
 					width: 200
 					height: 200
                     color: "#00000000"
-                    opacity: 1
-                    visible: true
                     Layout.fillHeight: true
                     Layout.fillWidth: true
                     Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter

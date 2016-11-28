@@ -8,5 +8,7 @@
         <file>shader/Display.fsh</file>
         <file>shader/Display.vsh</file>
         <file>textures/palette.png</file>
+        <file>qml/DebugView.qml</file>
+        <file>qml/ConsoleView.qml</file>
     </qresource>
 </RCC>

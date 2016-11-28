@@ -9,7 +9,6 @@
 
 Pico80::Pico80(QObject *root)
 {
-	Logger::info(TAG, "Starting");
 	Display *display = root->findChild<Display*>("Display");
 	Asic *asic = asicthread.getAsic();
 	connect(asic, SIGNAL(screenDirty(Vram*)), display, SLOT(invalidate(Vram*)), Qt::QueuedConnection);
@@ -19,6 +18,7 @@ Pico80::Pico80(QObject *root)
 	connect(display, SIGNAL(mousePress(uint8_t)), asic, SLOT(mousePress(uint8_t)), Qt::QueuedConnection);
 	connect(display, SIGNAL(mouseRelease(uint8_t)), asic, SLOT(mouseRelease(uint8_t)), Qt::QueuedConnection);
 	connect(display, SIGNAL(mouseMove(uint8_t, uint8_t)), asic, SLOT(mouseMove(uint8_t, uint8_t)), Qt::QueuedConnection);
+	Logger::info(TAG, "Started");
 }
 
 Pico80::~Pico80()

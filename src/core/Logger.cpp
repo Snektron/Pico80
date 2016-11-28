@@ -89,6 +89,11 @@ namespace Logger
 		init(std::shared_ptr<LoggingPolicy>(policy));
 	}
 
+	std::shared_ptr<LoggingPolicy> getPolicy()
+	{
+		return policy;
+	}
+
 	LogStream log(std::string level, std::string tag)
 	{
 		LogStream stream(policy);
