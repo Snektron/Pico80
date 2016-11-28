@@ -2,7 +2,7 @@
 #include <cstdint>
 #include <QTimer>
 #include <QObject>
-#include "core/logger.h"
+#include "core/Logger.h"
 
 AsicWorker::AsicWorker():
 	asic(ASIC_CLOCK, ASIC_TIMER)
@@ -17,7 +17,10 @@ void AsicWorker::tick()
 	last = time;
 	uint64_t cycles = INSTRUCTIONS(ASIC_CLOCK, Time::toint(passed));
 	if (cycles > 0)
+	{
+		Logger::info("AsicWorker") << cycles << Logger::endl;
 		asic.tick(cycles);
+	}
 }
 
 Asic* AsicWorker::getAsic()

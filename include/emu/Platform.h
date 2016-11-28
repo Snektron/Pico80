@@ -7,7 +7,7 @@
 #define PORT_INT_MASK 4
 #define PORT_INT_TRIG 5
 #define INT_TIMER 0
-#define INT_F12 1
+#define INT_ON 1
 
 #define PORT_SCRN_CMD 6
 #define PORT_SCRN_ARG0 7

@@ -39,7 +39,7 @@ private:
 
 	std::shared_ptr<Interrupt> interrupt;
 	std::shared_ptr<TimerInt> timer_int;
-	std::shared_ptr<InterruptDevice> f12_int;
+	std::shared_ptr<InterruptDevice> int_on;
 
 	std::shared_ptr<Z80e::CPU> cpu;
 
@@ -49,6 +49,7 @@ public:
 	void tick(uint64_t states);
 
 public slots:
+	void intOn();
 	void pressKey(uint8_t key);
 	void releaseKey(uint8_t key);
 	void moveMouse(uint8_t x, uint8_t y);

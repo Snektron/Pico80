@@ -1,6 +1,13 @@
 #include "gui/Display.h"
 #include "gui/DisplayRenderer.h"
 #include "core/Logger.h"
+#include "core/Keys.h"
+
+Display::Display():
+	vram(nullptr)
+{
+	setAcceptedMouseButtons(Qt::LeftButton | Qt::RightButton);
+}
 
 QQuickFramebufferObject::Renderer* Display::createRenderer() const
 {
@@ -19,14 +26,30 @@ bool Display::isDirty()
 	return displayDirty;
 }
 
-void Display::keyReleaseEvent(QKeyEvent *event)
-{
-	Logger::info("Display") << "KeyPress: " << event->key() << Logger::endl;
-}
-
 void Display::invalidate(Vram *vram)
 {
 	dirty = true;
 	this->vram = vram;
 	update();
+}
+
+void Display::keyPressEvent(QKeyEvent *event)
+{
+	if (event->key() == Qt::Key_F12)
+		emit turnedOn();
+}
+
+void Display::keyReleaseEvent(QKeyEvent *event)
+{
+
+}
+
+void Display::mousePressEvent(QMouseEvent *event)
+{
+	setFocus(true);
+}
+
+void Display::mouseReleaseEvent(QMouseEvent *event)
+{
+
 }

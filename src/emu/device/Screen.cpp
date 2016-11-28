@@ -7,17 +7,18 @@
 
 void Vram::clear(uint8_t color)
 {
-	std::memset(data, color, SCREEN_WIDTH * SCREEN_HEIGHT);
+//	std::memset(data, color, SCREEN_WIDTH * SCREEN_HEIGHT);
 }
 
 void Vram::setPixel(uint8_t x, uint8_t y, uint8_t color)
 {
-	data[SCREEN_INDEX(x, y)] = color;
+//	data[SCREEN_INDEX(x, y)] = color;
 }
 
 uint8_t Vram::getPixel(uint8_t x, uint8_t y)
 {
-	return data[SCREEN_INDEX(x, y)];
+//	return data[SCREEN_INDEX(x, y)];
+	return 0;
 }
 
 uint8_t* Vram::rawData()

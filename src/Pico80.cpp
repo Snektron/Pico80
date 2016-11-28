@@ -1,6 +1,7 @@
 #include "Pico80.h"
 #include "core/Logger.h"
 #include "gui/Display.h"
+#include "emu/Asic.h"
 #include "emu/device/Screen.h"
 
 #define TAG "Pico80"
@@ -9,7 +10,9 @@ Pico80::Pico80(QObject *root)
 {
 	Logger::info(TAG, "Starting");
 	Display *display = root->findChild<Display*>("Display");
-	connect(asicthread.getAsic(), SIGNAL(screenDirty(Vram*)), display, SLOT(invalidate(Vram*)), Qt::QueuedConnection);
+	Asic *asic = asicthread.getAsic();
+	connect(asic, SIGNAL(screenDirty(Vram*)), display, SLOT(invalidate(Vram*)), Qt::QueuedConnection);
+	connect(display, SIGNAL(turnedOn()), asic, SLOT(intOn()), Qt::QueuedConnection);
 }
 
 Pico80::~Pico80()

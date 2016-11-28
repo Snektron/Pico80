@@ -13,14 +13,22 @@ private:
 	bool dirty;
 
 public:
+	Display();
 	QQuickFramebufferObject::Renderer* createRenderer() const;
 	Vram* getVram();
 	bool isDirty();
 
-	void keyReleaseEvent(QKeyEvent *event);
-
 public slots:
 	void invalidate(Vram *vram);
+	void keyPressEvent(QKeyEvent *event);
+	void keyReleaseEvent(QKeyEvent *event);
+	void mousePressEvent(QMouseEvent *event);
+	void mouseReleaseEvent(QMouseEvent *event);
+
+signals:
+	void keyPress(uint8_t key);
+	void keyRelease(uint8_t key);
+	void turnedOn();
 };
 
 #endif // DISPLAY_H

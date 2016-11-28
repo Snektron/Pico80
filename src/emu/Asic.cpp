@@ -33,7 +33,7 @@ Asic::Asic(uint64_t clock_rate, uint64_t timer_freq):
 
 	interrupt = std::make_shared<Interrupt>();
 	timer_int = std::make_shared<TimerInt>(interrupt, INT_TIMER, INSTRUCTIONS(clock_rate, SECOND_IN_NANOS / timer_freq));
-	f12_int = std::make_shared<InterruptDevice>(interrupt, INT_F12);
+	int_on = std::make_shared<InterruptDevice>(interrupt, INT_ON);
 
 	cpu = std::make_shared<Z80e::CPU>(memory, interrupt);
 
@@ -87,6 +87,11 @@ void Asic::tick(uint64_t states)
 	leftover = cpu->execute(cycles);
 	int executed = cycles - leftover;
 	timer_int->update(executed);
+}
+
+void Asic::intOn()
+{
+	int_on->trigger();
 }
 
 void Asic::pressKey(uint8_t key)

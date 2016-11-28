@@ -9,12 +9,6 @@
 #include <QOpenGLTexture>
 #include "gui/Display.h"
 
-typedef union
-{
-	struct { uint8_t r, g, b, a; };
-	uint32_t rgba;
-} color_t;
-
 class DisplayRenderer : public QQuickFramebufferObject::Renderer, public QOpenGLFunctions
 {
 private:

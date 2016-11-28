@@ -17,8 +17,6 @@ Rectangle {
 
     RowLayout {
         id: rowLayout2
-        x: 10
-        y: 10
         spacing: 0
         anchors.fill: parent
 
@@ -41,7 +39,6 @@ Rectangle {
                 anchors.right: parent.right
                 anchors.left: parent.left
                 anchors.top: parent.top
-                anchors.bottomMargin: 0
 
                 SidebarButton {
                     id: button1
@@ -147,8 +144,6 @@ Rectangle {
                     width: 200
                     height: 200
                     color: "#00000000"
-                    Layout.preferredWidth: -1
-                    Layout.maximumWidth: 65535
                     Layout.fillHeight: true
                     Layout.fillWidth: true
 
@@ -207,8 +202,8 @@ Rectangle {
 
                 Rectangle {
 					id: display_container
-                    width: 200
-                    height: 200
+					width: 200
+					height: 200
                     color: "#00000000"
                     opacity: 1
                     visible: true
@@ -223,14 +218,7 @@ Rectangle {
 					Display {
 						id: display
 						objectName: "Display"
-						x: 315
-						y: 0
-						anchors.topMargin: 0
-						anchors.bottomMargin: 0
-						anchors.leftMargin: 0
-						anchors.rightMargin: 0
 						anchors.fill: parent
-						focus: true
 					}
                 }
             }

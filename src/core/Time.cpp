@@ -11,7 +11,7 @@ namespace Time
 {
 	namespace
 	{
-		struct tm tm_epoch = {0, 0, 0, 0, 0, 97, 0, 0, 0};
+        struct tm tm_epoch = {0, 0, 0, 0, 0, 97, 0, 0, 0, 0, 0};
 		time_t epoch = mktime(&tm_epoch);
 	}
 

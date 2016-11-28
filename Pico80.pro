@@ -1,6 +1,6 @@
 TEMPLATE = app
 
-QT += qml quick gui
+QT += qml quick gui opengl
 CONFIG += c++11 silent
 QMAKE_CXXFLAGS += -Wno-unused-parameter -Wno-reorder -Wno-extra
 
@@ -20,7 +20,8 @@ SOURCES += src/main.cpp \
     src/gui/DisplayRenderer.cpp \
     src/emu/AsicThread.cpp \
     src/Pico80.cpp \
-    src/gui/Display.cpp
+    src/gui/Display.cpp \
+    src/core/Keys.cpp
 
 RESOURCES += qml.qrc
 

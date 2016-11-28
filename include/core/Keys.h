@@ -3,6 +3,9 @@
 
 // internal key defines. They are redefined to provide a simpler subset of all keys
 
+#include <cstdint>
+#include <Qt>
+
 #define KM_SHIFT (1 << 0)
 #define KM_CTRL (1 << 1)
 #define KM_ALT (1 << 2)
@@ -113,14 +116,18 @@
 #define K_PERIOD 0x5C
 #define K_DOT K_PERIOD
 #define K_COMMA 0x5D
-#define K_EXCLAIM 0x5E
+#define K_EXCLAM 0x5E
 #define K_COLON 0x5F
 #define K_DEL 0x60
 #define K_INS 0x61
 #define K_QUOTEDBL 0x62
 #define K_QUOTE 0x63
 
+// mode keys (alt)
+
 #define K_QUIT 0x64
 #define K_MODE 0x65
+
+uint8_t mapQTKey(Qt::Key key, Qt::KeyboardModifier mod);
 
 #endif /* INCLUDE_CORE_KEYS_H_ */
