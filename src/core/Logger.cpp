@@ -6,9 +6,15 @@
 #include <memory>
 #include <ctime>
 #include <iomanip>
+#include <vector>
 
 namespace Logger
 {
+	namespace
+	{
+		std::vector<std::shared_ptr<LoggingPolicy>> policies;
+	}
+
 	void ConsolePolicy::write(std::string& line)
 	{
 		static std::mutex mutex;
@@ -35,36 +41,25 @@ namespace Logger
 			out.close();
 	}
 
-	ConsoleFilePolicy::ConsoleFilePolicy(std::string file):
-			filePolicy(file),
-			consolePolicy()
-	{}
-
-	void ConsoleFilePolicy::write(std::string& line)
-	{
-		filePolicy.write(line);
-		consolePolicy.write(line);
-	}
-
-	LogStream::LogStreamBuf::LogStreamBuf(std::shared_ptr<LoggingPolicy> policy):
-		policy(policy)
+	LogStream::LogStreamBuf::LogStreamBuf()
 	{}
 
 	LogStream::LogStreamBuf::LogStreamBuf(const LogStreamBuf& copy):
-		std::stringbuf(copy.str()),
-		policy(copy.policy)
+		std::stringbuf(copy.str())
 	{}
 
 	int LogStream::LogStreamBuf::sync()
 	{
 		std::string msg = str();
-		policy->write(msg);
+
+		for (auto i = policies.begin(); i != policies.end(); i++)
+			i->get()->write(msg);
+
 		str("");
 		return 0;
 	}
 
-	LogStream::LogStream(std::shared_ptr<LoggingPolicy> policy):
-		buf(policy),
+	LogStream::LogStream():
 		std::ostream(&buf)
 	{}
 
@@ -74,29 +69,19 @@ namespace Logger
 		std::ostream(&buf)
 	{}
 
-	namespace
+	void addPolicy(std::shared_ptr<LoggingPolicy> policy)
 	{
-		std::shared_ptr<LoggingPolicy> policy(new NullPolicy());
+		policies.push_back(policy);
 	}
 
-	void init(std::shared_ptr<LoggingPolicy> newpolicy)
+	void addPolicy(LoggingPolicy *policy)
 	{
-		policy = newpolicy;
-	}
-
-	void init(LoggingPolicy *policy)
-	{
-		init(std::shared_ptr<LoggingPolicy>(policy));
-	}
-
-	std::shared_ptr<LoggingPolicy> getPolicy()
-	{
-		return policy;
+		policies.push_back(std::shared_ptr<LoggingPolicy>(policy));
 	}
 
 	LogStream log(std::string level, std::string tag)
 	{
-		LogStream stream(policy);
+		LogStream stream;
 		time_t t = time(0);
 		struct tm *now = localtime(&t);
 		stream << '[' << std::setw(2) << std::setfill('0') << now->tm_hour;

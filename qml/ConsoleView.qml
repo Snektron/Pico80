@@ -28,7 +28,7 @@ RectangularGlow {
 			anchors.topMargin: 10
 			anchors.fill: parent
 			font.pixelSize: 12
-			font.family: "Roboto"
+			font.family: "Courier"
 		}
 	}
 

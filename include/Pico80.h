@@ -7,7 +7,7 @@ class Pico80 : public QObject
 {
 	Q_OBJECT
 private:
-	AsicThread asicthread;
+	AsicThread *asicthread;
 
 public:
 	Pico80(QObject* root);

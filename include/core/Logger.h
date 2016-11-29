@@ -22,12 +22,6 @@ namespace Logger
 		void write(std::string& line);
 	};
 
-	class NullPolicy: public LoggingPolicy
-	{
-	public:
-		void write(std::string& line){}
-	};
-
 	class FilePolicy: public LoggingPolicy
 	{
 	private:
@@ -40,26 +34,13 @@ namespace Logger
 		~FilePolicy();
 	};
 
-	class ConsoleFilePolicy : public LoggingPolicy
-	{
-	private:
-		FilePolicy filePolicy;
-		ConsolePolicy consolePolicy;
-	public:
-		ConsoleFilePolicy(std::string file);
-		void write(std::string& line);
-	};
-
 	class LogStream: public std::ostream
 	{
 	private:
 		class LogStreamBuf: public std::stringbuf
 		{
-		private:
-			std::shared_ptr<LoggingPolicy> policy;
-
 		public:
-			LogStreamBuf(std::shared_ptr<LoggingPolicy> policy);
+			LogStreamBuf();
 			LogStreamBuf(const LogStreamBuf& copy);
 			int sync();
 		};
@@ -67,13 +48,12 @@ namespace Logger
 		LogStreamBuf buf;
 
 	public:
-		LogStream(std::shared_ptr<LoggingPolicy> policy);
+		LogStream();
 		LogStream(const LogStream& copy);
 	};
 
-	void init(std::shared_ptr<LoggingPolicy> policy);
-	void init(LoggingPolicy *policy);
-	std::shared_ptr<LoggingPolicy> getPolicy();
+	void addPolicy(std::shared_ptr<LoggingPolicy> policy);
+	void addPolicy(LoggingPolicy *policy);
 
 	LogStream log(std::string level, std::string tag);
 
@@ -88,6 +68,6 @@ namespace Logger
 	void error(std::string tag, std::string msg);
 
 	std::ostream& endl(std::ostream& log);
-}
+};
 
 #endif /* SRC_LOGGER_H_ */

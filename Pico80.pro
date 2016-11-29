@@ -65,5 +65,6 @@ HEADERS += \
     include/gui/DisplayRenderer.h \
     include/Pico80.h \
     include/Settings.h \
+    include/gui/LogViewPolicy.h
 
 DISTFILES +=

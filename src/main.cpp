@@ -23,13 +23,9 @@ void initLogger()
 	std::string logfile = oss.str();
 
 	if (Settings::get()->saveLog)
-	{
-		if (Settings::get()->quiet)
-			Logger::init(new Logger::FilePolicy(logfile));
-		else
-			Logger::init(new Logger::ConsoleFilePolicy(logfile));
-	}else if (!Settings::get()->quiet)
-		Logger::init(new Logger::ConsolePolicy());
+		Logger::addPolicy(new Logger::FilePolicy(logfile));
+	if (!Settings::get()->quiet)
+		Logger::addPolicy(new Logger::ConsolePolicy());
 }
 
 bool parseArgs()
@@ -70,8 +66,6 @@ int main(int argc, char *argv[])
 	if (parseArgs())
 		return EXIT_SUCCESS;
 	initLogger();
-
-	Logger::info(TAG, "Starting");
 
 	registerTypes();
 

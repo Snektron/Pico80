@@ -4,13 +4,18 @@
 #include "gui/Display.h"
 #include "emu/Asic.h"
 #include "emu/device/Screen.h"
+#include "gui/LogViewPolicy.h"
 
 #define TAG "Pico80"
 
 Pico80::Pico80(QObject *root)
 {
+	QObject *logview = root->findChild<QObject*>("Log");
 	Display *display = root->findChild<Display*>("Display");
-	Asic *asic = asicthread.getAsic();
+	Logger::addPolicy(new LogViewPolicy(logview));
+	Logger::info(TAG, "Starting");
+	asicthread = new AsicThread();
+	Asic *asic = asicthread->getAsic();
 	connect(asic, SIGNAL(screenDirty(Vram*)), display, SLOT(invalidate(Vram*)), Qt::QueuedConnection);
 	connect(display, SIGNAL(turnedOn()), asic, SLOT(intOn()), Qt::QueuedConnection);
 	connect(display, SIGNAL(keyPress(uint8_t)), asic, SLOT(keyPress(uint8_t)), Qt::QueuedConnection);
@@ -23,18 +28,19 @@ Pico80::Pico80(QObject *root)
 
 Pico80::~Pico80()
 {
-	if (!asicthread.isFinished())
+	if (!asicthread->isFinished())
 		quit();
+	delete asicthread;
 }
 
 void Pico80::start()
 {
-	asicthread.start();
+	asicthread->start();
 }
 
 void Pico80::quit()
 {
 	Logger::info(TAG, "Stopping");
-	asicthread.quit();
-	asicthread.wait();
+	asicthread->quit();
+	asicthread->wait();
 }
