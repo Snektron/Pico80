@@ -8,7 +8,7 @@ import QtGraphicalEffects 1.0
 RectangularGlow {
 	glowRadius: 3
 	spread: 0.2
-	color: "#D8D8D8"
+	color: "#E0E0E0"
 	cornerRadius: glowRadius
 
 	Rectangle {
@@ -24,16 +24,19 @@ RectangularGlow {
 			anchors.topMargin: 10;
 			clip: true
 
-			Flickable {
-				id: flickable
+			ListView {
+				id: logview
 				boundsBehavior: Flickable.StopAtBounds
 				flickableDirection: Flickable.VerticalFlick
 				anchors.fill: parent
 
-				TextArea.flickable: TextArea {
-					id: log
-					objectName: "Log"
-					text: ""
+				model: LogModel
+
+				delegate: Text {
+					text: record
+					anchors.left: parent.left
+					anchors.right: parent.right
+					anchors.rightMargin: 10
 					textFormat: Text.PlainText
 					wrapMode: Text.WordWrap
 					font.pixelSize: 12
@@ -42,11 +45,11 @@ RectangularGlow {
 
 				ScrollBar.vertical: ScrollBar {
 					id: scrollbar
+					width: 5
 					contentItem: Rectangle {
 						color: "#B8B8B8"
 						anchors.left: parent.left
 						anchors.right: parent.right
-						implicitWidth: 5
 						height: parent.height * parent.size
 						y: parent.height * parent.position
 					}

@@ -8,11 +8,11 @@ import QtGraphicalEffects 1.0
 RectangularGlow {
 	glowRadius: 3
 	spread: 0.2
-	color: "#D8D8D8"
+	color: "#E0E0E0"
 	cornerRadius: glowRadius
 
 	Rectangle {
-		color: "#ffffff"
+		color: "#FFFFFF"
 		anchors.fill: parent
 	}
 }

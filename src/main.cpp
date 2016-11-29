@@ -52,7 +52,6 @@ bool parseArgs()
 void registerTypes()
 {
 	qmlRegisterType<Display>("Pico80", 1, 0, "Display");
-
 	qRegisterMetaType<uint8_t>("uint8_t");
 }
 
@@ -70,10 +69,10 @@ int main(int argc, char *argv[])
 	registerTypes();
 
 	QQmlApplicationEngine engine;
-	engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
-
-	Pico80 pico(engine.rootObjects()[0]);
+	Pico80 pico(engine.rootContext());
 	QObject::connect(&app, SIGNAL(aboutToQuit()), &pico, SLOT(quit()));
+	engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
+	pico.initialize(engine.rootObjects()[0]);
 	pico.start();
 
     return app.exec();

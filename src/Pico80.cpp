@@ -8,11 +8,16 @@
 
 #define TAG "Pico80"
 
-Pico80::Pico80(QObject *root)
+Pico80::Pico80(QQmlContext *ctx)
 {
-	QObject *logview = root->findChild<QObject*>("Log");
+	ctx->setContextProperty("LogModel", &logModel);
+}
+
+void Pico80::initialize(QObject* root)
+{
 	Display *display = root->findChild<Display*>("Display");
-	Logger::addPolicy(new LogViewPolicy(logview));
+
+	Logger::addPolicy(new LogViewPolicy(&logModel));
 	Logger::info(TAG, "Starting");
 	asicthread = new AsicThread();
 	Asic *asic = asicthread->getAsic();

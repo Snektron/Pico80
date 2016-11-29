@@ -18,7 +18,6 @@ void AsicWorker::tick()
 	Time::nanoseconds passed = time - last;
 	last = time;
 	int cycles = INSTRUCTIONS(ASIC_CLOCK, Time::toint(passed));
-//	Logger::info(TAG, "tick");
 	asic.tick(cycles);
 }
 

@@ -21,7 +21,8 @@ SOURCES += src/main.cpp \
     src/emu/AsicThread.cpp \
     src/Pico80.cpp \
     src/gui/Display.cpp \
-    src/emu/Keys.cpp
+    src/emu/Keys.cpp \
+    src/gui/LogModel.cpp
 
 RESOURCES += qml.qrc
 
@@ -65,6 +66,7 @@ HEADERS += \
     include/gui/DisplayRenderer.h \
     include/Pico80.h \
     include/Settings.h \
-    include/gui/LogViewPolicy.h
+    include/gui/LogViewPolicy.h \
+    include/gui/LogModel.h
 
 DISTFILES +=

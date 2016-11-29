@@ -2,15 +2,20 @@
 #define PICO80_H
 
 #include <QObject>
+#include <QQmlContext>
 #include "emu/AsicThread.h"
+#include "gui/LogModel.h"
+
 class Pico80 : public QObject
 {
 	Q_OBJECT
 private:
+	LogModel logModel;
 	AsicThread *asicthread;
 
 public:
-	Pico80(QObject* root);
+	Pico80(QQmlContext *ctx);
+	void initialize(QObject* root);
 	~Pico80();
 
 public slots:

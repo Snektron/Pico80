@@ -12,7 +12,7 @@ Asic::Asic(int clock_rate, int timer_freq):
 {
 	Logger::info(TAG, "Initializing asic");
 	Logger::info(TAG) << "Asic clock: " << (clock_rate / 1000000.0) << " hz" << Logger::endl;
-	Logger::info(TAG) << "Timer freq: " << timer_freq << " hz" << Logger::endl;
+	Logger::info(TAG) << "Timer freq: " << timer_freq << " Mhz" << Logger::endl;
 
 	log = std::make_shared<Log>();
 	screen = std::make_shared<Screen>();
