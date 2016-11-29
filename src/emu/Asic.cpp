@@ -97,7 +97,7 @@ void Asic::intOn()
 
 void Asic::keyPress(uint8_t key)
 {
-
+	Logger::debug(TAG, "Test");
 }
 
 void Asic::keyRelease(uint8_t key)
