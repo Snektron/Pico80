@@ -3,7 +3,7 @@
 
 #include <algorithm>
 #include <memory>
-#include "emu/device/StorageController.h"
+#include "emu/pico80/device/StorageController.h"
 #include "core/Logger.h"
 
 #define PAGE_SIZE 16384

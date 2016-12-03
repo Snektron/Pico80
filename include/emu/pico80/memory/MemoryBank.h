@@ -3,7 +3,7 @@
 
 #include <cstdint>
 #include <memory>
-#include "emu/memory/Page.h"
+#include "emu/pico80/memory/Page.h"
 #include "PageManager.h"
 #include "z80e/z80e.h"
 

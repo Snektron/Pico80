@@ -3,7 +3,7 @@
 
 #include <QQuickFramebufferObject>
 #include <QKeyEvent>
-#include "emu/device/Screen.h"
+#include "emu/pico80/device/Screen.h"
 
 class Display : public QQuickFramebufferObject
 {

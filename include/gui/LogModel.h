@@ -18,10 +18,13 @@ public:
 		RecordRole = Qt::UserRole + 1
 	};
 
-	void write(std::string line);
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 	QHash<int, QByteArray> roleNames() const;
+
+public slots:
+	void write(QString line);
+	void clear();
 };
 
 #endif // LOGMODEL_H

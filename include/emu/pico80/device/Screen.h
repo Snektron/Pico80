@@ -5,7 +5,7 @@
 #include <memory>
 #include <QObject>
 #include "z80e/z80e.h"
-#include "emu/Platform.h"
+#include "emu/pico80/Platform.h"
 
 #define SCREEN_INDEX(x, y) (SCREEN_WIDTH * (y & 0x7F) + (x & 0x7F))
 
@@ -29,7 +29,7 @@ public:
 class Screen: public QObject, public Z80e::IODevice
 {
 	Q_OBJECT
-private:
+public:
 	std::shared_ptr<Z80e::BasicIODevice> arg0, arg1, arg2;
 	Vram *vram;
 public:

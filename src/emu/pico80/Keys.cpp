@@ -1,4 +1,4 @@
-#include "emu/Keys.h"
+#include "emu/pico80/Keys.h"
 
 uint8_t mapQTkeyAlt(Qt::Key key)
 {

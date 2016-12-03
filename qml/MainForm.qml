@@ -193,17 +193,10 @@ Rectangle {
                             }
                         ]
 
-						Rectangle {
-							color: "#ff0000"
-						}
-
+						DashboardView {}
 						DebugView {}
-
 						ConsoleView {}
-
-                        Rectangle {
-                            color: "#ffff00"
-                        }
+						SettingsView {}
                     }
                 }
 

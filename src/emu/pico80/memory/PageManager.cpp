@@ -1,11 +1,11 @@
-#include "emu/memory/PageManager.h"
+#include "emu/pico80/memory/PageManager.h"
 #include <cstdint>
 #include <fstream>
 #include <exception>
 #include <ostream>
 #include <iomanip>
 #include <memory>
-#include "emu/device/StorageController.h"
+#include "emu/pico80/device/StorageController.h"
 #include "core/Logger.h"
 #include "Settings.h"
 

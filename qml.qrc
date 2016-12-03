@@ -10,5 +10,7 @@
         <file>textures/palette.png</file>
         <file>qml/DebugView.qml</file>
         <file>qml/ConsoleView.qml</file>
+        <file>qml/DashboardView.qml</file>
+        <file>qml/SettingsView.qml</file>
     </qresource>
 </RCC>

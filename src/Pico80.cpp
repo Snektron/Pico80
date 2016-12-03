@@ -2,8 +2,8 @@
 #include <cstdint>
 #include "core/Logger.h"
 #include "gui/Display.h"
-#include "emu/Asic.h"
-#include "emu/device/Screen.h"
+#include "emu/pico80/Asic.h"
+#include "emu/pico80/device/Screen.h"
 #include "gui/LogViewPolicy.h"
 
 #define TAG "Pico80"
@@ -22,7 +22,7 @@ void Pico80::initialize(QObject* root)
 	asicthread = new AsicThread();
 	Asic *asic = asicthread->getAsic();
 	connect(asic, SIGNAL(screenDirty(Vram*)), display, SLOT(invalidate(Vram*)), Qt::QueuedConnection);
-	connect(display, SIGNAL(turnedOn()), asic, SLOT(intOn()), Qt::QueuedConnection);
+	connect(display, SIGNAL(turnedOn()), asic, SLOT(turnOn()), Qt::QueuedConnection);
 	connect(display, SIGNAL(keyPress(uint8_t)), asic, SLOT(keyPress(uint8_t)), Qt::QueuedConnection);
 	connect(display, SIGNAL(keyRelease(uint8_t)), asic, SLOT(keyRelease(uint8_t)), Qt::QueuedConnection);
 	connect(display, SIGNAL(mousePress(uint8_t)), asic, SLOT(mousePress(uint8_t)), Qt::QueuedConnection);

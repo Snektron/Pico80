@@ -1,9 +1,9 @@
-#include "emu/device/Mouse.h"
+#include "emu/pico80/device/Mouse.h"
 #include <cstdint>
 #include <memory>
 #include "core/Logger.h"
 #include "z80e/z80e.h"
-#include "emu/Platform.h"
+#include "emu/pico80/Platform.h"
 
 uint8_t MouseX::read()
 {

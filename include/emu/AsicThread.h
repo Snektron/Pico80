@@ -4,7 +4,7 @@
 #include <QThread>
 #include <memory>
 #include <mutex>
-#include "emu/Asic.h"
+#include "emu/pico80/Asic.h"
 #include "core/Time.h"
 
 #define ASIC_CLOCK MHZ(50)

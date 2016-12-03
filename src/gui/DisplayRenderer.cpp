@@ -4,8 +4,8 @@
 #include <QQuickWindow>
 #include "gui/Display.h"
 #include "core/Logger.h"
-#include "emu/Platform.h"
-#include "emu/device/Screen.h"
+#include "emu/pico80/Platform.h"
+#include "emu/pico80/device/Screen.h"
 
 const float vertices[] =
 {
@@ -23,7 +23,6 @@ const float texcoords[] =
 	1, 1
 };
 
-
 DisplayRenderer::DisplayRenderer():
 	shader(nullptr),
 	display(nullptr)
@@ -39,6 +38,9 @@ QOpenGLFramebufferObject* DisplayRenderer::createFramebufferObject(const QSize &
 void DisplayRenderer::synchronize(QQuickFramebufferObject *item)
 {
 	this->display = (Display*) item;
+
+	if (display && display->isDirty() && texture && palette)
+		updateTexture();
 }
 
 void DisplayRenderer::render()
@@ -47,9 +49,6 @@ void DisplayRenderer::render()
 		initialize();
 	else
 		shader->bind();
-
-	if (display && display->isDirty())
-		updateTexture();
 
 	shader->enableAttributeArray(0);
 	shader->setAttributeArray(0, GL_FLOAT, vertices, 2);

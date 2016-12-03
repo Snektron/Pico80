@@ -1,10 +1,10 @@
 #include <cstdint>
 #include <memory>
-#include "emu/memory/Memory.h"
-#include "emu/memory/PageManager.h"
-#include "emu/memory/MemoryBank.h"
-#include "emu/memory/Page.h"
-#include "emu/device/StorageController.h"
+#include "emu/pico80/memory/Memory.h"
+#include "emu/pico80/memory/PageManager.h"
+#include "emu/pico80/memory/MemoryBank.h"
+#include "emu/pico80/memory/Page.h"
+#include "emu/pico80/device/StorageController.h"
 #include "core/Logger.h"
 #include "z80e/z80e.h"
 

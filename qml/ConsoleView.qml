@@ -14,44 +14,111 @@ RectangularGlow {
 	Rectangle {
 		color: "#ffffff"
 		anchors.fill: parent
+		clip: true
 
-		Rectangle {
-			color: "#F0F0F0"
+		ColumnLayout {
+			id: columnlayout1
 			anchors.fill: parent
-			anchors.leftMargin: 10;
-			anchors.rightMargin: 10;
-			anchors.bottomMargin: 10;
-			anchors.topMargin: 10;
-			clip: true
+			anchors.leftMargin: 10
+			anchors.rightMargin: 10
+			anchors.bottomMargin: 10
+			anchors.topMargin: 10
 
-			ListView {
-				id: logview
-				boundsBehavior: Flickable.StopAtBounds
-				flickableDirection: Flickable.VerticalFlick
-				anchors.fill: parent
+			Rectangle {
+				id: rectangle1
+				color: "#E7E7E7"
+				Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+				Layout.fillHeight: true
+				Layout.fillWidth: true
+				clip: true
 
-				model: LogModel
+				ListView {
+					id: logview
+					boundsBehavior: Flickable.StopAtBounds
+					flickableDirection: Flickable.VerticalFlick
+					anchors.fill: parent
+					anchors.leftMargin: 5
+					anchors.rightMargin: 5
+					anchors.bottomMargin: 5
+					anchors.topMargin: 5
 
-				delegate: Text {
-					text: record
-					anchors.left: parent.left
-					anchors.right: parent.right
-					anchors.rightMargin: 10
-					textFormat: Text.PlainText
-					wrapMode: Text.WordWrap
-					font.pixelSize: 12
-					font.family: "Courier"
-				}
+					model: LogModel
 
-				ScrollBar.vertical: ScrollBar {
-					id: scrollbar
-					width: 5
-					contentItem: Rectangle {
-						color: "#B8B8B8"
+					delegate: Text {
+						text: record
 						anchors.left: parent.left
 						anchors.right: parent.right
-						height: parent.height * parent.size
-						y: parent.height * parent.position
+						anchors.rightMargin: 10
+						textFormat: Text.PlainText
+						wrapMode: Text.WordWrap
+						font.pixelSize: 12
+						font.family: "Courier"
+						ListView.onAdd: if (autoscroll.checked) logview.positionViewAtEnd();
+					}
+
+					ScrollBar.vertical: ScrollBar {
+						id: scrollbar
+						width: 5
+						contentItem: Rectangle {
+							color: "#B8B8B8"
+							anchors.left: parent.left
+							anchors.right: parent.right
+							height: parent.height * parent.size
+							y: parent.height * parent.position
+						}
+					}
+				}
+			}
+
+			Row {
+				spacing: 5
+				Button {
+					implicitHeight: 20
+
+					Row {
+						anchors.verticalCenter: parent.verticalCenter
+						anchors.horizontalCenter: parent.horizontalCenter
+						spacing: 3
+
+						Text {
+							text: "\uF12D"
+							font.pointSize: 10
+							font.family: "FontAwesome"
+						}
+						Text {
+							text: "Clear"
+							font.pointSize: 10
+							font.family: "Roboto"
+						}
+					}
+
+					onClicked: LogModel.clear()
+				}
+
+				CheckBox {
+					id: autoscroll
+					font.family: "Roboto"
+					text: "Auto scroll"
+					implicitHeight: 20
+					checked: true
+
+					indicator: Rectangle {
+						width: 18
+						height: 18
+						radius: 2
+						color: "#FFFFFF"
+						border.color: "#000000"
+						anchors.verticalCenter: parent.verticalCenter
+
+						Rectangle {
+							width: 12
+							height: 12
+							radius: 3
+							color: "#000000"
+							anchors.horizontalCenter: parent.horizontalCenter
+							anchors.verticalCenter: parent.verticalCenter
+							visible: parent.parent.checked
+						}
 					}
 				}
 			}

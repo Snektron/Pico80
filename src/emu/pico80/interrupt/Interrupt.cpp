@@ -1,8 +1,8 @@
-#include "emu/interrupt/Interrupt.h"
+#include "emu/pico80/interrupt/Interrupt.h"
 #include <cstdint>
 #include <atomic>
 #include <mutex>
-#include "emu/Asic.h"
+#include "emu/pico80/Asic.h"
 #include "core/Logger.h"
 
 #define TAG "Interrupt"

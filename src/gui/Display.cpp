@@ -2,8 +2,8 @@
 #include <cstdint>
 #include "gui/DisplayRenderer.h"
 #include "core/Logger.h"
-#include "emu/Keys.h"
-#include "emu/Platform.h"
+#include "emu/pico80/Keys.h"
+#include "emu/pico80/Platform.h"
 
 Display::Display():
 	vram(nullptr)

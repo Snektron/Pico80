@@ -5,21 +5,22 @@
 #include <cstdint>
 #include <QObject>
 #include "core/Time.h"
-#include "emu/memory/Memory.h"
-#include "emu/device/Screen.h"
-#include "emu/device/Log.h"
-#include "emu/device/Mouse.h"
-#include "emu/device/StorageController.h"
-#include "emu/device/Keyboard.h"
-#include "emu/device/Clock.h"
-#include "emu/interrupt/Interrupt.h"
-#include "emu/interrupt/TimerInt.h"
+#include "emu/api/AbstractAsic.h"
+#include "emu/pico80/memory/Memory.h"
+#include "emu/pico80/device/Screen.h"
+#include "emu/pico80/device/Log.h"
+#include "emu/pico80/device/Mouse.h"
+#include "emu/pico80/device/StorageController.h"
+#include "emu/pico80/device/Keyboard.h"
+#include "emu/pico80/device/Clock.h"
+#include "emu/pico80/interrupt/Interrupt.h"
+#include "emu/pico80/interrupt/TimerInt.h"
 
 // calculate instructions executed in a certain time (ns)
 #define INSTRUCTIONS(clockrate, ns) ((clockrate) * (ns) / SECOND_IN_NANOS)
 #define MHZ(x) (x * 1000000)
 
-class Asic : public QObject
+class Asic : public AbstractAsic
 {
 	Q_OBJECT
 private:
@@ -46,7 +47,7 @@ public:
 	void tick(int states);
 
 public slots:
-	void intOn();
+	void turnOn();
 	void keyPress(uint8_t key);
 	void keyRelease(uint8_t key);
 	void mousePress(uint8_t button);

@@ -1,8 +1,8 @@
-#include "emu/Asic.h"
+#include "emu/pico80/Asic.h"
 #include <cstdint>
 #include <chrono>
 #include <memory>
-#include "emu/Platform.h"
+#include "emu/pico80/Platform.h"
 #include "core/Logger.h"
 
 #define TAG "Asic"
@@ -90,7 +90,7 @@ void Asic::tick(int states)
 	timer_int->update(executed);
 }
 
-void Asic::intOn()
+void Asic::turnOn()
 {
 	int_on->trigger();
 }

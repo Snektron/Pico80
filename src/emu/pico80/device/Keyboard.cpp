@@ -1,6 +1,6 @@
-#include "emu/device/Keyboard.h"
-#include "emu/TIKeys.h"
-#include "emu/Keys.h"
+#include "emu/pico80/device/Keyboard.h"
+#include "emu/pico80/TIKeys.h"
+#include "emu/pico80/Keys.h"
 
 uint8_t Keyboard::read()
 {

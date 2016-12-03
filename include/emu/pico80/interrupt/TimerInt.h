@@ -2,7 +2,7 @@
 #define INCLUDE_EMU_INTERRUPT_TIMERINT_H_
 
 #include <memory>
-#include "emu/interrupt/Interrupt.h"
+#include "emu/pico80/interrupt/Interrupt.h"
 #include "core/Logger.h"
 
 class TimerInt : public InterruptDevice

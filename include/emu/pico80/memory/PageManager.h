@@ -3,8 +3,8 @@
 
 #include <cstdint>
 #include <memory>
-#include "emu/memory/Page.h"
-#include "emu/device/StorageController.h"
+#include "emu/pico80/memory/Page.h"
+#include "emu/pico80/device/StorageController.h"
 #include "z80e/z80e.h"
 
 #define NUM_RAM_PAGES 2

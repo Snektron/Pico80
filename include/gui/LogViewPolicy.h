@@ -21,7 +21,7 @@ public:
 	void write(std::string& line)
 	{
 		std::lock_guard<std::mutex> lock(mutex);
-		model->write(line);
+		model->write(QString(line.c_str()));
 	}
 };
 
