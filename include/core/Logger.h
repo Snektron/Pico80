@@ -68,6 +68,6 @@ namespace Logger
 	void error(std::string tag, std::string msg);
 
 	std::ostream& endl(std::ostream& log);
-};
+}
 
 #endif /* SRC_LOGGER_H_ */

@@ -2,25 +2,28 @@
 #include <cstdint>
 #include "core/Logger.h"
 #include "gui/Display.h"
+#include "gui/LogViewPolicy.h"
 #include "emu/pico80/Asic.h"
 #include "emu/pico80/device/Screen.h"
-#include "gui/LogViewPolicy.h"
+#include "core/PluginManager.h"
 
 #define TAG "Pico80"
 
 Pico80::Pico80(QQmlContext *ctx)
 {
 	ctx->setContextProperty("LogModel", &logModel);
+	Logger::addPolicy(new LogViewPolicy(&logModel));
+	Logger::info(TAG, "Starting");
+
+	PluginManager manager;
 }
 
 void Pico80::initialize(QObject* root)
 {
 	Display *display = root->findChild<Display*>("Display");
 
-	Logger::addPolicy(new LogViewPolicy(&logModel));
-	Logger::info(TAG, "Starting");
-	asicthread = new AsicThread();
-	Asic *asic = asicthread->getAsic();
+	emuthread = new EmulatorThread();
+	Asic *asic = emuthread->getAsic();
 	connect(asic, SIGNAL(screenDirty(Vram*)), display, SLOT(invalidate(Vram*)), Qt::QueuedConnection);
 	connect(display, SIGNAL(turnedOn()), asic, SLOT(turnOn()), Qt::QueuedConnection);
 	connect(display, SIGNAL(keyPress(uint8_t)), asic, SLOT(keyPress(uint8_t)), Qt::QueuedConnection);
@@ -33,19 +36,19 @@ void Pico80::initialize(QObject* root)
 
 Pico80::~Pico80()
 {
-	if (!asicthread->isFinished())
+	if (!emuthread->isFinished())
 		quit();
-	delete asicthread;
+	delete emuthread;
 }
 
 void Pico80::start()
 {
-	asicthread->start();
+	emuthread->start();
 }
 
 void Pico80::quit()
 {
 	Logger::info(TAG, "Stopping");
-	asicthread->quit();
-	asicthread->wait();
+	emuthread->quit();
+	emuthread->wait();
 }

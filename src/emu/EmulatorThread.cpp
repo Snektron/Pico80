@@ -1,18 +1,18 @@
-#include "emu/AsicThread.h"
+#include "emu/EmulatorThread.h"
 #include <cstdint>
 #include <QTimer>
 #include <QObject>
 #include "core/Logger.h"
 
-#define TAG "AsicThread"
+#define TAG "EmulatorThread"
 
-AsicWorker::AsicWorker():
+EmulatorWorker::EmulatorWorker():
 	asic(ASIC_CLOCK, ASIC_TIMER)
 {
 	last = Time::now();
 }
 
-void AsicWorker::tick()
+void EmulatorWorker::tick()
 {
 	Time::point time = Time::now();
 	Time::nanoseconds passed = time - last;
@@ -21,12 +21,12 @@ void AsicWorker::tick()
 	asic.tick(cycles);
 }
 
-Asic* AsicWorker::getAsic()
+Asic* EmulatorWorker::getAsic()
 {
 	return &asic;
 }
 
-void AsicThread::run()
+void EmulatorThread::run()
 {
 	QTimer timer;
 	timer.setTimerType(Qt::PreciseTimer);
@@ -37,14 +37,14 @@ void AsicThread::run()
 	exec();
 }
 
-Asic* AsicThread::getAsic()
+Asic* EmulatorThread::getAsic()
 {
 	if (isRunning())
 		throw std::runtime_error("Unsafely tried to access asic.");
 	return asicworker.getAsic();
 }
 
-void AsicThread::quit()
+void EmulatorThread::quit()
 {
 	QThread::quit();
 }

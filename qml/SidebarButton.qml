@@ -23,8 +23,7 @@ Button {
             anchors.top: parent.top
             anchors.bottom: parent.bottom
             width: 5
-            color: "#6BB0DA"
-            visible: button.checked
+			color: button.checked ? "#6BB0DA" : "#20232F"
         }
     }
 

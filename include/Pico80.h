@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QQmlContext>
-#include "emu/AsicThread.h"
+#include "emu/EmulatorThread.h"
 #include "gui/LogModel.h"
 
 class Pico80 : public QObject
@@ -11,7 +11,7 @@ class Pico80 : public QObject
 	Q_OBJECT
 private:
 	LogModel logModel;
-	AsicThread *asicthread;
+	EmulatorThread *emuthread;
 
 public:
 	Pico80(QQmlContext *ctx);

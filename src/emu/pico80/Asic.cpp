@@ -90,6 +90,16 @@ void Asic::tick(int states)
 	timer_int->update(executed);
 }
 
+bool Asic::isDisplayDirty()
+{
+	return false;
+}
+
+AbstractDisplayData* Asic::getDisplayData()
+{
+	return nullptr;
+}
+
 void Asic::turnOn()
 {
 	int_on->trigger();
@@ -98,26 +108,6 @@ void Asic::turnOn()
 void Asic::keyPress(uint8_t key)
 {
 	Logger::debug(TAG, "Test");
-}
-
-void Asic::keyRelease(uint8_t key)
-{
-
-}
-
-void Asic::mousePress(uint8_t button)
-{
-
-}
-
-void Asic::mouseRelease(uint8_t button)
-{
-
-}
-
-void Asic::mouseMove(uint8_t x, uint8_t y)
-{
-
 }
 
 void Asic::invalidate(Vram *vram)

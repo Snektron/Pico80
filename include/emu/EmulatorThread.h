@@ -11,7 +11,7 @@
 #define ASIC_TIMER 200
 #define THREAD_INTERVAL 1
 
-class AsicWorker : public QObject
+class EmulatorWorker : public QObject
 {
 	Q_OBJECT
 private:
@@ -19,17 +19,17 @@ private:
 	Asic asic;
 
 public:
-	AsicWorker();
+	EmulatorWorker();
 	Asic* getAsic();
 private slots:
 	void tick();
 };
 
-class AsicThread : public QThread
+class EmulatorThread : public QThread
 {
 	Q_OBJECT
 private:
-	AsicWorker asicworker;
+	EmulatorWorker asicworker;
 
 public:
 	void run();

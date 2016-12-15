@@ -45,14 +45,12 @@ private:
 public:
 	Asic(int asic_clock, int timer_freq);
 	void tick(int states);
+	bool isDisplayDirty();
+	AbstractDisplayData* getDisplayData();
 
 public slots:
 	void turnOn();
 	void keyPress(uint8_t key);
-	void keyRelease(uint8_t key);
-	void mousePress(uint8_t button);
-	void mouseRelease(uint8_t button);
-	void mouseMove(uint8_t x, uint8_t y);
 
 private slots:
 	void invalidate(Vram *vram);
