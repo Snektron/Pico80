@@ -14,16 +14,18 @@ Button {
 
     id: button
     checkable: true
+	hoverEnabled: true
 
     background: Rectangle {
-        color: button.down || button.checked ? "#20232F" : "#2D313F"
+		color: button.checked ? "#20232F" : button.hovered || button.down ? "#3A4051" : "#2D313F"
 
         Rectangle {
             anchors.left: parent.left
             anchors.top: parent.top
             anchors.bottom: parent.bottom
             width: 5
-			color: button.checked ? "#6BB0DA" : "#20232F"
+			color: "#6BB0DA"
+			visible: button.checked
         }
     }
 

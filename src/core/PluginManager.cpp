@@ -27,14 +27,14 @@ void PluginManager::scanPluginDir()
 #endif
 	pluginsDir.cd("plugins");
 
-	Logger::info(TAG) << "Searching for plugins in " << pluginsDir.path().toStdString() << Logger::endl;
+	Logger::info(TAG, "Searing for plugins");
 
 	foreach (QString fileName, pluginsDir.entryList(QDir::Files))
 	{
 		QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
 		QObject *plugin = loader.instance();
 		if (plugin)
-			Logger::info(TAG) << "Succesfully loaded plugin " << fileName.toStdString() << Logger::endl;
+			Logger::info(TAG) << "Succesfully loaded " << fileName.toStdString() << Logger::endl;
 	}
 }
 

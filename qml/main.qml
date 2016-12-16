@@ -2,11 +2,12 @@ import QtQuick 2.5
 import QtQuick.Window 2.2
 
 Window {
-    id: window1
+	id: window
     visible: true
-    width: 640
-    height: 480
-	title: qsTr("Pico-80")
+	width: 800
+	height: 600
+	title: "Pico80"
+	minimumWidth: 64+10+300+10+200+10
 
     MainForm {
         anchors.right: parent.right

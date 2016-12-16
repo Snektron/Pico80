@@ -2,7 +2,6 @@
 #define DISPLAY_H
 
 #include <QQuickFramebufferObject>
-#include <QKeyEvent>
 #include "emu/pico80/device/Screen.h"
 
 class Display : public QQuickFramebufferObject

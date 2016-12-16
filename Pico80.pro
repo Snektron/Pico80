@@ -1,7 +1,6 @@
 TEMPLATE = app
 
 QT += qml quick gui opengl
-LIBS += -lscas -lz80e
 CONFIG += c++11 silent
 QMAKE_CXXFLAGS += -Wno-unused-parameter -Wno-reorder -Wno-extra
 
@@ -68,7 +67,8 @@ HEADERS += \
     include/Settings.h \
     include/core/PluginManager.h \
     include/api/IEmulator.h \
-    include/api/IPlugin.h
+    include/api/IPlugin.h \
+    include/api/IDisplay.h
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
