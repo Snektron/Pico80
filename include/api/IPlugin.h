@@ -8,14 +8,9 @@
 class IPlugin
 {
 public:
-	QString name();
-
-	IEmulator* createEmulator();
-	void destroyEmulator(IEmulator *emulator);
-
-	IDisplay* createDisplay();
-	void destroyDisplay(IDisplay *display);
-
+	virtual QString name() = 0;
+	virtual IEmulator* createEmulator() = 0;
+	virtual IDisplay* createDisplay() = 0;
 	virtual ~IPlugin() = default;
 };
 

@@ -9,7 +9,6 @@ class AbstractAsic : public QObject
 {
 	Q_OBJECT
 public:
-	Asic();
 	virtual void tick(int cycles){}
 	virtual bool isDisplayDirty() { return false; }
 	virtual AbstractDisplayData* getDisplayData() { return nullptr; }

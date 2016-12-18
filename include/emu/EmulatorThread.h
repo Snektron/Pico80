@@ -2,27 +2,22 @@
 #define ASICTHREAD_H
 
 #include <QThread>
-#include <memory>
-#include <mutex>
-#include "emu/pico80/Asic.h"
-#include "core/Time.h"
+#include "api/IEmulator.h"
+#include "core/Instance.h"
 
-#define ASIC_CLOCK MHZ(50)
-#define ASIC_TIMER 200
 #define THREAD_INTERVAL 1
 
 class EmulatorWorker : public QObject
 {
 	Q_OBJECT
 private:
-	Time::point last;
-	Asic asic;
+	IEmulator *emulator;
 
 public:
-	EmulatorWorker();
-	Asic* getAsic();
+	~EmulatorWorker();
 private slots:
 	void tick();
+	void instanceChanged(Instance *instance);
 };
 
 class EmulatorThread : public QThread
@@ -33,10 +28,13 @@ private:
 
 public:
 	void run();
-	Asic* getAsic();
 
 public slots:
 	void quit();
+	void instanceChanged(Instance *instance);
+
+signals:
+	void onInstanceChanged(Instance *instance);
 };
 
 #endif // ASICTHREAD_H

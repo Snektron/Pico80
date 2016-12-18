@@ -1,8 +1,6 @@
 import QtQuick 2.5
 import QtQuick.Controls 1.4
 import QtQuick.Controls 2.0
-import QtQuick.Controls.Styles 1.4
-import QtQuick.Controls.Material 2.0
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
 import Pico80 1.0
@@ -141,12 +139,16 @@ Rectangle {
 		anchors.bottom: parent.bottom
 
 		SplitView {
+			anchors.fill: parent
 			anchors.rightMargin: 10
 			anchors.leftMargin: 10
 			anchors.bottomMargin: 10
 			anchors.topMargin: 10
 
-			anchors.fill: parent
+			onWidthChanged: {
+				if (width > 0 && menuview_container.width > width - 250 - 10)
+					menuview_container.width = width - 250 - 10;
+			}
 
 			handleDelegate: Rectangle {
 				width: 10
@@ -158,6 +160,7 @@ Rectangle {
 				color: "#00000000"
 				Layout.fillHeight: true
 				Layout.minimumWidth: 300
+				width: 500;
 
 				StackLayout {
 					id: menuview
@@ -183,29 +186,33 @@ Rectangle {
 				}
 			}
 
-			Rectangle {
+			RectangularGlow {
 				id: display_container
-				color: "#00000000"
-				Layout.minimumWidth: 200
+				Layout.minimumWidth: 250
 				Layout.fillWidth: true
 
-				onWidthChanged: updateDimensions();
-				onHeightChanged: updateDimensions();
+				onWidthChanged: display.updateDimensions();
+				onHeightChanged: display.updateDimensions();
 
-				function updateDimensions()
-				{
-					display.setDimensions(width, height);
-				}
+				glowRadius: 3
+				spread: 0.2
+				color: "#E0E0E0"
+				cornerRadius: glowRadius
 
-				Display {
-					id: display
-					objectName: "Display"
-					anchors.horizontalCenter: parent.horizontalCenter
-					anchors.verticalCenter: parent.verticalCenter
+				Rectangle {
+					color: "#FFFFFF"
+					anchors.fill: parent
 
-					function setDimensions(parentWidth, parentHeight)
-					{
-						width = height = Math.min(parentWidth, parentHeight);
+					Display {
+						id: display
+						objectName: "Display"
+						anchors.horizontalCenter: parent.horizontalCenter
+						anchors.verticalCenter: parent.verticalCenter
+
+						function updateDimensions()
+						{
+							width = height = Math.min(parent.width, parent.height);
+						}
 					}
 				}
 			}

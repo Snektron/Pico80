@@ -2,25 +2,24 @@
 #define DISPLAY_H
 
 #include <QQuickFramebufferObject>
-#include "emu/pico80/device/Screen.h"
+#include "core/Instance.h"
 
 class Display : public QQuickFramebufferObject
 {
 	Q_OBJECT
 private:
-	Vram *vram;
+	Instance *instance;
 	bool dirty;
 
 public:
 	Display();
 	QQuickFramebufferObject::Renderer* createRenderer() const;
-	Vram* getVram();
 	bool isDirty();
-
-	void moveEvent(int x, int y);
+	Instance* getInstance();
 
 public slots:
-	void invalidate(Vram *vram);
+	void instanceChanged(Instance *instance);
+	void invalidate();
 	void keyPressEvent(QKeyEvent *event);
 	void keyReleaseEvent(QKeyEvent *event);
 	void mousePressEvent(QMouseEvent *event);
@@ -29,12 +28,12 @@ public slots:
 	void mouseMoveEvent(QMouseEvent *event);
 
 signals:
-	void turnedOn();
-	void keyPress(uint8_t key);
-	void keyRelease(uint8_t key);
-	void mousePress(uint8_t button);
-	void mouseRelease(uint8_t button);
-	void mouseMove(uint8_t x, uint8_t y);
+	void onTurnedOn();
+	void onKeyPress(QKeyEvent *event);
+	void onKeyRelease(QKeyEvent *event);
+	void onMousePress(QMouseEvent *event);
+	void onMouseRelease(QMouseEvent *event);
+	void onMouseMove(QMouseEvent *event);
 };
 
 #endif // DISPLAY_H

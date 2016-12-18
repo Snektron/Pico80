@@ -1,11 +1,9 @@
 #include "Pico80.h"
 #include <cstdint>
+#include <QThread>
 #include "core/Logger.h"
-#include "gui/Display.h"
+#include "gui/display/Display.h"
 #include "gui/LogViewPolicy.h"
-#include "emu/pico80/Asic.h"
-#include "emu/pico80/device/Screen.h"
-#include "core/PluginManager.h"
 
 #define TAG "Pico80"
 
@@ -15,40 +13,45 @@ Pico80::Pico80(QQmlContext *ctx)
 	Logger::addPolicy(new LogViewPolicy(&logModel));
 	Logger::info(TAG, "Starting");
 
-	PluginManager manager;
+	manager = new PluginManager();
 }
 
 void Pico80::initialize(QObject* root)
 {
 	Display *display = root->findChild<Display*>("Display");
+	emulator = new EmulatorThread();
 
-	emuthread = new EmulatorThread();
-	Asic *asic = emuthread->getAsic();
-	connect(asic, SIGNAL(screenDirty(Vram*)), display, SLOT(invalidate(Vram*)), Qt::QueuedConnection);
-	connect(display, SIGNAL(turnedOn()), asic, SLOT(turnOn()), Qt::QueuedConnection);
-	connect(display, SIGNAL(keyPress(uint8_t)), asic, SLOT(keyPress(uint8_t)), Qt::QueuedConnection);
-	connect(display, SIGNAL(keyRelease(uint8_t)), asic, SLOT(keyRelease(uint8_t)), Qt::QueuedConnection);
-	connect(display, SIGNAL(mousePress(uint8_t)), asic, SLOT(mousePress(uint8_t)), Qt::QueuedConnection);
-	connect(display, SIGNAL(mouseRelease(uint8_t)), asic, SLOT(mouseRelease(uint8_t)), Qt::QueuedConnection);
-	connect(display, SIGNAL(mouseMove(uint8_t, uint8_t)), asic, SLOT(mouseMove(uint8_t, uint8_t)), Qt::QueuedConnection);
+	connect(manager, SIGNAL(onInstanceChanged(Instance*)), display, SLOT(instanceChanged(Instance*)), Qt::QueuedConnection);
+	connect(manager, SIGNAL(onInstanceChanged(Instance*)), emulator, SLOT(instanceChanged(Instance*)), Qt::QueuedConnection);
+
+	if (manager->hasPlugins())
+	{
+		IPlugin *plugin = manager->getPlugins()[0];
+		manager->setActive(plugin);
+	}
+
 	Logger::info(TAG, "Started");
 }
 
 Pico80::~Pico80()
 {
-	if (!emuthread->isFinished())
-		quit();
-	delete emuthread;
+	delete emulator;
+	delete manager;
 }
 
 void Pico80::start()
 {
-	emuthread->start();
+	emulator->start();
 }
 
 void Pico80::quit()
 {
 	Logger::info(TAG, "Stopping");
-	emuthread->quit();
-	emuthread->wait();
+	if (emulator)
+	{
+		emulator->quit();
+		emulator->wait();
+	}
+
+	manager->unloadPlugins();
 }

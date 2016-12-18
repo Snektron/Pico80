@@ -6,13 +6,35 @@
 
 #define TAG "PluginManager"
 
-PluginManager::PluginManager()
+PluginManager::PluginManager():
+	active(nullptr)
 {
-	scanPluginDir();
+	reloadPlugins();
 }
 
-void PluginManager::scanPluginDir()
+PluginManager::~PluginManager()
 {
+	unloadPlugins();
+}
+
+bool PluginManager::loadPlugin(QObject *object)
+{
+	if (!object)
+		return false;
+
+	IPlugin *plugin = qobject_cast<IPlugin*>(object);
+	if (!plugin)
+		return false;
+
+	Logger::info(TAG) << "Loaded plugin '" << plugin->name().toStdString() << "'" << Logger::endl;
+	plugins.append(plugin);
+	return true;
+}
+
+void PluginManager::reloadPlugins()
+{
+	unloadPlugins();
+
 	QDir pluginsDir(QApplication::applicationDirPath());
 
 #if defined(Q_OS_WIN)
@@ -27,18 +49,65 @@ void PluginManager::scanPluginDir()
 #endif
 	pluginsDir.cd("plugins");
 
-	Logger::info(TAG, "Searing for plugins");
+	Logger::info(TAG, "Searching for plugins");
 
 	foreach (QString fileName, pluginsDir.entryList(QDir::Files))
 	{
 		QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
-		QObject *plugin = loader.instance();
-		if (plugin)
-			Logger::info(TAG) << "Succesfully loaded " << fileName.toStdString() << Logger::endl;
+		loadPlugin(loader.instance());
 	}
 }
 
-QList<QString>* PluginManager::getAvailablePlugins()
+void PluginManager::unloadPlugins()
 {
-	return &availablePlugins;
+	foreach (IPlugin *plugin, plugins)
+	{
+		if (active && active->getPlugin() == plugin)
+			deactivate();
+		delete plugin;
+	}
+
+	plugins.clear();
+}
+
+bool PluginManager::hasPlugins()
+{
+	return !plugins.empty();
+}
+
+IPlugin* PluginManager::getPlugin(QString name)
+{
+	foreach(IPlugin *plugin, plugins)
+		if (plugin->name() == name)
+			return plugin;
+	return nullptr;
+}
+
+QList<IPlugin*> PluginManager::getPlugins()
+{
+	return plugins;
+}
+
+void PluginManager::setActive(IPlugin *plugin)
+{
+	if (active)
+		deactivate();
+	Logger::info(TAG) << "Activating plugin '" << plugin->name().toStdString() << "'" << Logger::endl;
+	active = new Instance(plugin);
+	emit onInstanceChanged(active);
+}
+
+void PluginManager::deactivate()
+{
+	if (active)
+	{
+		delete active;
+		active = nullptr;
+		emit onInstanceChanged(nullptr);
+	}
+}
+
+Instance* PluginManager::getActive()
+{
+	return active;
 }

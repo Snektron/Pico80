@@ -4,6 +4,7 @@
 class IDisplay
 {
 public:
+	virtual void render() = 0;
 	virtual ~IDisplay() = default;
 };
 

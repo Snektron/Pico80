@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QQmlContext>
+#include "core/PluginManager.h"
 #include "emu/EmulatorThread.h"
 #include "gui/LogModel.h"
 
@@ -11,7 +12,8 @@ class Pico80 : public QObject
 	Q_OBJECT
 private:
 	LogModel logModel;
-	EmulatorThread *emuthread;
+	PluginManager *manager;
+	EmulatorThread *emulator;
 
 public:
 	Pico80(QQmlContext *ctx);

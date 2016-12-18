@@ -6,24 +6,27 @@
 
 #define TAG "EmulatorThread"
 
-EmulatorWorker::EmulatorWorker():
-	asic(ASIC_CLOCK, ASIC_TIMER)
-{
-	last = Time::now();
-}
-
 void EmulatorWorker::tick()
 {
-	Time::point time = Time::now();
-	Time::nanoseconds passed = time - last;
-	last = time;
-	int cycles = INSTRUCTIONS(ASIC_CLOCK, Time::toint(passed));
-	asic.tick(cycles);
+	if (emulator)
+		emulator->tick();
 }
 
-Asic* EmulatorWorker::getAsic()
+void EmulatorWorker::instanceChanged(Instance *instance)
 {
-	return &asic;
+	if (emulator)
+		delete emulator;
+
+	emulator = instance->getPlugin()->createEmulator();
+
+	if (!emulator)
+		Logger::info(TAG, "Failed to instantiate emulator.");
+}
+
+EmulatorWorker::~EmulatorWorker()
+{
+	if (emulator)
+		delete emulator;
 }
 
 void EmulatorThread::run()
@@ -31,20 +34,20 @@ void EmulatorThread::run()
 	QTimer timer;
 	timer.setTimerType(Qt::PreciseTimer);
 
-	connect(&timer, SIGNAL(timeout()), &asicworker, SLOT(tick()));
+	connect(&timer, SIGNAL(timeout()), &asicworker, SLOT(tick()), Qt::QueuedConnection);
+	connect(this, SIGNAL(onInstanceChanged(Instance*)), &asicworker, SLOT(instanceChanged(Instance*)), Qt::QueuedConnection);
 	timer.start(THREAD_INTERVAL);
 
 	exec();
 }
 
-Asic* EmulatorThread::getAsic()
-{
-	if (isRunning())
-		throw std::runtime_error("Unsafely tried to access asic.");
-	return asicworker.getAsic();
-}
-
 void EmulatorThread::quit()
 {
 	QThread::quit();
+}
+
+void EmulatorThread::instanceChanged(Instance *instance)
+{
+	Logger::info(TAG, "Test");
+	emit onInstanceChanged(instance);
 }

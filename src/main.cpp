@@ -8,7 +8,7 @@
 #include <QObject>
 #include "Settings.h"
 #include "core/Logger.h"
-#include "gui/Display.h"
+#include "gui/display/Display.h"
 #include "Pico80.h"
 
 #define TAG "main"

@@ -12,5 +12,7 @@
         <file>qml/ConsoleView.qml</file>
         <file>qml/DashboardView.qml</file>
         <file>qml/SettingsView.qml</file>
+        <file>shader/FallbackDisplay.fsh</file>
+        <file>shader/FallbackDisplay.vsh</file>
     </qresource>
 </RCC>

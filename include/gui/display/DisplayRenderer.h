@@ -2,28 +2,22 @@
 #define DISPLAYRENDERER_H
 
 #include <QSize>
-#include <QOpenGLFunctions>
 #include <QOpenGLFramebufferObject>
 #include <QQuickFramebufferObject>
-#include <QOpenGLShaderProgram>
-#include <QOpenGLTexture>
-#include "gui/Display.h"
+#include "gui/display/Display.h"
+#include "api/IDisplay.h"
 
-class DisplayRenderer : public QQuickFramebufferObject::Renderer, public QOpenGLFunctions
+class DisplayRenderer : public QQuickFramebufferObject::Renderer
 {
 private:
-	Display *display;
-	QOpenGLShaderProgram *shader;
-	QOpenGLTexture *texture;
-	QOpenGLTexture *palette;
+	Display *parent;
+	IDisplay *display;
 
 public:
 	DisplayRenderer();
 	QOpenGLFramebufferObject* createFramebufferObject(const QSize &size);
 	void synchronize(QQuickFramebufferObject *item);
 	void render();
-	void initialize();
-	void updateTexture();
 	~DisplayRenderer();
 };
 
