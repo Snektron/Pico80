@@ -14,6 +14,7 @@ private:
 	IEmulator *emulator;
 
 public:
+	EmulatorWorker();
 	~EmulatorWorker();
 private slots:
 	void tick();
@@ -24,7 +25,6 @@ class EmulatorThread : public QThread
 {
 	Q_OBJECT
 private:
-	EmulatorWorker asicworker;
 
 public:
 	void run();

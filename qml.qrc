@@ -2,17 +2,19 @@
     <qresource prefix="/">
         <file>qml/main.qml</file>
         <file>qml/MainForm.qml</file>
-        <file>qml/SidebarButton.qml</file>
         <file>fonts/Roboto-Regular.ttf</file>
         <file>fonts/fontawesome-webfont.ttf</file>
         <file>shader/Display.fsh</file>
         <file>shader/Display.vsh</file>
         <file>textures/palette.png</file>
-        <file>qml/DebugView.qml</file>
-        <file>qml/ConsoleView.qml</file>
-        <file>qml/DashboardView.qml</file>
-        <file>qml/SettingsView.qml</file>
         <file>shader/FallbackDisplay.fsh</file>
         <file>shader/FallbackDisplay.vsh</file>
+        <file>qml/view/ConsoleView.qml</file>
+        <file>qml/view/DashboardView.qml</file>
+        <file>qml/view/DebugView.qml</file>
+        <file>qml/view/SettingsView.qml</file>
+        <file>qml/SideBar.qml</file>
+        <file>qml/SideBarButton.qml</file>
+        <file>qml/view/Dock.qml</file>
     </qresource>
 </RCC>

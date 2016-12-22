@@ -2,14 +2,14 @@ import QtQuick 2.5
 import QtQuick.Controls 1.4
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.3
-import QtGraphicalEffects 1.0
 import Pico80 1.0
+import "view"
 
 Rectangle {
     id: base
 	color: "#F1F1F1"
 
-    FontLoader { source: "/fonts/Roboto-Regular.ttf" }
+	FontLoader { source: "/fonts/Roboto-Regular.ttf" }
     FontLoader { source: "/fonts/fontawesome-webfont.ttf"}
 
 	Rectangle {
@@ -20,118 +20,57 @@ Rectangle {
 		anchors.bottom: parent.bottom
 		width: 80
 
-		ColumnLayout {
-			spacing: 0
+		SideBar {
+			id: sidebar
+
+			onCurrentChanged: {
+				if (current) {
+					menuview.state = ""
+					menuview.currentIndex = current.index
+				} else
+					menuview.state = "hidden"
+			}
+		}
+
+		Column {
 			anchors.fill: parent
 
-			SidebarButton {
-				id: button1
+			SideBarButton {
+				id: sb_dashboard
+				sidebar: sidebar
 				caption: "Dashboard"
 				icon: "\uF0e4"
 				checked: true
-				Layout.alignment: Qt.AlignLeft | Qt.AlignTop
-				Layout.minimumHeight: 64
-				Layout.maximumHeight: 64
-				Layout.preferredHeight: 64
-				Layout.fillWidth: true
-				Layout.fillHeight: true
-
-				onActivated: {
-					button2.checked = false
-					button3.checked = false
-					button4.checked = false
-					menuview.state = ""
-					menuview.currentIndex = 0
-				}
-
-				onDeactivated: {
-					menuview.state = 'hidden'
-					menuview.currentIndex = -1
-				}
+				index: 0
 			}
 
-			SidebarButton {
-				id: button2
+			SideBarButton {
+				id: sb_debug
+				sidebar: sidebar
 				caption: "Debug"
 				icon: "\uF188"
-				anchors.top: button1.bottom
-				Layout.alignment: Qt.AlignLeft | Qt.AlignTop
-				Layout.minimumHeight: 64
-				Layout.maximumHeight: 64
-				Layout.preferredHeight: 64
-				Layout.fillWidth: true
-				Layout.fillHeight: true
-
-				onActivated: {
-					button1.checked = false
-					button3.checked = false
-					button4.checked = false
-					menuview.state = ""
-					menuview.currentIndex = 1
-				}
-
-				onDeactivated: {
-					menuview.state = 'hidden'
-					menuview.currentIndex = -1
-				}
+				index: 1
 			}
 
-			SidebarButton {
-				id: button3
+			SideBarButton {
+				id: sb_console
+				sidebar: sidebar
 				caption: "Console"
 				icon: "\uF120"
-				anchors.top: button2.bottom
-				Layout.alignment: Qt.AlignLeft | Qt.AlignTop
-				Layout.minimumHeight: 64
-				Layout.maximumHeight: 64
-				Layout.preferredHeight: 64
-				Layout.fillWidth: true
-				Layout.fillHeight: true
-
-				onActivated: {
-					button1.checked = false
-					button2.checked = false
-					button4.checked = false
-					menuview.state = ""
-					menuview.currentIndex = 2
-				}
-
-				onDeactivated: {
-					menuview.state = 'hidden'
-					menuview.currentIndex = -1
-				}
+				index: 2
 			}
 
-			SidebarButton {
-				id: button4
+			SideBarButton {
+				id: sb_settings
+				sidebar: sidebar
 				caption: "Settings"
 				icon: "\uF085"
-				anchors.top: button3.bottom
-				Layout.alignment: Qt.AlignLeft | Qt.AlignTop
-				Layout.minimumHeight: 64
-				Layout.maximumHeight: 64
-				Layout.preferredHeight: 64
-				Layout.fillWidth: true
-				Layout.fillHeight: true
-
-				onActivated: {
-					button1.checked = false
-					button2.checked = false
-					button3.checked = false
-					menuview.state = ""
-					menuview.currentIndex = 3
-				}
-
-				onDeactivated: {
-					menuview.state = 'hidden'
-					menuview.currentIndex = -1
-				}
+				index: 3
 			}
 		}
 	}
 
 	Rectangle {
-		id: mainview
 		color: "#00000000"
 		anchors.left: toolbar.right
 		anchors.top: parent.top
@@ -140,27 +79,22 @@ Rectangle {
 
 		SplitView {
 			anchors.fill: parent
-			anchors.rightMargin: 10
-			anchors.leftMargin: 10
-			anchors.bottomMargin: 10
-			anchors.topMargin: 10
 
 			onWidthChanged: {
-				if (width > 0 && menuview_container.width > width - 250 - 10)
-					menuview_container.width = width - 250 - 10;
+				if (width > 0 && mainview_container.width > width - 250 - 10)
+					mainview_container.width = width - 250 - 10;
 			}
 
 			handleDelegate: Rectangle {
-				width: 10
-				color: "#00000000"
+				width: 1
+				color: "#BBBBBB"
 			}
 
 			Rectangle {
-				id: menuview_container
+				id: mainview_container
 				color: "#00000000"
-				Layout.fillHeight: true
 				Layout.minimumWidth: 300
-				width: 500;
+				width: 400;
 
 				StackLayout {
 					id: menuview
@@ -171,7 +105,7 @@ Rectangle {
 						State {
 							name: "hidden"
 							PropertyChanges {
-								target: menuview_container;
+								target: mainview_container;
 								Layout.preferredWidth: 0
 								visible: false
 								Layout.fillWidth: false
@@ -186,33 +120,24 @@ Rectangle {
 				}
 			}
 
-			RectangularGlow {
+			Rectangle {
+				color: "#FFFFFF"
 				id: display_container
 				Layout.minimumWidth: 250
-				Layout.fillWidth: true
+				Layout.minimumHeight: 250
 
 				onWidthChanged: display.updateDimensions();
 				onHeightChanged: display.updateDimensions();
 
-				glowRadius: 3
-				spread: 0.2
-				color: "#E0E0E0"
-				cornerRadius: glowRadius
+				Display {
+					id: display
+					objectName: "Display"
+					anchors.centerIn: parent
 
-				Rectangle {
-					color: "#FFFFFF"
-					anchors.fill: parent
-
-					Display {
-						id: display
-						objectName: "Display"
-						anchors.horizontalCenter: parent.horizontalCenter
-						anchors.verticalCenter: parent.verticalCenter
-
-						function updateDimensions()
-						{
-							width = height = Math.min(parent.width, parent.height);
-						}
+					function updateDimensions()
+					{
+						var size = Math.min(parent.width, parent.height) - 10;
+						width = height = size;
 					}
 				}
 			}

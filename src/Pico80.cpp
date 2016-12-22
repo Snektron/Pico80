@@ -48,10 +48,7 @@ void Pico80::quit()
 {
 	Logger::info(TAG, "Stopping");
 	if (emulator)
-	{
 		emulator->quit();
-		emulator->wait();
-	}
 
 	manager->unloadPlugins();
 }
