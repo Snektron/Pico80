@@ -3,12 +3,11 @@
 
 #include <QObject>
 #include "api/IPlugin.h"
-#include "core/Instance.h"
 
 class PluginManager: public QObject
 {
 	Q_OBJECT
-	Instance *active;
+	IPlugin *active;
 	QList<IPlugin*> plugins;
 
 public:
@@ -23,10 +22,10 @@ public:
 
 	void setActive(IPlugin* plugin);
 	void deactivate();
-	Instance* getActive();
+	IPlugin* getActive();
 
 signals:
-	void onInstanceChanged(Instance *instance);
+	void onPluginChanged(IPlugin *plugin);
 };
 
 #endif // PLUGINMANAGER_H

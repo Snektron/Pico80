@@ -5,9 +5,10 @@
 #include <QOpenGLFramebufferObject>
 #include <QQuickFramebufferObject>
 #include "gui/display/Display.h"
+#include "api/IPlugin.h"
 #include "api/IDisplay.h"
 
-class DisplayRenderer : public QQuickFramebufferObject::Renderer
+class DisplayRenderer: public QQuickFramebufferObject::Renderer
 {
 private:
 	Display *parent;

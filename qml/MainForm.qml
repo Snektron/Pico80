@@ -33,6 +33,7 @@ Rectangle {
 		}
 
 		Column {
+			objectName: "Sidebar"
 			anchors.fill: parent
 
 			SideBarButton {
@@ -98,6 +99,7 @@ Rectangle {
 
 				StackLayout {
 					id: menuview
+					objectName: "View"
 					anchors.fill: parent
 					currentIndex: 0
 

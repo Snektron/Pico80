@@ -4,7 +4,7 @@ import QtQuick.Controls 2.0
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
 
-Dock {
+View {
 	ColumnLayout {
 		id: columnlayout1
 		anchors.fill: parent

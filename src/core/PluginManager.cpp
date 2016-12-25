@@ -62,7 +62,7 @@ void PluginManager::unloadPlugins()
 {
 	foreach (IPlugin *plugin, plugins)
 	{
-		if (active && active->getPlugin() == plugin)
+		if (active && active == plugin)
 			deactivate();
 		delete plugin;
 	}
@@ -93,21 +93,20 @@ void PluginManager::setActive(IPlugin *plugin)
 	if (active)
 		deactivate();
 	Logger::info(TAG) << "Activating plugin '" << plugin->name().toStdString() << "'" << Logger::endl;
-	active = new Instance(plugin);
-	emit onInstanceChanged(active);
+	active = plugin;
+	emit onPluginChanged(active);
 }
 
 void PluginManager::deactivate()
 {
 	if (active)
 	{
-		delete active;
 		active = nullptr;
-		emit onInstanceChanged(nullptr);
+		emit onPluginChanged(nullptr);
 	}
 }
 
-Instance* PluginManager::getActive()
+IPlugin* PluginManager::getActive()
 {
 	return active;
 }

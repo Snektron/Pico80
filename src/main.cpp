@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
 	Pico80 pico(engine.rootContext());
 	QObject::connect(&app, SIGNAL(aboutToQuit()), &pico, SLOT(quit()));
 	engine.load(QUrl(QStringLiteral("qrc:/qml/main.qml")));
-	pico.initialize(engine.rootObjects()[0]);
+	pico.initialize(&engine, engine.rootObjects()[0]);
 	pico.start();
 
     return app.exec();

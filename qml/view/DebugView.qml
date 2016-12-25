@@ -5,7 +5,7 @@ import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
 
-Dock {
+View {
 	color: "#FFFFFF"
 	anchors.fill: parent
 }

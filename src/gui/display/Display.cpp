@@ -21,14 +21,8 @@ bool Display::isDirty()
 	return displayDirty;
 }
 
-Instance* Display::getInstance()
+void Display::pluginChanged(IPlugin *plugin)
 {
-	return instance;
-}
-
-void Display::instanceChanged(Instance *instance)
-{
-	this->instance = instance;
 	invalidate();
 }
 

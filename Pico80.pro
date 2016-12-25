@@ -9,14 +9,14 @@ SOURCES += \
     src/core/Logger.cpp \
     src/core/Time.cpp \
     src/core/PluginManager.cpp \
-    src/core/Instance.cpp \
     src/emu/EmulatorThread.cpp \
     src/gui/display/DisplayRenderer.cpp \
     src/gui/display/Display.cpp \
     src/gui/LogModel.cpp \
     src/Pico80.cpp \
     src/Settings.cpp \
-    src/gui/display/FallbackDisplay.cpp
+    src/gui/display/FallbackDisplay.cpp \
+    src/api/PluginEngine.cpp
 
 RESOURCES += qml.qrc
 
@@ -29,7 +29,6 @@ HEADERS += \
     include/core/Logger.h \
     include/core/Time.h \
     include/core/PluginManager.h \
-    include/core/Instance.h \
     include/emu/EmulatorThread.h \
     include/gui/display/Display.h \
     include/gui/display/DisplayRenderer.h \
@@ -37,7 +36,9 @@ HEADERS += \
     include/gui/LogModel.h \
     include/Pico80.h \
     include/Settings.h \
-    include/gui/display/FallbackDisplay.h
+    include/gui/display/FallbackDisplay.h \
+    include/api/PluginEngine.h \
+    include/api/Factory.h
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =

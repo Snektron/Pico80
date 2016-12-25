@@ -2,23 +2,21 @@
 #define DISPLAY_H
 
 #include <QQuickFramebufferObject>
-#include "core/Instance.h"
+#include "api/IPlugin.h"
 
 class Display : public QQuickFramebufferObject
 {
 	Q_OBJECT
 private:
-	Instance *instance;
 	bool dirty;
 
 public:
 	Display();
 	QQuickFramebufferObject::Renderer* createRenderer() const;
 	bool isDirty();
-	Instance* getInstance();
 
 public slots:
-	void instanceChanged(Instance *instance);
+	void pluginChanged(IPlugin *plugin);
 	void invalidate();
 	void keyPressEvent(QKeyEvent *event);
 	void keyReleaseEvent(QKeyEvent *event);
@@ -33,7 +31,7 @@ signals:
 	void onKeyRelease(QKeyEvent *event);
 	void onMousePress(QMouseEvent *event);
 	void onMouseRelease(QMouseEvent *event);
-	void onMouseMove(QMouseEvent *event);
+	void onMouseMove(QMouseEvent *event);	
 };
 
 #endif // DISPLAY_H

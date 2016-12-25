@@ -3,7 +3,7 @@
 
 #include <QThread>
 #include "api/IEmulator.h"
-#include "core/Instance.h"
+#include "api/IPlugin.h"
 
 #define THREAD_INTERVAL 1
 
@@ -18,7 +18,7 @@ public:
 	~EmulatorWorker();
 private slots:
 	void tick();
-	void instanceChanged(Instance *instance);
+	void pluginChanged(IPlugin *plugin);
 };
 
 class EmulatorThread : public QThread
@@ -31,10 +31,10 @@ public:
 
 public slots:
 	void quit();
-	void instanceChanged(Instance *instance);
+	void pluginChanged(IPlugin *plugin);
 
 signals:
-	void onInstanceChanged(Instance *instance);
+	void onPluginChanged(IPlugin *plugin);
 };
 
 #endif // ASICTHREAD_H

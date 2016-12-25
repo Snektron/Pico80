@@ -22,12 +22,13 @@ void EmulatorWorker::tick()
 		emulator->tick();
 }
 
-void EmulatorWorker::instanceChanged(Instance *instance)
+void EmulatorWorker::pluginChanged(IPlugin *plugin)
 {
 	if (emulator)
 		delete emulator;
 
-	emulator = instance->getPlugin()->createEmulator();
+	if (plugin)
+		emulator = plugin->createEmulator();
 
 	if (!emulator)
 		Logger::warn(TAG, "Failed to instantiate emulator.");
@@ -44,16 +45,16 @@ void EmulatorThread::run()
 	connect(&timer, SIGNAL(timeout()),
 			&worker, SLOT(tick()),
 			Qt::QueuedConnection);
-	connect(this, SIGNAL(onInstanceChanged(Instance*)),
-			&worker, SLOT(instanceChanged(Instance*)),
+	connect(this, SIGNAL(onPluginChanged(IPlugin*)),
+			&worker, SLOT(pluginChanged(IPlugin*)),
 			Qt::QueuedConnection);
 
 	exec();
 
 	disconnect(&timer, SIGNAL(timeout()),
 			   &worker, SLOT(tick()));
-	disconnect(this, SIGNAL(onInstanceChanged(Instance*)),
-			   &worker, SLOT(instanceChanged(Instance*)));
+	disconnect(this, SIGNAL(onPluginChanged(IPlugin*)),
+			   &worker, SLOT(pluginChanged(IPlugin*)));
 }
 
 void EmulatorThread::quit()
@@ -62,7 +63,7 @@ void EmulatorThread::quit()
 	QThread::wait();
 }
 
-void EmulatorThread::instanceChanged(Instance *instance)
+void EmulatorThread::pluginChanged(IPlugin *plugin)
 {
-	emit onInstanceChanged(instance);
+	emit onPluginChanged(plugin);
 }

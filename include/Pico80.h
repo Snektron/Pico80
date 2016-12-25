@@ -17,7 +17,7 @@ private:
 
 public:
 	Pico80(QQmlContext *ctx);
-	void initialize(QObject* root);
+	void initialize(QQmlEngine *engine, QObject *root);
 	~Pico80();
 
 public slots:

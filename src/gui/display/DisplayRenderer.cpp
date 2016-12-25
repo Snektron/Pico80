@@ -29,8 +29,8 @@ void DisplayRenderer::synchronize(QQuickFramebufferObject *item)
 			display = nullptr;
 		}
 
-		if (parent->getInstance())
-			display = parent->getInstance()->getPlugin()->createDisplay();
+	//	if (parent->getInstance())
+	//		display = parent->getInstance()->getPlugin()->createDisplay();
 	}
 
 	if (!display)

@@ -16,13 +16,13 @@ Pico80::Pico80(QQmlContext *ctx)
 	manager = new PluginManager();
 }
 
-void Pico80::initialize(QObject* root)
+void Pico80::initialize(QQmlEngine *engine, QObject *root)
 {
 	Display *display = root->findChild<Display*>("Display");
 	emulator = new EmulatorThread();
 
-	connect(manager, SIGNAL(onInstanceChanged(Instance*)), display, SLOT(instanceChanged(Instance*)), Qt::QueuedConnection);
-	connect(manager, SIGNAL(onInstanceChanged(Instance*)), emulator, SLOT(instanceChanged(Instance*)), Qt::QueuedConnection);
+	connect(manager, SIGNAL(onPluginChanged(IPlugin*)), display, SLOT(pluginChanged(IPlugin*)), Qt::QueuedConnection);
+	connect(manager, SIGNAL(onPluginChanged(IPlugin*)), emulator, SLOT(pluginChanged(IPlugin*)), Qt::QueuedConnection);
 
 	if (manager->hasPlugins())
 	{

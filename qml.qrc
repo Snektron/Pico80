@@ -15,6 +15,6 @@
         <file>qml/view/SettingsView.qml</file>
         <file>qml/SideBar.qml</file>
         <file>qml/SideBarButton.qml</file>
-        <file>qml/view/Dock.qml</file>
+        <file>qml/view/View.qml</file>
     </qresource>
 </RCC>
