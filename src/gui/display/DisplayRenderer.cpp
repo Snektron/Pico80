@@ -2,9 +2,6 @@
 #include <QQuickWindow>
 #include "gui/display/Display.h"
 #include "gui/display/FallbackDisplay.h"
-#include "core/Logger.h"
-
-#define TAG "DisplayRenderer"
 
 DisplayRenderer::DisplayRenderer():
 	parent(nullptr),
@@ -21,7 +18,7 @@ void DisplayRenderer::synchronize(QQuickFramebufferObject *item)
 {
 	this->parent = (Display*) item;
 
-	if (parent && parent->isDirty())
+/*	if (parent && parent->isDirty())
 	{
 		if (display)
 		{
@@ -31,11 +28,11 @@ void DisplayRenderer::synchronize(QQuickFramebufferObject *item)
 
 	//	if (parent->getInstance())
 	//		display = parent->getInstance()->getPlugin()->createDisplay();
-	}
+	} */
 
 	if (!display)
 	{
-		Logger::warn(TAG, "Failed to instantiate display, using fallback.");
+		qWarning() << "Failed to instantiate display";
 		display = new FallbackDisplayRenderer();
 	}
 }

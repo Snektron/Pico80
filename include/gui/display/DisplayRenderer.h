@@ -4,9 +4,8 @@
 #include <QSize>
 #include <QOpenGLFramebufferObject>
 #include <QQuickFramebufferObject>
+#include <picore/api/IDisplay.h>
 #include "gui/display/Display.h"
-#include "api/IPlugin.h"
-#include "api/IDisplay.h"
 
 class DisplayRenderer: public QQuickFramebufferObject::Renderer
 {

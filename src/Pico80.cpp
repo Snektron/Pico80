@@ -1,54 +1,66 @@
 #include "Pico80.h"
-#include <cstdint>
-#include <QThread>
-#include "core/Logger.h"
-#include "gui/display/Display.h"
-#include "gui/LogViewPolicy.h"
+#include <QQmlContext>
+#include <picore/PluginEngine.h>
+#include "gui/Logging.h"
 
-#define TAG "Pico80"
-
-Pico80::Pico80(QQmlContext *ctx)
+Pico80::Pico80():
+	emulator(Q_NULLPTR)
 {
-	ctx->setContextProperty("LogModel", &logModel);
-	Logger::addPolicy(new LogViewPolicy(&logModel));
-	Logger::info(TAG, "Starting");
-
+	Logging::installMessageHandler();
+	qInfo() << "Starting";
+	theme = new ThemeEngine();
 	manager = new PluginManager();
-}
 
-void Pico80::initialize(QQmlEngine *engine, QObject *root)
-{
-	Display *display = root->findChild<Display*>("Display");
-	emulator = new EmulatorThread();
+	QQmlContext *ctx = qmlEngine.rootContext();
+	ctx->setContextProperty("logModel", Logging::instance());
+	ctx->setContextProperty("theme", theme->loadTheme());
 
-	connect(manager, SIGNAL(onPluginChanged(IPlugin*)), display, SLOT(pluginChanged(IPlugin*)), Qt::QueuedConnection);
-	connect(manager, SIGNAL(onPluginChanged(IPlugin*)), emulator, SLOT(pluginChanged(IPlugin*)), Qt::QueuedConnection);
-
-	if (manager->hasPlugins())
-	{
-		IPlugin *plugin = manager->getPlugins()[0];
-		manager->setActive(plugin);
-	}
-
-	Logger::info(TAG, "Started");
+	qmlEngine.load(QUrl("qrc:/qml/main.qml"));
 }
 
 Pico80::~Pico80()
 {
 	delete emulator;
 	delete manager;
+	delete theme;
+	Logging::removeMessageHandler();
+}
+
+template <typename T>
+T Pico80::findChild(QString name)
+{
+	foreach (QObject* rootObject, qmlEngine.rootObjects())
+	{
+		T object = rootObject->findChild<T>(name);
+		if (object)
+			return object;
+	}
+
+	return Q_NULLPTR;
+}
+
+void Pico80::setEmulatorPlugin(QString name)
+{
+	delete emulator;
+	IPlugin *plugin = manager->getPlugin(name);
+	if (plugin)
+		qDebug() << "Activating plugin" << name;
+	else
+		qWarning() << "Failed to activate plugin" << name;
+
+	emulator = new EmulatorContext(qmlEngine, plugin);
+	emulator->start();
 }
 
 void Pico80::start()
 {
-	emulator->start();
+	if (manager->hasPlugins())
+		setEmulatorPlugin(manager->getPlugins()[0]->name());
+	else
+		setEmulatorPlugin("");
 }
 
 void Pico80::quit()
 {
-	Logger::info(TAG, "Stopping");
-	if (emulator)
-		emulator->quit();
-
-	manager->unloadPlugins();
+	qInfo() << "Stopping";
 }

@@ -2,30 +2,26 @@
 #define DISPLAY_H
 
 #include <QQuickFramebufferObject>
-#include "api/IPlugin.h"
+#include <picore/PluginEngine.h>
 
 class Display : public QQuickFramebufferObject
 {
 	Q_OBJECT
 private:
-	bool dirty;
 
 public:
 	Display();
 	QQuickFramebufferObject::Renderer* createRenderer() const;
-	bool isDirty();
 
 public slots:
-	void pluginChanged(IPlugin *plugin);
-	void invalidate();
 	void keyPressEvent(QKeyEvent *event);
 	void keyReleaseEvent(QKeyEvent *event);
 	void mousePressEvent(QMouseEvent *event);
 	void mouseReleaseEvent(QMouseEvent *event);
-	void hoverMoveEvent(QHoverEvent *event);
 	void mouseMoveEvent(QMouseEvent *event);
 
 signals:
+	void onPluginChanged(PluginEngine *engine);
 	void onTurnedOn();
 	void onKeyPress(QKeyEvent *event);
 	void onKeyRelease(QKeyEvent *event);

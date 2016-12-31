@@ -2,12 +2,12 @@
 #define PLUGINMANAGER_H
 
 #include <QObject>
-#include "api/IPlugin.h"
+#include <picore/api/IPlugin.h>
 
 class PluginManager: public QObject
 {
 	Q_OBJECT
-	IPlugin *active;
+private:
 	QList<IPlugin*> plugins;
 
 public:
@@ -19,13 +19,6 @@ public:
 	bool hasPlugins();
 	IPlugin* getPlugin(QString name);
 	QList<IPlugin*> getPlugins();
-
-	void setActive(IPlugin* plugin);
-	void deactivate();
-	IPlugin* getActive();
-
-signals:
-	void onPluginChanged(IPlugin *plugin);
 };
 
 #endif // PLUGINMANAGER_H

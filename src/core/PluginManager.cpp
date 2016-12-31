@@ -2,12 +2,9 @@
 #include <QApplication>
 #include <QDir>
 #include <QPluginLoader>
-#include "core/Logger.h"
+#include <QDebug>
 
-#define TAG "PluginManager"
-
-PluginManager::PluginManager():
-	active(nullptr)
+PluginManager::PluginManager()
 {
 	reloadPlugins();
 }
@@ -26,7 +23,7 @@ bool PluginManager::loadPlugin(QObject *object)
 	if (!plugin)
 		return false;
 
-	Logger::info(TAG) << "Loaded plugin '" << plugin->name().toStdString() << "'" << Logger::endl;
+	qInfo() << "Loaded plugin" << plugin->name();
 	plugins.append(plugin);
 	return true;
 }
@@ -49,7 +46,7 @@ void PluginManager::reloadPlugins()
 #endif
 	pluginsDir.cd("plugins");
 
-	Logger::info(TAG, "Searching for plugins");
+	qInfo() << "Searching for plugins...";
 
 	foreach (QString fileName, pluginsDir.entryList(QDir::Files))
 	{
@@ -61,11 +58,7 @@ void PluginManager::reloadPlugins()
 void PluginManager::unloadPlugins()
 {
 	foreach (IPlugin *plugin, plugins)
-	{
-		if (active && active == plugin)
-			deactivate();
 		delete plugin;
-	}
 
 	plugins.clear();
 }
@@ -80,33 +73,10 @@ IPlugin* PluginManager::getPlugin(QString name)
 	foreach(IPlugin *plugin, plugins)
 		if (plugin->name() == name)
 			return plugin;
-	return nullptr;
+	return Q_NULLPTR;
 }
 
 QList<IPlugin*> PluginManager::getPlugins()
 {
 	return plugins;
-}
-
-void PluginManager::setActive(IPlugin *plugin)
-{
-	if (active)
-		deactivate();
-	Logger::info(TAG) << "Activating plugin '" << plugin->name().toStdString() << "'" << Logger::endl;
-	active = plugin;
-	emit onPluginChanged(active);
-}
-
-void PluginManager::deactivate()
-{
-	if (active)
-	{
-		active = nullptr;
-		emit onPluginChanged(nullptr);
-	}
-}
-
-IPlugin* PluginManager::getActive()
-{
-	return active;
 }

@@ -1,9 +1,7 @@
 #include "gui/display/Display.h"
-#include <cstdint>
 #include "gui/display/DisplayRenderer.h"
 
-Display::Display():
-	dirty(false)
+Display::Display()
 {
 	setAcceptedMouseButtons(Qt::LeftButton | Qt::RightButton);
 	setAcceptHoverEvents(true);
@@ -14,48 +12,31 @@ QQuickFramebufferObject::Renderer* Display::createRenderer() const
 	return new DisplayRenderer();
 }
 
-bool Display::isDirty()
-{
-	bool displayDirty = dirty;
-	dirty = false;
-	return displayDirty;
-}
-
-void Display::pluginChanged(IPlugin *plugin)
-{
-	invalidate();
-}
-
-void Display::invalidate()
-{
-	dirty = true;
-	update();
-}
 
 void Display::keyPressEvent(QKeyEvent *event)
 {
 	if (event->key() == Qt::Key_F12)
 		emit onTurnedOn();
+	emit onKeyPress(event);
 }
 
 void Display::keyReleaseEvent(QKeyEvent *event)
 {
-
+	emit onKeyRelease(event);
 }
 
 void Display::mousePressEvent(QMouseEvent *event)
 {
 	setFocus(true);
+	emit onMousePress(event);
 }
 
 void Display::mouseReleaseEvent(QMouseEvent *event)
 {
+	emit onMouseRelease(event);
 }
 
 void Display::mouseMoveEvent(QMouseEvent *event)
 {
-}
-
-void Display::hoverMoveEvent(QHoverEvent *event)
-{
+	emit onMouseMove(event);
 }

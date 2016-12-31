@@ -2,8 +2,8 @@
 #define ASICTHREAD_H
 
 #include <QThread>
-#include "api/IEmulator.h"
-#include "api/IPlugin.h"
+#include <picore/PluginEngine.h>
+#include <picore/api/IEmulator.h>
 
 #define THREAD_INTERVAL 1
 
@@ -14,27 +14,24 @@ private:
 	IEmulator *emulator;
 
 public:
-	EmulatorWorker();
+	EmulatorWorker(PluginEngine *engine);
 	~EmulatorWorker();
 private slots:
 	void tick();
-	void pluginChanged(IPlugin *plugin);
 };
 
 class EmulatorThread : public QThread
 {
 	Q_OBJECT
 private:
+	PluginEngine *engine;
 
 public:
+	EmulatorThread(PluginEngine *engine);
 	void run();
 
 public slots:
 	void quit();
-	void pluginChanged(IPlugin *plugin);
-
-signals:
-	void onPluginChanged(IPlugin *plugin);
 };
 
 #endif // ASICTHREAD_H

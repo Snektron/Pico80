@@ -1,17 +1,15 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
-#include <string>
+#include <QString>
 #include <QCommandLineParser>
 
 namespace Settings
 {
 	typedef struct Settings
 	{
-		std::string rom;
+		QString rom;
 		bool saveRom;
-		bool quiet;
-		bool saveLog;
 	} Settings;
 
 	enum class ParseResult

@@ -3,49 +3,37 @@ TEMPLATE = app
 QT += qml quick gui opengl
 CONFIG += c++11 silent
 QMAKE_CXXFLAGS += -Wno-unused-parameter -Wno-reorder -Wno-extra
+INCLUDEPATH += include ../picore/include
 
 SOURCES += \
     src/main.cpp \
-    src/core/Logger.cpp \
-    src/core/Time.cpp \
     src/core/PluginManager.cpp \
     src/emu/EmulatorThread.cpp \
     src/gui/display/DisplayRenderer.cpp \
     src/gui/display/Display.cpp \
-    src/gui/LogModel.cpp \
+    src/gui/display/FallbackDisplay.cpp \
     src/Pico80.cpp \
     src/Settings.cpp \
-    src/gui/display/FallbackDisplay.cpp \
-    src/api/PluginEngine.cpp
-
-RESOURCES += qml.qrc
-
-INCLUDEPATH += include
+    src/gui/Logging.cpp \
+    src/gui/display/DisplayWrapper.cpp \
+    src/emu/EmulatorContext.cpp \
+    src/gui/ThemeEngine.cpp
 
 HEADERS += \
-    include/api/IEmulator.h \
-    include/api/IPlugin.h \
-    include/api/IDisplay.h \
-    include/core/Logger.h \
-    include/core/Time.h \
     include/core/PluginManager.h \
     include/emu/EmulatorThread.h \
     include/gui/display/Display.h \
     include/gui/display/DisplayRenderer.h \
-    include/gui/LogViewPolicy.h \
-    include/gui/LogModel.h \
+    include/gui/display/FallbackDisplay.h \
     include/Pico80.h \
     include/Settings.h \
-    include/gui/display/FallbackDisplay.h \
-    include/api/PluginEngine.h \
-    include/api/Factory.h
+    include/gui/Logging.h \
+    include/gui/display/DisplayWrapper.h \
+    include/emu/EmulatorContext.h \
+    include/gui/ThemeEngine.h
 
-# Additional import path used to resolve QML modules in Qt Creator's code model
-QML_IMPORT_PATH =
+RESOURCES += \
+    rsrc.qrc
 
-# Default rules for deployment.
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
-!isEmpty(target.path): INSTALLS += target
-
-DISTFILES +=
+win32: LIBS += -L../build-Pico80-Desktop_Qt_5_7_0_MinGW_32bit-Debug/ -lpicore
+unix: LIBS += -L../build-Pico80-Desktop-Debug/ -lpicore

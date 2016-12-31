@@ -11,7 +11,7 @@ View {
 		anchors.margins: 10
 
 		Rectangle {
-			color: "#E7E7E7"
+			color: "#F7F7F7"
 			Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 			Layout.fillHeight: true
 			Layout.fillWidth: true
@@ -27,10 +27,11 @@ View {
 				anchors.bottomMargin: 5
 				anchors.topMargin: 5
 
-				model: LogModel
+				model: logModel
 
-				delegate: Text {
+				delegate: Text {					
 					text: record
+					color: ["#222222", "#FFAF00", "#FF2222", "#FF5555", "#000000"][type]
 					anchors.left: parent.left
 					anchors.right: parent.right
 					anchors.rightMargin: 10

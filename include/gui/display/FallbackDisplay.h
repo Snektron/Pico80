@@ -4,7 +4,7 @@
 #include <QOpenGLFunctions>
 #include <QOpenGLShaderProgram>
 #include <QOpenGLTexture>
-#include "api/IDisplay.h"
+#include <picore/api/IDisplay.h>
 
 class FallbackDisplayRenderer: public IDisplay, public QOpenGLFunctions
 {

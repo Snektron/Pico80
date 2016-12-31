@@ -10,11 +10,10 @@
         <file>shader/FallbackDisplay.fsh</file>
         <file>shader/FallbackDisplay.vsh</file>
         <file>qml/view/ConsoleView.qml</file>
-        <file>qml/view/DashboardView.qml</file>
         <file>qml/view/DebugView.qml</file>
         <file>qml/view/SettingsView.qml</file>
-        <file>qml/SideBar.qml</file>
-        <file>qml/SideBarButton.qml</file>
         <file>qml/view/View.qml</file>
+        <file>qml/components/SideBar.qml</file>
+        <file>qml/components/SideBarButton.qml</file>
     </qresource>
 </RCC>
