@@ -1,0 +1,4 @@
+#ifndef DISPLAYWRAPPER_H
+#define DISPLAYWRAPPER_H
+
+#endif // DISPLAYWRAPPER_H
