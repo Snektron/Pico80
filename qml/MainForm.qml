@@ -2,7 +2,6 @@ import QtQuick 2.5
 import QtQuick.Controls 1.4
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.3
-import Pico80 1.0
 import "components"
 import "view"
 
@@ -119,20 +118,11 @@ Rectangle {
 			Layout.minimumWidth: 250
 			Layout.minimumHeight: 250
 
-		//	onWidthChanged: display.updateDimensions();
-		//	onHeightChanged: display.updateDimensions();
-
-		/*	Display {
-				id: display
-				objectName: "Display"
-				anchors.centerIn: parent
-
-				function updateDimensions()
-				{
-					var size = Math.min(parent.width, parent.height) - 10;
-					width = height = size;
-				}
-			} */
+			function updateDisplay() {
+				for (var i = 0; i < children.length; i++)
+					if (children[i].objectName === "Display")
+						children[i].anchors.fill = display_container
+			}
 		}
 	}
 }

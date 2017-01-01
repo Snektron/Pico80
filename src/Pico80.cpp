@@ -26,27 +26,14 @@ Pico80::~Pico80()
 	Logging::removeMessageHandler();
 }
 
-template <typename T>
-T Pico80::findChild(QString name)
-{
-	foreach (QObject* rootObject, qmlEngine.rootObjects())
-	{
-		T object = rootObject->findChild<T>(name);
-		if (object)
-			return object;
-	}
-
-	return Q_NULLPTR;
-}
-
-void Pico80::setEmulatorPlugin(QString name)
+void Pico80::setEmulatorPlugin(QString file)
 {
 	delete emulator;
-	IPlugin *plugin = manager->getPlugin(name);
+	IPlugin *plugin = manager->loadPluginByFile(file);
 	if (plugin)
-		qDebug() << "Activating plugin" << name;
+		qDebug() << "Activating plugin" << plugin->name();
 	else
-		qWarning() << "Failed to activate plugin" << name;
+		qWarning() << "Failed to activate plugin" << file;
 
 	emulator = new EmulatorContext(qmlEngine, plugin);
 	emulator->start();
@@ -54,8 +41,9 @@ void Pico80::setEmulatorPlugin(QString name)
 
 void Pico80::start()
 {
-	if (manager->hasPlugins())
-		setEmulatorPlugin(manager->getPlugins()[0]->name());
+	QList<PluginDescriptor> plugins = manager->availablePlugins();
+	if (plugins.size() > 0)
+		setEmulatorPlugin(plugins[0].getFileName());
 	else
 		setEmulatorPlugin("");
 }

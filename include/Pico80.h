@@ -2,16 +2,16 @@
 #define PICO80_H
 
 #include <QObject>
-#include <QQmlApplicationEngine>
-#include "gui/ThemeEngine.h"
+#include "core/QmlPicoEngine.h"
 #include "core/PluginManager.h"
+#include "gui/ThemeEngine.h"
 #include "emu/EmulatorContext.h"
 
 class Pico80 : public QObject
 {
 	Q_OBJECT
 private:
-	QQmlApplicationEngine qmlEngine;
+	QmlPicoEngine qmlEngine;
 	ThemeEngine *theme;
 	PluginManager *manager;
 	EmulatorContext *emulator;
@@ -19,11 +19,9 @@ private:
 public:
 	Pico80();
 	~Pico80();
-	template <typename T>
-	T findChild(QString name);
 
 public slots:
-	void setEmulatorPlugin(QString name);
+	void setEmulatorPlugin(QString file);
 	void start();
 	void quit();
 

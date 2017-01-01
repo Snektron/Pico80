@@ -4,34 +4,8 @@
 #include <QPluginLoader>
 #include <QDebug>
 
-PluginManager::PluginManager()
+QDir getPluginDirectory()
 {
-	reloadPlugins();
-}
-
-PluginManager::~PluginManager()
-{
-	unloadPlugins();
-}
-
-bool PluginManager::loadPlugin(QObject *object)
-{
-	if (!object)
-		return false;
-
-	IPlugin *plugin = qobject_cast<IPlugin*>(object);
-	if (!plugin)
-		return false;
-
-	qInfo() << "Loaded plugin" << plugin->name();
-	plugins.append(plugin);
-	return true;
-}
-
-void PluginManager::reloadPlugins()
-{
-	unloadPlugins();
-
 	QDir pluginsDir(QApplication::applicationDirPath());
 
 #if defined(Q_OS_WIN)
@@ -46,37 +20,66 @@ void PluginManager::reloadPlugins()
 #endif
 	pluginsDir.cd("plugins");
 
-	qInfo() << "Searching for plugins...";
+	return pluginsDir;
+}
+
+QList<PluginDescriptor> PluginManager::availablePlugins()
+{
+	QDir pluginsDir = getPluginDirectory();
+	QList<PluginDescriptor> plugins;
 
 	foreach (QString fileName, pluginsDir.entryList(QDir::Files))
 	{
 		QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
-		loadPlugin(loader.instance());
-	}
-}
 
-void PluginManager::unloadPlugins()
-{
-	foreach (IPlugin *plugin, plugins)
+		QObject *instance = loader.instance();
+		if (!instance)
+			continue;
+
+		IPlugin *plugin = qobject_cast<IPlugin*>(instance);
+		if (!plugin)
+			continue;
+
+		plugins << PluginDescriptor(fileName, plugin->name());
 		delete plugin;
+	}
 
-	plugins.clear();
+	return plugins;
 }
 
-bool PluginManager::hasPlugins()
+IPlugin* PluginManager::loadPluginByName(QString name)
 {
-	return !plugins.empty();
-}
+	QDir pluginsDir = getPluginDirectory();
 
-IPlugin* PluginManager::getPlugin(QString name)
-{
-	foreach(IPlugin *plugin, plugins)
+	foreach (QString fileName, pluginsDir.entryList(QDir::Files))
+	{
+		QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
+
+		QObject *instance = loader.instance();
+		if (!instance)
+			continue;
+
+		IPlugin *plugin = qobject_cast<IPlugin*>(instance);
+		if (!plugin)
+			continue;
+
 		if (plugin->name() == name)
 			return plugin;
+
+		delete plugin;
+	}
+
 	return Q_NULLPTR;
 }
 
-QList<IPlugin*> PluginManager::getPlugins()
+IPlugin* PluginManager::loadPluginByFile(QString file)
 {
-	return plugins;
+	QDir pluginsDir = getPluginDirectory();
+	QPluginLoader loader(pluginsDir.absoluteFilePath(file));
+
+	QObject *instance = loader.instance();
+	if (!instance)
+		return Q_NULLPTR;
+
+	return qobject_cast<IPlugin*>(instance);
 }

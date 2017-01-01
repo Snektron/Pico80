@@ -30,10 +30,11 @@ HEADERS += \
     include/gui/Logging.h \
     include/gui/display/DisplayWrapper.h \
     include/emu/EmulatorContext.h \
-    include/gui/ThemeEngine.h
+    include/gui/ThemeEngine.h \
+    include/core/QmlPicoEngine.h
 
 RESOURCES += \
     rsrc.qrc
 
-win32: LIBS += -L../build-Pico80-Desktop_Qt_5_7_0_MinGW_32bit-Debug/ -lpicore
+win32: LIBS += -L../build-Pico80-Desktop_Qt_5_7_0_MinGW_32bit-Debug/ -lpicored
 unix: LIBS += -L../build-Pico80-Desktop-Debug/ -lpicore

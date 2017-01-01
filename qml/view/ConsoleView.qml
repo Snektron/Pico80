@@ -29,7 +29,7 @@ View {
 
 				model: logModel
 
-				delegate: Text {					
+				delegate: Text {
 					text: record
 					color: ["#222222", "#FFAF00", "#FF2222", "#FF5555", "#000000"][type]
 					anchors.left: parent.left

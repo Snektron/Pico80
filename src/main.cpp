@@ -28,11 +28,6 @@ bool parseArgs()
 	}
 }
 
-void registerTypes()
-{
-	qmlRegisterType<Display>("Pico80", 1, 0, "Display");
-}
-
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
@@ -42,8 +37,6 @@ int main(int argc, char *argv[])
 
 	if (parseArgs())
 		return EXIT_SUCCESS;
-
-	registerTypes();
 
 	Pico80 pico;
 	QObject::connect(&app, SIGNAL(aboutToQuit()), &pico, SLOT(quit()));

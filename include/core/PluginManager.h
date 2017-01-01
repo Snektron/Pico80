@@ -2,23 +2,30 @@
 #define PLUGINMANAGER_H
 
 #include <QObject>
+#include <QString>
 #include <picore/api/IPlugin.h>
+
+class PluginDescriptor
+{
+private:
+	QString filename, pluginname;
+
+public:
+	PluginDescriptor(QString filename, QString pluginname):
+		filename(filename), pluginname(pluginname)
+	{}
+
+	QString getFileName() { return filename; }
+	QString getPluginName() { return pluginname; }
+};
 
 class PluginManager: public QObject
 {
 	Q_OBJECT
-private:
-	QList<IPlugin*> plugins;
-
 public:
-	PluginManager();
-	~PluginManager();
-	bool loadPlugin(QObject *object);
-	void reloadPlugins();
-	void unloadPlugins();
-	bool hasPlugins();
-	IPlugin* getPlugin(QString name);
-	QList<IPlugin*> getPlugins();
+	QList<PluginDescriptor> availablePlugins();
+	IPlugin* loadPluginByName(QString name);
+	IPlugin* loadPluginByFile(QString file);
 };
 
 #endif // PLUGINMANAGER_H
