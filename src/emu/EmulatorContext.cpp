@@ -1,7 +1,7 @@
 #include "emu/EmulatorContext.h"
 #include "gui/display/Display.h"
 
-EmulatorContext::EmulatorContext(QmlPicoEngine &qmlEngine, IPlugin *plugin):
+EmulatorContext::EmulatorContext(QmlPicoEngine *qmlEngine, IPlugin *plugin):
 	display(Q_NULLPTR)
 {
 	loadDefaults();
@@ -29,9 +29,9 @@ void EmulatorContext::loadDefaults()
 	pluginEngine.registerDisplayQml(QUrl("qrc:/qml/impl/Display.qml"));
 }
 
-void EmulatorContext::createQmlComponents(QmlPicoEngine &qmlEngine)
+void EmulatorContext::createQmlComponents(QmlPicoEngine *qmlEngine)
 {
-	QQuickItem *displayContainer = qmlEngine.findChild<QQuickItem*>("DisplayContainer");
+	QQuickItem *displayContainer = qmlEngine->findChild<QQuickItem*>("DisplayContainer");
 	display = pluginEngine.createDisplay(qmlEngine);
 	display->setObjectName("Display");
 	display->setParentItem(displayContainer);

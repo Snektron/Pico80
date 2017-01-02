@@ -17,7 +17,8 @@ SOURCES += \
     src/gui/Logging.cpp \
     src/gui/display/DisplayWrapper.cpp \
     src/emu/EmulatorContext.cpp \
-    src/gui/ThemeEngine.cpp
+    src/gui/ThemeEngine.cpp \
+    src/core/PicoSettings.cpp
 
 HEADERS += \
     include/core/PluginManager.h \
@@ -31,10 +32,13 @@ HEADERS += \
     include/gui/display/DisplayWrapper.h \
     include/emu/EmulatorContext.h \
     include/gui/ThemeEngine.h \
-    include/core/QmlPicoEngine.h
+    include/core/QmlPicoEngine.h \
+    include/core/PicoSettings.h
 
 RESOURCES += \
     rsrc.qrc
 
 win32: LIBS += -L../build-Pico80-Desktop_Qt_5_7_0_MinGW_32bit-Debug/ -lpicored
 unix: LIBS += -L../build-Pico80-Desktop-Debug/ -lpicore
+
+DISTFILES +=

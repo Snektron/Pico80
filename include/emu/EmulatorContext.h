@@ -17,13 +17,13 @@ private:
 	QQuickItem *display;
 
 public:
-	EmulatorContext(QmlPicoEngine &qmlEngine, IPlugin *plugin);
+	EmulatorContext(QmlPicoEngine *qmlEngine, IPlugin *plugin);
 	~EmulatorContext();
 	void start();
 
 private:
 	void loadDefaults();
-	void createQmlComponents(QmlPicoEngine &qmlEngine);
+	void createQmlComponents(QmlPicoEngine *qmlEngine);
 };
 
 #endif // EMULATORCONTEXT_H

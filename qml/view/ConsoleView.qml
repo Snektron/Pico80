@@ -85,7 +85,8 @@ View {
 				font.family: "Roboto"
 				text: "Auto scroll"
 				implicitHeight: 20
-				checked: true
+				checked: settings.value("console/autoscroll", "true") === "true";
+				onCheckedChanged: settings.setValue("console/autoscroll", checked);
 
 				indicator: Rectangle {
 					width: 18

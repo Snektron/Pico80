@@ -27,6 +27,22 @@ View {
 				font.pointSize: 10
 				font.family: "Roboto"
 			}
+
+			ComboBox {
+				model: ["Test", "Test 1", "Test 2"]
+				implicitHeight: 15
+				font.family: "Roboto Light"
+
+				indicator: Text {
+					anchors.right: parent.right
+					anchors.rightMargin: 3
+					anchors.verticalCenter: parent.verticalCenter
+					color: "#101010"
+					text: "\uF107"
+					font.pointSize: 10
+					font.family: "FontAwesome"
+				}
+			}
 		}
 	}
 }

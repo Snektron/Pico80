@@ -34,6 +34,8 @@ int main(int argc, char *argv[])
 	QGuiApplication::setApplicationName("Pico80");
 	QGuiApplication::setApplicationDisplayName("Pico80");
 	QGuiApplication::setApplicationVersion("0");
+	QGuiApplication::setOrganizationName("QuantumInfinity");
+	QGuiApplication::setOrganizationDomain("quantuminfinity.space");
 
 	if (parseArgs())
 		return EXIT_SUCCESS;

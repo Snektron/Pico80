@@ -8,22 +8,28 @@ Pico80::Pico80():
 {
 	Logging::installMessageHandler();
 	qInfo() << "Starting";
+
+	qmlEngine = new QmlPicoEngine();
+	settings = new PicoSettings();
 	theme = new ThemeEngine();
 	manager = new PluginManager();
 
-	QQmlContext *ctx = qmlEngine.rootContext();
+	QQmlContext *ctx = qmlEngine->rootContext();
 	ctx->setContextProperty("logModel", Logging::instance());
 	ctx->setContextProperty("theme", theme->loadTheme());
+	ctx->setContextProperty("settings", settings);
 
-	qmlEngine.load(QUrl("qrc:/qml/main.qml"));
+	qmlEngine->load(QUrl("qrc:/qml/main.qml"));
 }
 
 Pico80::~Pico80()
 {
+	Logging::removeMessageHandler();
+	delete qmlEngine;
 	delete emulator;
 	delete manager;
 	delete theme;
-	Logging::removeMessageHandler();
+	delete settings;
 }
 
 void Pico80::setEmulatorPlugin(QString file)
