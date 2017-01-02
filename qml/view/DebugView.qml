@@ -5,6 +5,5 @@ import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
 
 View {
-	color: "#FFFFFF"
-	anchors.fill: parent
+
 }

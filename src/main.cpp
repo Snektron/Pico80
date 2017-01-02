@@ -1,8 +1,8 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QObject>
+#include <QtQuickControls2/QQuickStyle>
 #include "Settings.h"
-#include "gui/display/Display.h"
 #include "Pico80.h"
 
 #define TAG "main"

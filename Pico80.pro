@@ -1,6 +1,6 @@
 TEMPLATE = app
 
-QT += qml quick gui opengl
+QT += qml quick gui opengl quickcontrols2
 CONFIG += c++11 silent
 QMAKE_CXXFLAGS += -Wno-unused-parameter -Wno-reorder -Wno-extra
 INCLUDEPATH += include ../picore/include

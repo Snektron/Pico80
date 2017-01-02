@@ -77,7 +77,7 @@ View {
 					}
 				}
 
-				onClicked: LogModel.clear()
+				onClicked: logModel.clear()
 			}
 
 			CheckBox {

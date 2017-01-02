@@ -1,8 +1,5 @@
 import QtQuick 2.5
-import QtQuick.Controls.Material 2.0
 import QtQuick.Controls 2.0
-import QtQuick.Controls.Styles 1.4
-import QtQuick.Layouts 1.3
 import QtPositioning 5.7
 
 Button {
@@ -45,7 +42,7 @@ Button {
 		text: button.caption
 		anchors.topMargin: 5
 		font.pointSize: 10
-		font.family: "Roboto"
+		font.family: "Roboto Light"
 		anchors.top: button.verticalCenter
 		anchors.horizontalCenter: button.horizontalCenter
 	}

@@ -10,7 +10,11 @@ Rectangle {
 	color: "#F1F1F1"
 
 	FontLoader { source: "/fonts/Roboto-Regular.ttf" }
-    FontLoader { source: "/fonts/fontawesome-webfont.ttf"}
+	FontLoader { source: "/fonts/Roboto-Light.ttf" }
+	FontLoader { source: "/fonts/Roboto-Thin.ttf" }
+	FontLoader { source: "/fonts/OpenSans-Regular.ttf" }
+	FontLoader { source: "/fonts/OpenSans-Light.ttf" }
+	FontLoader { source: "/fonts/fontawesome-webfont.ttf"}
 
 	Rectangle {
 		id: toolbar
@@ -78,7 +82,7 @@ Rectangle {
 
 		handleDelegate: Rectangle {
 			width: 1
-			color: "#BBBBBB"
+			color: "#7F7F7F"
 		}
 
 		Rectangle {

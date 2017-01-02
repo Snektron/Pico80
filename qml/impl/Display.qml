@@ -1,13 +1,12 @@
 import QtQuick 2.0
 
 Rectangle {
-	color: "#C0C0C0"
-	anchors.margins: 10
+	color: "#D0D0D0"
 
 	Column {
 		anchors.centerIn: parent
 		Text {
-			color: "#101010"
+			color: "#7F7F7F"
 			text: "\uF071"
 			font.pointSize: 50
 			font.family: "FontAwesome"
@@ -15,12 +14,12 @@ Rectangle {
 		}
 
 		Text {
-			color: "#101010"
+			color: "#7F7F7F"
 			width: parent.parent.width
 			horizontalAlignment: Text.AlignHCenter
 			text: "No plugin selected or something has gone wrong."
 			font.pointSize: 10
-			font.family: "Roboto"
+			font.family: "OpenSans"
 			wrapMode: Text.WordWrap
 			anchors.horizontalCenter: parent.horizontalCenter
 		}

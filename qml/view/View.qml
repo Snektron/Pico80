@@ -1,6 +1,6 @@
 import QtQuick 2.0
 
 Rectangle {
-	color: "#FFFFFF"
+	color: "#FEFEFE"
 	anchors.fill: parent
 }
