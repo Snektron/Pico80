@@ -3,44 +3,45 @@ import QtQuick.Controls 2.0
 import QtQuick.Controls.Material 2.0
 import QtQuick.Controls.Universal 2.0
 import QtPositioning 5.7
-import "../components"
+import Picore 1.0
+import Picore.Settings 1.0
+import Picore.Components 1.0
 
 View {
-	Column {
+	SettingGroup {
+		text: "Settings"
 		anchors.fill: parent
 		anchors.margins: 10
-		spacing: 10
+		font.pointSize: 13
 
-		Text {
-			text: "Settings"
-			font.pointSize: 13
-			font.family: "Roboto Light"
-		}
+		SettingGroup {
+			text: "General"
 
-		SettingsGroup { text: "General" }
+			SettingItem {
+				text: "Test"
 
-		Row {
-			spacing: 10
+				ComboBox {
+					model: ["Test", "Test 1", "Test 2"]
+					implicitHeight: 15
+					font.family: "Roboto Light"
 
-			Text {
-				text: "Emulator plugin"
-				font.pointSize: 10
-				font.family: "Roboto"
+					indicator: Text {
+						anchors.right: parent.right
+						anchors.rightMargin: 3
+						anchors.verticalCenter: parent.verticalCenter
+						color: "#101010"
+						text: "\uF107"
+						font.pointSize: 10
+						font.family: "FontAwesome"
+					}
+				}
 			}
 
-			ComboBox {
-				model: ["Test", "Test 1", "Test 2"]
-				implicitHeight: 15
-				font.family: "Roboto Light"
+			SettingItem {
+				text: "Test 2"
 
-				indicator: Text {
-					anchors.right: parent.right
-					anchors.rightMargin: 3
-					anchors.verticalCenter: parent.verticalCenter
-					color: "#101010"
-					text: "\uF107"
-					font.pointSize: 10
-					font.family: "FontAwesome"
+				PicoCheckBox {
+
 				}
 			}
 		}

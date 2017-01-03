@@ -17,10 +17,7 @@ void PicoSettings::load()
 	QSettings qsettings("settings.ini", QSettings::IniFormat);
 
 	foreach (QString key, qsettings.allKeys())
-	{
 		settings[key] = qsettings.value(key);
-		qInfo() << key << settings[key];
-	}
 }
 
 void PicoSettings::save()

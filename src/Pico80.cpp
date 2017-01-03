@@ -19,6 +19,7 @@ Pico80::Pico80():
 	ctx->setContextProperty("theme", theme->loadTheme());
 	ctx->setContextProperty("settings", settings);
 
+	qmlEngine->addImportPath("qrc:/qml/import/");
 	qmlEngine->load(QUrl("qrc:/qml/main.qml"));
 }
 

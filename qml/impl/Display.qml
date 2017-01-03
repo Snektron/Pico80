@@ -19,7 +19,7 @@ Rectangle {
 			horizontalAlignment: Text.AlignHCenter
 			text: "No plugin selected or something has gone wrong."
 			font.pointSize: 10
-			font.family: "OpenSans"
+			font.family: "Roboto Light"
 			wrapMode: Text.WordWrap
 			anchors.horizontalCenter: parent.horizontalCenter
 		}

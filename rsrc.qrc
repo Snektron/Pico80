@@ -12,7 +12,6 @@
         <file>qml/view/ConsoleView.qml</file>
         <file>qml/view/DebugView.qml</file>
         <file>qml/view/SettingsView.qml</file>
-        <file>qml/view/View.qml</file>
         <file>qml/components/SideBar.qml</file>
         <file>qml/components/SideBarButton.qml</file>
         <file>qml/impl/Display.qml</file>
@@ -20,7 +19,5 @@
         <file>fonts/OpenSans-Regular.ttf</file>
         <file>fonts/Roboto-Light.ttf</file>
         <file>fonts/Roboto-Thin.ttf</file>
-        <file>qml/components/SettingsGroup.qml</file>
-        <file>qml/components/HLine.qml</file>
     </qresource>
 </RCC>

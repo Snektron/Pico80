@@ -1,8 +1,8 @@
 import QtQuick 2.5
-import QtQuick.Controls.Material 2.0
 import QtQuick.Controls 2.0
-import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
+import Picore 1.0
+import Picore.Components 1.0
 
 View {
 	ColumnLayout {
@@ -80,31 +80,11 @@ View {
 				onClicked: logModel.clear()
 			}
 
-			CheckBox {
+			PicoCheckBox {
 				id: autoscroll
-				font.family: "Roboto"
 				text: "Auto scroll"
-				implicitHeight: 20
 				checked: settings.value("console/autoscroll", "true") === "true";
 				onCheckedChanged: settings.setValue("console/autoscroll", checked);
-
-				indicator: Rectangle {
-					width: 18
-					height: 18
-					radius: 2
-					color: "#FFFFFF"
-					border.color: "#000000"
-					anchors.verticalCenter: parent.verticalCenter
-
-					Rectangle {
-						width: 12
-						height: 12
-						radius: 3
-						color: "#000000"
-						anchors.centerIn: parent
-						visible: parent.parent.checked
-					}
-				}
 			}
 		}
 	}

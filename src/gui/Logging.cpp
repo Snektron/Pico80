@@ -1,5 +1,5 @@
 #include "gui/Logging.h"
-#include <iostream>
+#include <QTextStream>
 
 QString fromType(QtMsgType type)
 {
@@ -91,10 +91,13 @@ namespace Logging
 	namespace
 	{
 		LogModel model;
+		QTextStream out(stdout);
 	}
 
 	void messageHandler(QtMsgType type, const QMessageLogContext& ctx, const QString& msg)
 	{
+		out << msg << "\n";
+		out.flush();
 		model.write(type, ctx, msg);
 	}
 
