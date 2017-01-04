@@ -16,8 +16,12 @@ Pico80::Pico80():
 	QQmlContext *ctx = qmlEngine->rootContext();
 	ctx->setContextProperty("pico", system);
 
+	connect(system, SIGNAL(pluginChanged(QString)), this, SLOT(setEmulatorPlugin(QString)), Qt::QueuedConnection);
+
 	qmlEngine->addImportPath("qrc:/qml/import/");
 	qmlEngine->load(QUrl("qrc:/qml/main.qml"));
+
+	emulator = new EmulatorContext(qmlEngine, Q_NULLPTR);
 }
 
 Pico80::~Pico80()
@@ -48,15 +52,6 @@ void Pico80::setEmulatorPlugin(QString file)
 		emulator = new EmulatorContext(qmlEngine, Q_NULLPTR);
 	}
 	emulator->start();
-}
-
-void Pico80::start()
-{
-	QList<PluginDescriptor> plugins = manager->availablePlugins();
-	if (plugins.size() > 0)
-		setEmulatorPlugin(plugins[0].getFileName());
-	else
-		setEmulatorPlugin("");
 }
 
 void Pico80::quit()

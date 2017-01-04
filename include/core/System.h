@@ -24,6 +24,7 @@ private:
 public:
 	System(PluginManager *manager);
 	~System();
+	Q_INVOKABLE void setPlugin(QVariant file);
 	PicoSettings* getSettings();
 	PluginModel* getPluginModel();
 	LogModel* getLogModel();
@@ -31,6 +32,7 @@ public:
 
 signals:
 	themeChanged();
+	pluginChanged(QString file);
 };
 
 #endif // SYSTEM_H

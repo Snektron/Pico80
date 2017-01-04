@@ -24,6 +24,7 @@ View {
 					textRole: "name"
 					model: pico.pluginModel
 					id: pluginSetting
+					currentIndex: 0
 
 					delegate: ItemDelegate {
 						width: pluginSetting.width
@@ -38,6 +39,22 @@ View {
 							anchors.left: parent.left
 							anchors.leftMargin: 3
 						}
+					}
+
+					onActivated: updatePlugin(currentIndex)
+					Component.onCompleted: {
+						var text = pico.settings.value("General/Emulator", "none");
+						var index = find(text);
+						if (index === -1)
+							index = 0;
+						currentIndex = index;
+						updatePlugin(currentIndex)
+					}
+
+					function updatePlugin(index)
+					{
+						pico.settings.setValue("General/Emulator", currentText);
+						pico.setPlugin(pico.pluginModel.fileForPlugin(index));
 					}
 				}
 			}

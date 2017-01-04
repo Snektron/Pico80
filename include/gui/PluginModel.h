@@ -3,6 +3,7 @@
 
 #include <QAbstractListModel>
 #include <QList>
+#include <QString>
 #include "core/PluginManager.h"
 
 class PluginModel : public QAbstractListModel
@@ -24,6 +25,7 @@ public:
 	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 	QHash<int, QByteArray> roleNames() const;
 	Q_INVOKABLE void update();
+	Q_INVOKABLE QVariant fileForPlugin(int index);
 };
 
 #endif // PLUGINMODEL_H

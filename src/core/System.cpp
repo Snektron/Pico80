@@ -1,4 +1,5 @@
 #include "core/System.h"
+#include <QDebug>
 
 System::System(PluginManager *manager):
 	pluginModel(manager)
@@ -10,6 +11,12 @@ System::System(PluginManager *manager):
 System::~System()
 {
 	disconnect(&themeEngine, SIGNAL(themeChanged()), this, SIGNAL(themeChanged()));
+}
+
+void System::setPlugin(QVariant file)
+{
+	if (!file.isNull())
+		emit pluginChanged(file.toString());
 }
 
 PicoSettings* System::getSettings()

@@ -49,3 +49,10 @@ void PluginModel::update()
 	this->plugins = plugins;
 	endInsertRows();
 }
+
+QVariant PluginModel::fileForPlugin(int index)
+{
+	if (index < 0 || index > plugins.size())
+		return QVariant();
+	return QVariant(plugins[index].getFileName());
+}

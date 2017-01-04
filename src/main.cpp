@@ -42,7 +42,6 @@ int main(int argc, char *argv[])
 
 	Pico80 pico;
 	QObject::connect(&app, SIGNAL(aboutToQuit()), &pico, SLOT(quit()));
-	pico.start();
 
     return app.exec();
 }

@@ -25,7 +25,6 @@ public:
 
 public slots:
 	void setEmulatorPlugin(QString file);
-	void start();
 	void quit();
 
 signals:
