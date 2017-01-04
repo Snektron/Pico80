@@ -42,7 +42,7 @@ Button {
 		text: button.caption
 		anchors.topMargin: 5
 		font.pointSize: 10
-		font.family: "Roboto Light"
+		font.family: "Roboto"
 		anchors.top: button.verticalCenter
 		anchors.horizontalCenter: button.horizontalCenter
 	}

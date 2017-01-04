@@ -1,6 +1,11 @@
 #include "gui/ThemeEngine.h"
 #include <QVariantMap>
 
+ThemeEngine::ThemeEngine()
+{
+	theme = QVariant();
+}
+
 QVariant ThemeEngine::loadDefaultTheme()
 {
 	return QVariant();
@@ -8,5 +13,12 @@ QVariant ThemeEngine::loadDefaultTheme()
 
 QVariant ThemeEngine::loadTheme()
 {
-	return loadDefaultTheme();
+	theme = loadDefaultTheme();
+	emit themeChanged();
+	return theme;
+}
+
+QVariant ThemeEngine::getTheme()
+{
+	return theme;
 }

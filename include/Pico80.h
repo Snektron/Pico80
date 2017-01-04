@@ -5,7 +5,9 @@
 #include "core/QmlPicoEngine.h"
 #include "core/PluginManager.h"
 #include "core/PicoSettings.h"
+#include "core/System.h"
 #include "gui/ThemeEngine.h"
+#include "gui/PluginModel.h"
 #include "emu/EmulatorContext.h"
 
 class Pico80 : public QObject
@@ -13,10 +15,9 @@ class Pico80 : public QObject
 	Q_OBJECT
 private:
 	QmlPicoEngine *qmlEngine;
-	PicoSettings *settings;
-	ThemeEngine *theme;
 	PluginManager *manager;
 	EmulatorContext *emulator;
+	System *system;
 
 public:
 	Pico80();

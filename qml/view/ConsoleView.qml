@@ -6,7 +6,6 @@ import Picore.Components 1.0
 
 View {
 	ColumnLayout {
-		id: columnlayout1
 		anchors.fill: parent
 		anchors.margins: 10
 
@@ -27,7 +26,7 @@ View {
 				anchors.bottomMargin: 5
 				anchors.topMargin: 5
 
-				model: logModel
+				model: pico.logModel
 
 				delegate: Text {
 					text: record
@@ -58,33 +57,38 @@ View {
 
 		Row {
 			spacing: 5
-			Button {
-				implicitHeight: 20
 
-				Row {
-					anchors.centerIn: parent
+			PicoButton {
+				id: clearButton
+				text: "\uF12D"
+				font.family: "FontAwesome"
+
+				onClicked: logModel.clear()
+
+				contentItem: Row {
 					spacing: 3
 
 					Text {
 						text: "\uF12D"
 						font.pointSize: 10
 						font.family: "FontAwesome"
+						anchors.verticalCenter: parent.verticalCenter
 					}
+
 					Text {
-						text: "Clear"
+						font.family: "Roboto Light"
 						font.pointSize: 10
-						font.family: "Roboto"
+						text: "Clear"
+						anchors.verticalCenter: parent.verticalCenter
 					}
 				}
-
-				onClicked: logModel.clear()
 			}
 
 			PicoCheckBox {
 				id: autoscroll
 				text: "Auto scroll"
-				checked: settings.value("console/autoscroll", "true") === "true";
-				onCheckedChanged: settings.setValue("console/autoscroll", checked);
+				checked: pico.settings.value("Console/AutoScroll", "true") === "true";
+				onCheckedChanged: pico.settings.setValue("Console/AutoScroll", checked);
 			}
 		}
 	}

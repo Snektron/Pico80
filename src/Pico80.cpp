@@ -10,14 +10,11 @@ Pico80::Pico80():
 	qInfo() << "Starting";
 
 	qmlEngine = new QmlPicoEngine();
-	settings = new PicoSettings();
-	theme = new ThemeEngine();
 	manager = new PluginManager();
+	system = new System(manager);
 
 	QQmlContext *ctx = qmlEngine->rootContext();
-	ctx->setContextProperty("logModel", Logging::instance());
-	ctx->setContextProperty("theme", theme->loadTheme());
-	ctx->setContextProperty("settings", settings);
+	ctx->setContextProperty("pico", system);
 
 	qmlEngine->addImportPath("qrc:/qml/import/");
 	qmlEngine->load(QUrl("qrc:/qml/main.qml"));
@@ -28,21 +25,28 @@ Pico80::~Pico80()
 	Logging::removeMessageHandler();
 	delete qmlEngine;
 	delete emulator;
+	delete system;
 	delete manager;
-	delete theme;
-	delete settings;
 }
 
 void Pico80::setEmulatorPlugin(QString file)
 {
 	delete emulator;
-	IPlugin *plugin = manager->loadPluginByFile(file);
-	if (plugin)
-		qDebug() << "Activating plugin" << plugin->name();
-	else
-		qWarning() << "Failed to activate plugin" << file;
+	if (file != "")
+	{
+		IPlugin *plugin = manager->loadPluginByFile(file);
+		if (plugin)
+			qDebug() << "Activating plugin" << plugin->name();
+		else
+			qWarning() << "Failed to activate plugin" << file;
 
-	emulator = new EmulatorContext(qmlEngine, plugin);
+		emulator = new EmulatorContext(qmlEngine, plugin);
+	}
+	else
+	{
+		qDebug() << "Activating builtin plugin";
+		emulator = new EmulatorContext(qmlEngine, Q_NULLPTR);
+	}
 	emulator->start();
 }
 

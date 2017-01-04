@@ -18,21 +18,26 @@ View {
 			text: "General"
 
 			SettingItem {
-				text: "Test"
+				text: "Emulator plugin"
 
-				ComboBox {
-					model: ["Test", "Test 1", "Test 2"]
-					implicitHeight: 15
-					font.family: "Roboto Light"
+				PicoComboBox {
+					textRole: "name"
+					model: pico.pluginModel
+					id: pluginSetting
 
-					indicator: Text {
-						anchors.right: parent.right
-						anchors.rightMargin: 3
-						anchors.verticalCenter: parent.verticalCenter
-						color: "#101010"
-						text: "\uF107"
-						font.pointSize: 10
-						font.family: "FontAwesome"
+					delegate: ItemDelegate {
+						width: pluginSetting.width
+						implicitHeight: 15
+						highlighted: pluginSetting.highlightedIndex == index
+
+						contentItem: Text {
+							text: name
+							font.family: "Roboto Light"
+							verticalAlignment: Text.AlignVCenter
+							anchors.verticalCenter: parent.verticalCenter
+							anchors.left: parent.left
+							anchors.leftMargin: 3
+						}
 					}
 				}
 			}
@@ -41,7 +46,14 @@ View {
 				text: "Test 2"
 
 				PicoCheckBox {
+				}
+			}
 
+			SettingItem {
+				text: "Test 3"
+
+				PicoButton {
+					text: "Test"
 				}
 			}
 		}

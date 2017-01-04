@@ -28,6 +28,8 @@ QList<PluginDescriptor> PluginManager::availablePlugins()
 	QDir pluginsDir = getPluginDirectory();
 	QList<PluginDescriptor> plugins;
 
+	plugins << PluginDescriptor("", "none");
+
 	foreach (QString fileName, pluginsDir.entryList(QDir::Files))
 	{
 		QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));

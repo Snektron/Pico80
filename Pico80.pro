@@ -19,7 +19,9 @@ SOURCES += \
     src/gui/display/DisplayWrapper.cpp \
     src/emu/EmulatorContext.cpp \
     src/gui/ThemeEngine.cpp \
-    src/core/PicoSettings.cpp
+    src/core/PicoSettings.cpp \
+    src/gui/PluginModel.cpp \
+    src/core/System.cpp
 
 HEADERS += \
     include/core/PluginManager.h \
@@ -34,7 +36,9 @@ HEADERS += \
     include/emu/EmulatorContext.h \
     include/gui/ThemeEngine.h \
     include/core/QmlPicoEngine.h \
-    include/core/PicoSettings.h
+    include/core/PicoSettings.h \
+    include/gui/PluginModel.h \
+    include/core/System.h
 
 RESOURCES += \
     rsrc.qrc
