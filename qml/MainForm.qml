@@ -70,7 +70,7 @@ Rectangle {
 
 	Rectangle {
 		id: spacer
-		color: "#191B21"
+		color: theme.spacer
 		width: 1
 		height: parent.height
 		anchors.left: toolbar.right
@@ -89,12 +89,11 @@ Rectangle {
 
 		handleDelegate: Rectangle {
 			width: 1
-			color: "#191B21"
+			color: theme.spacer
 		}
 
 		Rectangle {
 			id: mainview_container
-			color: "#00000000"
 			Layout.minimumWidth: 300
 			width: 400;
 
@@ -125,7 +124,6 @@ Rectangle {
 		Rectangle {
 			id: display_container
 			objectName: "DisplayContainer"
-			color: "#FFFFFF"
 			Layout.minimumWidth: 250
 			Layout.minimumHeight: 250
 

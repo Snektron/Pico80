@@ -1,3 +1,26 @@
-test {
-    test1 = #FF0000
+spacer = #191B21
+
+sidebar {
+    primary = #2D313F
+	selected = #20232F
+	pressed = #3A4051
+	accent = #6BB0DA
+	text = #EEEEEE
+}
+
+display_placeholder {
+    background = #D0D0D0
+	text = #7F7F7F
+}
+
+console {
+    background = #FFFFFF
+	scrollbar = #B8B8B8
+	log {
+	    debug = #555555
+		warning = #FFAF00
+		critical = #FF2222
+		fatal = #FF5555
+		info = #000000
+	}
 }

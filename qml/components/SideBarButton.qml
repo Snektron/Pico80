@@ -18,11 +18,11 @@ Button {
 	background: Rectangle {
 		color: {
 			if (button.checked)
-				return theme.sidebar.checked;
-			else if( button.hovered || button.down)
-				return theme.sidebar.down
+				return theme.sidebar.selected;
+			else if(button.hovered || button.down)
+				return theme.sidebar.pressed;
 			else
-				return theme.sidebar.primary
+				return theme.sidebar.primary;
 		}
 
 		Rectangle {
@@ -36,7 +36,7 @@ Button {
 	}
 
 	Text {
-		color: "#EEEEEE"
+		color: theme.sidebar.text
 		text: button.icon
 		font.pointSize: 15
 		font.family: "FontAwesome"
@@ -45,7 +45,7 @@ Button {
 	}
 
 	Text {
-		color: "#EEEEEE"
+		color: theme.sidebar.text
 		text: button.caption
 		anchors.topMargin: 5
 		font.pointSize: 10

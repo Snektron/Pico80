@@ -5,17 +5,10 @@ import Picore 1.0
 import Picore.Components 1.0
 
 View {
-	PicoToolBar {
-		id: toolbar
-	}
-
 	Rectangle {
-		color: "#FFFFFF"
+		color: theme.console.background
 		Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-		anchors.top: toolbar.bottom
-		anchors.left: parent.left
-		anchors.right: parent.right
-		anchors.bottom: parent.bottom
+		anchors.fill: parent
 		clip: true
 
 		ListView {
@@ -28,11 +21,19 @@ View {
 			anchors.bottomMargin: 5
 			anchors.topMargin: 5
 
+			property var consolecolors: [
+				theme.console.log.debug,
+				theme.console.log.warning,
+				theme.console.log.critical,
+				theme.console.log.fatal,
+				theme.console.log.info
+			]
+
 			model: pico.logModel
 
 			delegate: Text {
 				text: record
-				color: ["#222222", "#FFAF00", "#FF2222", "#FF5555", "#000000"][type]
+				color: logview.consolecolors[type]
 				anchors.left: parent.left
 				anchors.right: parent.right
 				anchors.rightMargin: 10
@@ -47,7 +48,7 @@ View {
 				id: scrollbar
 				width: 5
 				contentItem: Rectangle {
-					color: "#B8B8B8"
+					color: theme.console.scrollbar
 					anchors.left: parent.left
 					anchors.right: parent.right
 					height: parent.height * parent.size

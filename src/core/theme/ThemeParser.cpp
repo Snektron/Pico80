@@ -220,8 +220,8 @@ State ThemeParser::parseBlock()
 	skipWhiteSpace();
 	while (peek() != '}')
 	{
-		if (parseBody() == State::ERROR)
-			return State::ERROR;
+		if (parseBody() != State::OK)
+			return error("Block end ('}') expected");
 		skipWhiteSpace();
 	}
 	consume();
