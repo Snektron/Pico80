@@ -19,5 +19,6 @@
         <file>fonts/OpenSans-Regular.ttf</file>
         <file>fonts/Roboto-Light.ttf</file>
         <file>fonts/Roboto-Thin.ttf</file>
+        <file>theme/default.thm</file>
     </qresource>
 </RCC>

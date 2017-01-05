@@ -3,15 +3,7 @@
 
 System::System(PluginManager *manager):
 	pluginModel(manager)
-{
-	themeEngine.loadTheme();
-	connect(&themeEngine, SIGNAL(themeChanged()), this, SIGNAL(themeChanged()));
-}
-
-System::~System()
-{
-	disconnect(&themeEngine, SIGNAL(themeChanged()), this, SIGNAL(themeChanged()));
-}
+{}
 
 void System::setPlugin(QVariant file)
 {
@@ -32,9 +24,4 @@ PluginModel* System::getPluginModel()
 LogModel* System::getLogModel()
 {
 	return Logging::instance();
-}
-
-QVariant System::getTheme()
-{
-	return themeEngine.getTheme();
 }

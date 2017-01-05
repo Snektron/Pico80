@@ -1,5 +1,6 @@
-#include "gui/ThemeEngine.h"
+#include "core/theme/ThemeEngine.h"
 #include <QVariantMap>
+#include <core/theme/ThemeParser.h>
 
 ThemeEngine::ThemeEngine()
 {
@@ -8,12 +9,15 @@ ThemeEngine::ThemeEngine()
 
 QVariant ThemeEngine::loadDefaultTheme()
 {
-	return QVariant();
+//	ThemeParser parser(":/theme/default.thm");
+	ThemeParser parser("test.txt");
+	theme = parser.parse();
+	return theme;
 }
 
 QVariant ThemeEngine::loadTheme()
 {
-	theme = loadDefaultTheme();
+	loadDefaultTheme();
 	emit themeChanged();
 	return theme;
 }

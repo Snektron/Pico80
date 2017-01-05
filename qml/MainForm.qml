@@ -18,7 +18,7 @@ Rectangle {
 
 	Rectangle {
 		id: toolbar
-		color: "#2D313F"
+		color: theme.sidebar.primary
 		anchors.left: parent.left
 		anchors.top: parent.top
 		anchors.bottom: parent.bottom
@@ -68,9 +68,16 @@ Rectangle {
 		}
 	}
 
+	Rectangle {
+		id: spacer
+		color: "#191B21"
+		width: 1
+		height: parent.height
+		anchors.left: toolbar.right
+	}
 
 	SplitView {
-		anchors.left: toolbar.right
+		anchors.left: spacer.right
 		anchors.top: parent.top
 		anchors.right: parent.right
 		anchors.bottom: parent.bottom
@@ -82,7 +89,7 @@ Rectangle {
 
 		handleDelegate: Rectangle {
 			width: 1
-			color: "#7F7F7F"
+			color: "#191B21"
 		}
 
 		Rectangle {

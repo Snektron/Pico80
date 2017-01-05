@@ -16,14 +16,21 @@ Button {
 	hoverEnabled: true
 
 	background: Rectangle {
-		color: button.checked ? "#20232F" : button.hovered || button.down ? "#3A4051" : "#2D313F"
+		color: {
+			if (button.checked)
+				return theme.sidebar.checked;
+			else if( button.hovered || button.down)
+				return theme.sidebar.down
+			else
+				return theme.sidebar.primary
+		}
 
 		Rectangle {
 			anchors.left: parent.left
 			anchors.top: parent.top
 			anchors.bottom: parent.bottom
 			width: 5
-			color: "#6BB0DA"
+			color: theme.sidebar.accent
 			visible: button.checked
 		}
 	}

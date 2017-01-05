@@ -12,9 +12,11 @@ Pico80::Pico80():
 	qmlEngine = new QmlPicoEngine();
 	manager = new PluginManager();
 	system = new System(manager);
+	themeEngine = new ThemeEngine();
 
 	QQmlContext *ctx = qmlEngine->rootContext();
 	ctx->setContextProperty("pico", system);
+	ctx->setContextProperty("theme", themeEngine->loadTheme());
 
 	connect(system, SIGNAL(pluginChanged(QString)), this, SLOT(setEmulatorPlugin(QString)), Qt::QueuedConnection);
 
@@ -30,6 +32,7 @@ Pico80::~Pico80()
 	delete qmlEngine;
 	delete emulator;
 	delete system;
+	delete themeEngine;
 	delete manager;
 }
 

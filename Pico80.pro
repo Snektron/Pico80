@@ -18,10 +18,11 @@ SOURCES += \
     src/gui/Logging.cpp \
     src/gui/display/DisplayWrapper.cpp \
     src/emu/EmulatorContext.cpp \
-    src/gui/ThemeEngine.cpp \
     src/core/PicoSettings.cpp \
     src/gui/PluginModel.cpp \
-    src/core/System.cpp
+    src/core/System.cpp \
+    src/core/theme/ThemeEngine.cpp \
+    src/core/theme/ThemeParser.cpp
 
 HEADERS += \
     include/core/PluginManager.h \
@@ -34,11 +35,12 @@ HEADERS += \
     include/gui/Logging.h \
     include/gui/display/DisplayWrapper.h \
     include/emu/EmulatorContext.h \
-    include/gui/ThemeEngine.h \
     include/core/QmlPicoEngine.h \
     include/core/PicoSettings.h \
     include/gui/PluginModel.h \
-    include/core/System.h
+    include/core/System.h \
+    include/core/theme/ThemeEngine.h \
+    include/core/theme/ThemeParser.h
 
 RESOURCES += \
     rsrc.qrc

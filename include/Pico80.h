@@ -6,7 +6,6 @@
 #include "core/PluginManager.h"
 #include "core/PicoSettings.h"
 #include "core/System.h"
-#include "gui/ThemeEngine.h"
 #include "gui/PluginModel.h"
 #include "emu/EmulatorContext.h"
 
@@ -18,6 +17,7 @@ private:
 	PluginManager *manager;
 	EmulatorContext *emulator;
 	System *system;
+	ThemeEngine *themeEngine;
 
 public:
 	Pico80();
