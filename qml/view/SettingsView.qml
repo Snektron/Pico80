@@ -10,7 +10,6 @@ import Picore.Components 1.0
 View {
 	SettingGroup {
 		text: "Settings"
-		anchors.fill: parent
 		anchors.margins: 10
 		font.pointSize: 13
 

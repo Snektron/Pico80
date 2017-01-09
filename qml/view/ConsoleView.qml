@@ -5,9 +5,36 @@ import Picore 1.0
 import Picore.Components 1.0
 
 View {
+	toolbar: Row {
+		spacing: 5
+		anchors.fill: parent
+
+		Item{width: 5; height: 1}
+
+		PicoToolButton {
+			id: clearButton
+			text: "\uF12D"
+			anchors.verticalCenter: parent.verticalCenter
+			onClicked: pico.logModel.clear()
+			pressedColor: theme.toolbar.button.pressed
+			hoveredColor: theme.toolbar.button.hovered
+		}
+
+		PicoToolCheckBox {
+			text: "\uF07d"
+			anchors.verticalCenter: parent.verticalCenter
+
+			hoveredColor: theme.toolbar.button.hovered
+			enabledColor: theme.toolbar.button.checked
+			disabledColor: theme.toolbar.button.unchecked
+
+			checked: pico.settings.value("Console/AutoScroll", "true") === "true";
+			onCheckedChanged: pico.settings.setValue("Console/AutoScroll", checked);
+		}
+	}
+
 	Rectangle {
 		color: theme.console.background
-		Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 		anchors.fill: parent
 		clip: true
 

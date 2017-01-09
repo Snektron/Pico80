@@ -6,8 +6,8 @@ Window {
 	width: 800
 	height: 600
 	title: "Pico80"
-	minimumWidth: 80 + 300 + 1 + 250
-	minimumHeight: 400
+	minimumWidth: 800
+	minimumHeight: 500
 
     MainForm {
 		anchors.fill: parent

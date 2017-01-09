@@ -20,5 +20,6 @@
         <file>fonts/Roboto-Light.ttf</file>
         <file>fonts/Roboto-Thin.ttf</file>
         <file>theme/default.thm</file>
+        <file>theme/test.thm</file>
     </qresource>
 </RCC>

@@ -9,8 +9,8 @@ ThemeEngine::ThemeEngine()
 
 QVariant ThemeEngine::loadDefaultTheme()
 {
-//	ThemeParser parser(":/theme/default.thm");
-	ThemeParser parser("test.txt");
+	ThemeParser parser(":/theme/test.thm");
+//	ThemeParser parser("test.txt");
 	theme = parser.parse();
 	return theme;
 }

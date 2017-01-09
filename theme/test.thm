@@ -1,0 +1,53 @@
+spacer = #9E9E9E
+
+toolbar {
+	primary = #EEEEEE
+	shadow = #333333A0
+	spacer = #BDBDBD
+
+	button {
+		pressed = #BDBDBD
+		hovered = #E0E0E0
+		checked = #000000
+		unchecked = #9E9E9E
+	}
+}
+
+sidebar {
+	primary = #2D313F
+	toolbar {
+		primary = #43495E
+		shadow = #333333A0
+	}
+	button {
+		primary = #2D313F
+		selected = #20232F
+		hovered = #3A4051
+		accent = #6BB0DA
+	}
+	icon {
+		primary = #EEEEEE
+		selected = #EEEEEE
+	}
+	text {
+		primary = #EEEEEE
+		selected = #EEEEEE
+	}
+}
+
+display_placeholder {
+	background = #E0E0E0
+	text = #757575
+}
+
+console {
+	background = #FFFFFF
+	scrollbar = #B8B8B8
+	log {
+		debug = #616161
+		warning = #FFC400
+		critical = #D50000
+		fatal = #D50000
+		info = #000000
+	}
+}

@@ -237,9 +237,11 @@ State ThemeParser::parseAssignment()
 		return error("Color value does not start with a '#'");
 	consume();
 
-	int nibbles[6];
+	int nibbles[8];
+	nibbles[6] = 0xF;
+	nibbles[7] = 0xF;
 
-	for (int i = 0; i < 6; i++)
+	for (int i = 0; i < 8; i++)
 	{
 		char n = peek();
 		if ('a' <= n && n <= 'f')
@@ -248,14 +250,18 @@ State ThemeParser::parseAssignment()
 			nibbles[i] = n - 'A' + 10;
 		else if ('0' <= n && n <= '9')
 			nibbles[i] = n - '0';
+		else if (i == 6)
+			break;
 		else
 			return error("Error parsing theme color value");
 		consume();
 	}
 
+
 	QColor color(nibbles[0] << 4 | nibbles[1],
 				 nibbles[2] << 4 | nibbles[3],
-				 nibbles[4] << 4 | nibbles[5]);
+				 nibbles[4] << 4 | nibbles[5],
+				 nibbles[6] << 4 | nibbles[7]);
 
 	return setThemeValue(color);
 }

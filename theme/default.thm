@@ -1,11 +1,26 @@
 spacer = #191B21
 
+toolbar {
+    primary = #353A49
+	shadow = #000000
+}
+
 sidebar {
     primary = #2D313F
-	selected = #20232F
-	pressed = #3A4051
-	accent = #6BB0DA
-	text = #EEEEEE
+	button {
+		primary = #2D313F
+		selected = #20232F
+		hovered = #3A4051
+		accent = #6BB0DA
+	}
+	icon {
+		primary = #EEEEEE
+		selected = #EEEEEE
+	}
+	text {
+		primary = #EEEEEE
+		selected = #EEEEEE
+	}
 }
 
 display_placeholder {

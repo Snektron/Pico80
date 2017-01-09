@@ -2,6 +2,7 @@ import QtQuick 2.5
 import QtQuick.Controls 1.4
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.3
+import Picore.Components 1.0
 import "components"
 import "view"
 
@@ -17,12 +18,18 @@ Rectangle {
 	FontLoader { source: "/fonts/fontawesome-webfont.ttf"}
 
 	Rectangle {
-		id: toolbar
+		id: sidebar_base
 		color: theme.sidebar.primary
 		anchors.left: parent.left
 		anchors.top: parent.top
 		anchors.bottom: parent.bottom
 		width: 80
+
+		PicoToolBar {
+			id: bartoolbar
+			color: theme.sidebar.toolbar.primary
+			shadowColor: theme.sidebar.toolbar.shadow
+		}
 
 		SideBar {
 			id: sidebar
@@ -38,7 +45,10 @@ Rectangle {
 
 		Column {
 			objectName: "SideBar"
-			anchors.fill: parent
+			anchors.top: bartoolbar.bottom
+			anchors.bottom: parent.bottom
+			anchors.left: parent.left
+			anchors.right: parent.right
 
 			SideBarButton {
 				id: sb_debug
@@ -68,39 +78,54 @@ Rectangle {
 		}
 	}
 
-	Rectangle {
-		id: spacer
-		color: theme.spacer
-		width: 1
-		height: parent.height
-		anchors.left: toolbar.right
-	}
-
 	SplitView {
-		anchors.left: spacer.right
+		anchors.left: sidebar_base.right
 		anchors.top: parent.top
 		anchors.right: parent.right
 		anchors.bottom: parent.bottom
 
 		onWidthChanged: {
-			if (width > 0 && mainview_container.width > width - 250 - 10)
-				mainview_container.width = width - 250 - 10;
+			if (width > 0 && mainview_container.width > width - 300 - 1)
+				mainview_container.width = width - 300 - 1;
 		}
 
 		handleDelegate: Rectangle {
 			width: 1
 			color: theme.spacer
+
+			PicoToolBar {
+				color: theme.toolbar.primary
+				shadowColor: theme.toolbar.shadow
+
+				Rectangle {
+					width: 1
+					anchors.top: parent.top
+					anchors.bottom: parent.bottom
+					anchors.topMargin: 5
+					anchors.bottomMargin: 5
+					color: theme.toolbar.spacer
+				}
+			}
 		}
 
 		Rectangle {
 			id: mainview_container
 			Layout.minimumWidth: 300
-			width: 400;
+			width: 400
+
+			PicoToolBar {
+				id: toolbar
+				color: theme.toolbar.primary
+				shadowColor: theme.toolbar.shadow
+			}
 
 			StackLayout {
 				id: menuview
 				objectName: "View"
-				anchors.fill: parent
+				anchors.top: toolbar.bottom
+				anchors.left: parent.left
+				anchors.right: parent.right
+				anchors.bottom: parent.bottom
 				currentIndex: 0
 
 				states: [
@@ -115,6 +140,14 @@ Rectangle {
 					}
 				]
 
+				Component.onCompleted: updateToolbar(currentIndex)
+				onCurrentIndexChanged: updateToolbar(currentIndex)
+				onStateChanged: updateToolbar(state === "" ? currentIndex : -1)
+
+				function updateToolbar(index) {
+					toolbar.items = index === -1 ? null : children[index].toolbar;
+				}
+
 				DebugView {}
 				ConsoleView {}
 				SettingsView {}
@@ -122,15 +155,29 @@ Rectangle {
 		}
 
 		Rectangle {
-			id: display_container
-			objectName: "DisplayContainer"
-			Layout.minimumWidth: 250
+			Layout.minimumWidth: 300
 			Layout.minimumHeight: 250
 
-			function updateDisplay() {
-				for (var i = 0; i < children.length; i++)
-					if (children[i].objectName === "Display")
-						children[i].anchors.fill = display_container
+			PicoToolBar {
+				id: emulatortoolbar
+				color: theme.toolbar.primary
+				shadowColor: theme.toolbar.shadow
+			}
+
+			Item {
+				id: display_container
+				objectName: "DisplayContainer"
+
+				anchors.top: emulatortoolbar.bottom
+				anchors.left: parent.left
+				anchors.right: parent.right
+				anchors.bottom: parent.bottom
+
+				function updateDisplay() {
+					for (var i = 0; i < children.length; i++)
+						if (children[i].objectName === "Display")
+							children[i].anchors.fill = display_container
+				}
 			}
 		}
 	}
