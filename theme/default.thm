@@ -1,17 +1,45 @@
-spacer = #191B21
+spacer = #9E9E9E
+
+tooltip {
+	background = #81C784
+	text = #FFFFFF
+	shadow = #212121A0
+}
+
+button {
+	primary = #E0E0E0
+	pressed = #9E9E9E
+	hovered = #BDBDBD
+}
+
+checkbox {
+	background = #E0E0E0
+}
 
 toolbar {
-    primary = #353A49
-	shadow = #000000
+	primary = #EEEEEE
+	shadow = #33333390
+	spacer = #BDBDBD
+
+	button {
+		pressed = #BDBDBD
+		hovered = #E0E0E0
+		checked = #000000
+		unchecked = #9E9E9E
+	}
 }
 
 sidebar {
-    primary = #2D313F
+	primary = #2D313F
+	toolbar {
+		primary = #43495E
+		shadow = #212121E0
+	}
 	button {
 		primary = #2D313F
 		selected = #20232F
 		hovered = #3A4051
-		accent = #6BB0DA
+		accent = #4DD0E1
 	}
 	icon {
 		primary = #EEEEEE
@@ -24,18 +52,18 @@ sidebar {
 }
 
 display_placeholder {
-    background = #D0D0D0
-	text = #7F7F7F
+	background = #E0E0E0
+	text = #757575
 }
 
 console {
-    background = #FFFFFF
+	background = #FFFFFF
 	scrollbar = #B8B8B8
 	log {
-	    debug = #555555
-		warning = #FFAF00
-		critical = #FF2222
-		fatal = #FF5555
+		debug = #616161
+		warning = #FFC400
+		critical = #D50000
+		fatal = #D50000
 		info = #000000
 	}
 }

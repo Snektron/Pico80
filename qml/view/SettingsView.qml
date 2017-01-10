@@ -8,68 +8,83 @@ import Picore.Settings 1.0
 import Picore.Components 1.0
 
 View {
-	SettingGroup {
-		text: "Settings"
+	Item {
+		anchors.fill: parent
 		anchors.margins: 10
-		font.pointSize: 13
 
 		SettingGroup {
-			text: "General"
+			text: "Settings"
+			anchors.margins: 10
+			font.pointSize: 13
 
-			SettingItem {
-				text: "Emulator plugin"
+			SettingGroup {
+				text: "General"
 
-				PicoComboBox {
-					textRole: "name"
-					model: pico.pluginModel
-					id: pluginSetting
-					currentIndex: 0
+				SettingItem {
+					text: "Emulator plugin"
 
-					delegate: ItemDelegate {
-						width: pluginSetting.width
-						implicitHeight: 15
-						highlighted: pluginSetting.highlightedIndex == index
+					PicoComboBox {
+						textRole: "name"
+						model: pico.pluginModel
+						id: pluginSetting
+						currentIndex: 0
 
-						contentItem: Text {
-							text: name
-							font.family: "Roboto Light"
-							verticalAlignment: Text.AlignVCenter
-							anchors.verticalCenter: parent.verticalCenter
-							anchors.left: parent.left
-							anchors.leftMargin: 3
+						delegate: ItemDelegate {
+							width: pluginSetting.width
+							implicitHeight: 15
+							highlighted: pluginSetting.highlightedIndex == index
+
+							contentItem: Text {
+								text: name
+								font.family: "Roboto Light"
+								verticalAlignment: Text.AlignVCenter
+								anchors.verticalCenter: parent.verticalCenter
+								anchors.left: parent.left
+								anchors.leftMargin: 3
+							}
+						}
+
+						onActivated: updatePlugin(currentIndex)
+						Component.onCompleted: {
+							var text = pico.settings.value("General/Emulator", "none");
+							var index = find(text);
+							if (index === -1)
+								index = 0;
+							currentIndex = index;
+							updatePlugin(currentIndex)
+						}
+
+						function updatePlugin(index)
+						{
+							pico.settings.setValue("General/Emulator", currentText);
+							pico.setPlugin(pico.pluginModel.fileForPlugin(index));
 						}
 					}
+				}
 
-					onActivated: updatePlugin(currentIndex)
-					Component.onCompleted: {
-						var text = pico.settings.value("General/Emulator", "none");
-						var index = find(text);
-						if (index === -1)
-							index = 0;
-						currentIndex = index;
-						updatePlugin(currentIndex)
-					}
+				SettingItem {
+					text: "Test 2"
 
-					function updatePlugin(index)
-					{
-						pico.settings.setValue("General/Emulator", currentText);
-						pico.setPlugin(pico.pluginModel.fileForPlugin(index));
+					PicoCheckBox {
 					}
 				}
-			}
 
-			SettingItem {
-				text: "Test 2"
+				SettingItem {
+					text: "Test 3"
 
-				PicoCheckBox {
+					PicoButton {
+						text: "Test"
+						tooltip: PicoToolTip {
+							text: "dit is een heel lang stukje text om dit dingetje te testen.nl"
+						}
+					}
 				}
-			}
 
-			SettingItem {
-				text: "Test 3"
+				SettingItem {
+					text: "Test 4"
 
-				PicoButton {
-					text: "Test"
+					PicoCheckBox {
+					}
 				}
 			}
 		}

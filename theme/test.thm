@@ -1,8 +1,24 @@
 spacer = #9E9E9E
 
+tooltip {
+	background = #81C784
+	text = #FFFFFF
+	shadow = #212121A0
+}
+
+button {
+	primary = #E0E0E0
+	pressed = #9E9E9E
+	hovered = #BDBDBD
+}
+
+checkbox {
+	background = #E0E0E0
+}
+
 toolbar {
 	primary = #EEEEEE
-	shadow = #333333A0
+	shadow = #33333390
 	spacer = #BDBDBD
 
 	button {
@@ -17,13 +33,13 @@ sidebar {
 	primary = #2D313F
 	toolbar {
 		primary = #43495E
-		shadow = #333333A0
+		shadow = #212121E0
 	}
 	button {
 		primary = #2D313F
 		selected = #20232F
 		hovered = #3A4051
-		accent = #6BB0DA
+		accent = #4DD0E1
 	}
 	icon {
 		primary = #EEEEEE

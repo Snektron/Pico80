@@ -94,9 +94,6 @@ Rectangle {
 			color: theme.spacer
 
 			PicoToolBar {
-				color: theme.toolbar.primary
-				shadowColor: theme.toolbar.shadow
-
 				Rectangle {
 					width: 1
 					anchors.top: parent.top
@@ -115,8 +112,6 @@ Rectangle {
 
 			PicoToolBar {
 				id: toolbar
-				color: theme.toolbar.primary
-				shadowColor: theme.toolbar.shadow
 			}
 
 			StackLayout {
@@ -160,8 +155,6 @@ Rectangle {
 
 			PicoToolBar {
 				id: emulatortoolbar
-				color: theme.toolbar.primary
-				shadowColor: theme.toolbar.shadow
 			}
 
 			Item {
