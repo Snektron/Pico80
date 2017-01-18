@@ -10,13 +10,9 @@ SOURCES += \
     src/main.cpp \
     src/core/PluginManager.cpp \
     src/emu/EmulatorThread.cpp \
-    src/gui/display/DisplayRenderer.cpp \
-    src/gui/display/Display.cpp \
-    src/gui/display/FallbackDisplay.cpp \
     src/Pico80.cpp \
     src/Settings.cpp \
     src/gui/Logging.cpp \
-    src/gui/display/DisplayWrapper.cpp \
     src/emu/EmulatorContext.cpp \
     src/core/PicoSettings.cpp \
     src/gui/PluginModel.cpp \
@@ -27,13 +23,9 @@ SOURCES += \
 HEADERS += \
     include/core/PluginManager.h \
     include/emu/EmulatorThread.h \
-    include/gui/display/Display.h \
-    include/gui/display/DisplayRenderer.h \
-    include/gui/display/FallbackDisplay.h \
     include/Pico80.h \
     include/Settings.h \
     include/gui/Logging.h \
-    include/gui/display/DisplayWrapper.h \
     include/emu/EmulatorContext.h \
     include/core/QmlPicoEngine.h \
     include/core/PicoSettings.h \

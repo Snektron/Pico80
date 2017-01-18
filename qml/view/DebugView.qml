@@ -5,6 +5,7 @@ import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
 import Picore 1.0
 import Picore.Components 1.0
+import "../components"
 
 View {
 }

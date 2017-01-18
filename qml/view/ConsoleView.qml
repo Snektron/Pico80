@@ -3,12 +3,12 @@ import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.3
 import Picore 1.0
 import Picore.Components 1.0
+import "../components"
 
 View {
 	toolbar: Row {
 		spacing: 5
 		anchors.fill: parent
-		z: 200
 
 		Item{width: 5; height: 1}
 
@@ -28,8 +28,8 @@ View {
 			text: "\uF07d"
 			anchors.verticalCenter: parent.verticalCenter
 
-			checked: pico.settings.value("Console/AutoScroll", "true") === "true";
-			onCheckedChanged: pico.settings.setValue("Console/AutoScroll", checked);
+			checked: settings.autoscroll;
+			onCheckedChanged: settings.autoscroll = checked;
 
 			tooltip: PicoToolTip {
 				text: "Enable autoscrolling"
@@ -46,10 +46,6 @@ View {
 			boundsBehavior: Flickable.StopAtBounds
 			flickableDirection: Flickable.VerticalFlick
 			anchors.fill: parent
-			anchors.leftMargin: 5
-			anchors.rightMargin: 5
-			anchors.bottomMargin: 5
-			anchors.topMargin: 5
 
 			property var consolecolors: [
 				theme.console.log.debug,
@@ -61,29 +57,28 @@ View {
 
 			model: pico.logModel
 
+			onCountChanged: {
+				if (settings.autoscroll) {
+					positionViewAtEnd();
+					currentIndex = count - 1;
+				}
+			}
+
 			delegate: Text {
 				text: record
 				color: logview.consolecolors[type]
 				anchors.left: parent.left
 				anchors.right: parent.right
-				anchors.rightMargin: 10
+				anchors.leftMargin: 5
+				anchors.rightMargin: 5 + scrollbar.width
 				textFormat: Text.PlainText
 				wrapMode: Text.WordWrap
 				font.pointSize: 11
 				font.family: "Courier"
-			//	ListView.onAdd: if (autoscroll.checked) logview.positionViewAtEnd();
 			}
 
-			ScrollBar.vertical: ScrollBar {
+			ScrollBar.vertical: PicoScrollBar {
 				id: scrollbar
-				width: 5
-				contentItem: Rectangle {
-					color: theme.console.scrollbar
-					anchors.left: parent.left
-					anchors.right: parent.right
-					height: parent.height * parent.size
-					y: parent.height * parent.position
-				}
 			}
 		}
 	}

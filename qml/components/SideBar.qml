@@ -1,7 +1,7 @@
 import QtQuick 2.5
 
 Item {
-	property SideBarButton current: null
+	property SideBarItem current: null
 
 	function setCurrent(button) {
 		if (current)

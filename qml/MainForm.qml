@@ -17,6 +17,10 @@ Rectangle {
 	FontLoader { source: "/fonts/OpenSans-Light.ttf" }
 	FontLoader { source: "/fonts/fontawesome-webfont.ttf"}
 
+	Settings {
+		id: settings
+	}
+
 	Rectangle {
 		id: sidebar_base
 		color: theme.sidebar.primary
@@ -50,7 +54,7 @@ Rectangle {
 			anchors.left: parent.left
 			anchors.right: parent.right
 
-			SideBarButton {
+			SideBarItem {
 				id: sb_debug
 				objectName: "Test"
 				sidebar: sidebar
@@ -60,7 +64,7 @@ Rectangle {
 				checked: true
 			}
 
-			SideBarButton {
+			SideBarItem {
 				id: sb_console
 				sidebar: sidebar
 				index: 1
@@ -68,7 +72,7 @@ Rectangle {
 				icon: "\uF120"
 			}
 
-			SideBarButton {
+			SideBarItem {
 				id: sb_settings
 				index: 2
 				sidebar: sidebar
@@ -110,17 +114,10 @@ Rectangle {
 			Layout.minimumWidth: 300
 			width: 400
 
-			PicoToolBar {
-				id: toolbar
-			}
-
 			StackLayout {
 				id: menuview
 				objectName: "View"
-				anchors.top: toolbar.bottom
-				anchors.left: parent.left
-				anchors.right: parent.right
-				anchors.bottom: parent.bottom
+				anchors.fill: parent
 				currentIndex: 0
 
 				states: [
@@ -135,14 +132,6 @@ Rectangle {
 					}
 				]
 
-				Component.onCompleted: updateToolbar(currentIndex)
-				onCurrentIndexChanged: updateToolbar(currentIndex)
-				onStateChanged: updateToolbar(state === "" ? currentIndex : -1)
-
-				function updateToolbar(index) {
-					toolbar.items = index === -1 ? null : children[index].toolbar;
-				}
-
 				DebugView {}
 				ConsoleView {}
 				SettingsView {}
@@ -153,18 +142,10 @@ Rectangle {
 			Layout.minimumWidth: 300
 			Layout.minimumHeight: 250
 
-			PicoToolBar {
-				id: emulatortoolbar
-			}
-
 			Item {
 				id: display_container
 				objectName: "DisplayContainer"
-
-				anchors.top: emulatortoolbar.bottom
-				anchors.left: parent.left
-				anchors.right: parent.right
-				anchors.bottom: parent.bottom
+				anchors.fill: parent
 
 				function updateDisplay() {
 					for (var i = 0; i < children.length; i++)

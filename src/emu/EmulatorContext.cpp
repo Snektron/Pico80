@@ -1,5 +1,4 @@
 #include "emu/EmulatorContext.h"
-#include "gui/display/Display.h"
 
 EmulatorContext::EmulatorContext(QmlPicoEngine *qmlEngine, IPlugin *plugin):
 	display(Q_NULLPTR)
@@ -8,20 +7,23 @@ EmulatorContext::EmulatorContext(QmlPicoEngine *qmlEngine, IPlugin *plugin):
 	if (plugin)
 		plugin->registerPlugin(pluginEngine);
 
-	emulator = new EmulatorThread(&pluginEngine);
 	createQmlComponents(qmlEngine);
+	emulatorThread = new EmulatorThread(&pluginEngine);
+	connect(emulatorThread, SIGNAL(started()),
+			this, SLOT(onEmulatorThreadStarted()),
+			Qt::QueuedConnection);
 }
 
 EmulatorContext::~EmulatorContext()
 {
+	emulatorThread->quit();
+	delete emulatorThread;
 	delete display;
-	emulator->quit();
-	delete emulator;
 }
 
 void EmulatorContext::start()
 {
-	emulator->start();
+	emulatorThread->start();
 }
 
 void EmulatorContext::loadDefaults()
@@ -36,4 +38,9 @@ void EmulatorContext::createQmlComponents(QmlPicoEngine *qmlEngine)
 	display->setObjectName("Display");
 	display->setParentItem(displayContainer);
 	QMetaObject::invokeMethod(displayContainer, "updateDisplay");
+}
+
+void EmulatorContext::onEmulatorThreadStarted()
+{
+	emit emulatorThread->initialize(display);
 }

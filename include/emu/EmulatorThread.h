@@ -1,6 +1,7 @@
 #ifndef ASICTHREAD_H
 #define ASICTHREAD_H
 
+#include <QQuickItem>
 #include <QThread>
 #include <picore/PluginEngine.h>
 #include <picore/api/IEmulator.h>
@@ -12,12 +13,13 @@ class EmulatorWorker : public QObject
 	Q_OBJECT
 private:
 	IEmulator *emulator;
-
+	bool initialized;
 public:
 	EmulatorWorker(PluginEngine *engine);
 	~EmulatorWorker();
 private slots:
 	void tick();
+	void onInitialize(QQuickItem *display);
 };
 
 class EmulatorThread : public QThread
@@ -32,6 +34,9 @@ public:
 
 public slots:
 	void quit();
+
+signals:
+	void initialize(QQuickItem *display);
 };
 
 #endif // ASICTHREAD_H

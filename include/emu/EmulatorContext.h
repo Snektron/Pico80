@@ -13,7 +13,7 @@ class EmulatorContext: public QObject
 	Q_OBJECT
 private:
 	PluginEngine pluginEngine;
-	EmulatorThread *emulator;
+	EmulatorThread *emulatorThread;
 	QQuickItem *display;
 
 public:
@@ -24,6 +24,9 @@ public:
 private:
 	void loadDefaults();
 	void createQmlComponents(QmlPicoEngine *qmlEngine);
+
+private slots:
+	void onEmulatorThreadStarted();
 };
 
 #endif // EMULATORCONTEXT_H

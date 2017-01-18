@@ -16,6 +16,12 @@ checkbox {
 	background = #E0E0E0
 }
 
+scrollbar {
+	slider = #BDBDBD
+	grabbed = #616161
+	background = #EEEEEE
+}
+
 toolbar {
 	primary = #EEEEEE
 	shadow = #33333390
@@ -58,7 +64,6 @@ display_placeholder {
 
 console {
 	background = #FFFFFF
-	scrollbar = #B8B8B8
 	log {
 		debug = #616161
 		warning = #FFC400

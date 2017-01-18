@@ -6,6 +6,7 @@ import QtPositioning 5.7
 import Picore 1.0
 import Picore.Settings 1.0
 import Picore.Components 1.0
+import "../components"
 
 View {
 	Item {
@@ -59,31 +60,6 @@ View {
 							pico.settings.setValue("General/Emulator", currentText);
 							pico.setPlugin(pico.pluginModel.fileForPlugin(index));
 						}
-					}
-				}
-
-				SettingItem {
-					text: "Test 2"
-
-					PicoCheckBox {
-					}
-				}
-
-				SettingItem {
-					text: "Test 3"
-
-					PicoButton {
-						text: "Test"
-						tooltip: PicoToolTip {
-							text: "dit is een heel lang stukje text om dit dingetje te testen.nl"
-						}
-					}
-				}
-
-				SettingItem {
-					text: "Test 4"
-
-					PicoCheckBox {
 					}
 				}
 			}

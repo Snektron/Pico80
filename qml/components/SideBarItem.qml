@@ -8,6 +8,9 @@ Button {
 	property int index: 0
 	property var sidebar: null
 
+	property Component content: null
+	property Component toolbar: null
+
 	width: 80
 	height: 64
 

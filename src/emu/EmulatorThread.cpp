@@ -4,7 +4,8 @@
 #include <QDebug>
 
 EmulatorWorker::EmulatorWorker(PluginEngine *engine):
-	emulator(engine->createEmulator())
+	emulator(engine->createEmulator()),
+	initialized(false)
 {
 	if (!emulator)
 		qWarning() << "Failed to instantiate emulator";
@@ -18,8 +19,17 @@ EmulatorWorker::~EmulatorWorker()
 
 void EmulatorWorker::tick()
 {
-	if (emulator)
+	if (emulator && initialized)
 		emulator->tick();
+}
+
+void EmulatorWorker::onInitialize(QQuickItem *display)
+{
+	if (emulator)
+	{
+		emulator->initialize(display);
+		initialized = true;
+	}
 }
 
 EmulatorThread::EmulatorThread(PluginEngine *engine):
@@ -35,13 +45,12 @@ void EmulatorThread::run()
 	EmulatorWorker worker(engine);
 
 	connect(&timer, SIGNAL(timeout()),
-			&worker, SLOT(tick()),
-			Qt::QueuedConnection);
+			&worker, SLOT(tick()));
+	connect(this, SIGNAL(initialize(QQuickItem*)),
+			&worker, SLOT(onInitialize(QQuickItem*)),
+			Qt::BlockingQueuedConnection);
 
 	exec();
-
-	disconnect(&timer, SIGNAL(timeout()),
-			   &worker, SLOT(tick()));
 }
 
 void EmulatorThread::quit()

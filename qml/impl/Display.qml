@@ -1,11 +1,12 @@
 import QtQuick 2.0
+import Picore 1.0
 
-Rectangle {
+View {
 	id: display
 	color: theme.display_placeholder.background
 
 	Column {
-		anchors.centerIn: display
+		anchors.centerIn: parent
 
 		Text {
 			color: theme.display_placeholder.text
