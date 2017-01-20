@@ -1,7 +1,8 @@
 #include "Pico80.h"
 #include <QQmlContext>
-#include <picore/PluginEngine.h>
+#include <QDebug>
 #include "gui/Logging.h"
+#include "DefaultEmulatorContext.h"
 
 Pico80::Pico80():
 	emulator(Q_NULLPTR)
@@ -9,7 +10,7 @@ Pico80::Pico80():
 	Logging::installMessageHandler();
 	qInfo() << "Starting";
 
-	qmlEngine = new QmlPicoEngine();
+	qmlEngine = new PicoQmlEngine();
 	manager = new PluginManager();
 	system = new System(manager);
 	themeEngine = new ThemeEngine();
@@ -20,10 +21,10 @@ Pico80::Pico80():
 
 	connect(system, SIGNAL(pluginChanged(QString)), this, SLOT(setEmulatorPlugin(QString)), Qt::QueuedConnection);
 
-	qmlEngine->addImportPath("qrc:/qml/import/");
+	qmlEngine->addImportPath("qrc:/qml/");
 	qmlEngine->load(QUrl("qrc:/qml/main.qml"));
 
-	emulator = new EmulatorContext(qmlEngine, Q_NULLPTR);
+	emulator = new DefaultEmulatorContext(qmlEngine);
 }
 
 Pico80::~Pico80()
@@ -39,22 +40,24 @@ Pico80::~Pico80()
 void Pico80::setEmulatorPlugin(QString file)
 {
 	delete emulator;
+	emulator = Q_NULLPTR;
 	if (file != "")
 	{
 		IPlugin *plugin = manager->loadPluginByFile(file);
 		if (plugin)
+		{
 			qDebug() << "Activating plugin" << plugin->name();
+			emulator = plugin->createContext(qmlEngine);
+		}
 		else
 			qWarning() << "Failed to activate plugin" << file;
-
-		emulator = new EmulatorContext(qmlEngine, plugin);
 	}
-	else
+
+	if (!emulator)
 	{
 		qDebug() << "Activating builtin plugin";
-		emulator = new EmulatorContext(qmlEngine, Q_NULLPTR);
+		emulator = new DefaultEmulatorContext(qmlEngine);
 	}
-	emulator->start();
 }
 
 void Pico80::quit()

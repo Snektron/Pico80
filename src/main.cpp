@@ -1,7 +1,6 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include <QObject>
-#include <QtQuickControls2/QQuickStyle>
+#include <QDebug>
 #include "Settings.h"
 #include "Pico80.h"
 

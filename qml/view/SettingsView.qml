@@ -3,10 +3,8 @@ import QtQuick.Controls 2.0
 import QtQuick.Controls.Material 2.0
 import QtQuick.Controls.Universal 2.0
 import QtPositioning 5.7
-import Picore 1.0
-import Picore.Settings 1.0
-import Picore.Components 1.0
-import "../components"
+import Pico80.Settings 1.0
+import Pico80.Components 1.0
 
 View {
 	Item {

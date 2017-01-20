@@ -1,0 +1,11 @@
+module Pico80.Components
+PicoCheckBox 1.0 PicoCheckBox.qml
+PicoButton 1.0 PicoButton.qml
+PicoComboBox 1.0 PicoComboBox.qml
+PicoToolBar 1.0 PicoToolBar.qml
+PicoToolButton 1.0 PicoToolButton.qml
+PicoToolCheckBox 1.0 PicoToolCheckBox.qml
+PicoToolTip 1.0 PicoToolTip.qml
+PicoToolTipArea 1.0 PicoToolTipArea.qml
+PicoScrollBar 1.0 PicoScrollBar.qml
+View 1.0 View.qml

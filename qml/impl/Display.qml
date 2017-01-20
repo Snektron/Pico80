@@ -1,5 +1,5 @@
 import QtQuick 2.0
-import Picore 1.0
+import Pico80.Components 1.0
 
 View {
 	id: display

@@ -2,22 +2,22 @@
 #define PICO80_H
 
 #include <QObject>
-#include "core/QmlPicoEngine.h"
+#include "core/PicoQmlEngine.h"
 #include "core/PluginManager.h"
 #include "core/PicoSettings.h"
 #include "core/System.h"
 #include "gui/PluginModel.h"
-#include "emu/EmulatorContext.h"
+#include "Pico80/api/IEmulatorContext.h"
 
 class Pico80 : public QObject
 {
 	Q_OBJECT
 private:
-	QmlPicoEngine *qmlEngine;
+	PicoQmlEngine *qmlEngine;
 	PluginManager *manager;
-	EmulatorContext *emulator;
 	System *system;
 	ThemeEngine *themeEngine;
+	IEmulatorContext *emulator;
 
 public:
 	Pico80();

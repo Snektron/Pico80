@@ -18,5 +18,19 @@
         <file>theme/test.thm</file>
         <file>qml/Settings.qml</file>
         <file>qml/components/SideBarItem.qml</file>
+        <file>qml/Pico80/Components/PicoButton.qml</file>
+        <file>qml/Pico80/Components/PicoCheckBox.qml</file>
+        <file>qml/Pico80/Components/PicoComboBox.qml</file>
+        <file>qml/Pico80/Components/PicoScrollBar.qml</file>
+        <file>qml/Pico80/Components/PicoToolBar.qml</file>
+        <file>qml/Pico80/Components/PicoToolButton.qml</file>
+        <file>qml/Pico80/Components/PicoToolCheckBox.qml</file>
+        <file>qml/Pico80/Components/PicoToolTip.qml</file>
+        <file>qml/Pico80/Components/PicoToolTipArea.qml</file>
+        <file>qml/Pico80/Components/qmldir</file>
+        <file>qml/Pico80/Settings/qmldir</file>
+        <file>qml/Pico80/Settings/SettingGroup.qml</file>
+        <file>qml/Pico80/Settings/SettingItem.qml</file>
+        <file>qml/Pico80/Components/View.qml</file>
     </qresource>
 </RCC>

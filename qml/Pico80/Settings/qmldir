@@ -1,0 +1,3 @@
+module Pico80.Settings
+SettingGroup 1.0 SettingGroup.qml
+SettingItem 1.0 SettingItem.qml

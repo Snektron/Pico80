@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QString>
-#include <picore/api/IPlugin.h>
+#include "Pico80/api/IPlugin.h"
 
 class PluginDescriptor
 {
