@@ -5,10 +5,9 @@ import Pico80.Components 1.0
 
 View {
 	toolbar: Row {
-		spacing: 5
+		spacing: 2
+		anchors.leftMargin: 4
 		anchors.fill: parent
-
-		Item{width: 5; height: 1}
 
 		PicoToolButton {
 			id: clearButton
@@ -36,7 +35,7 @@ View {
 	}
 
 	Rectangle {
-		color: theme.console.background
+		color: Theme.console.background
 		anchors.fill: parent
 
 		ListView {
@@ -46,14 +45,14 @@ View {
 			anchors.fill: parent
 
 			property var consolecolors: [
-				theme.console.log.debug,
-				theme.console.log.warning,
-				theme.console.log.critical,
-				theme.console.log.fatal,
-				theme.console.log.info
+				Theme.console.log.debug,
+				Theme.console.log.warning,
+				Theme.console.log.critical,
+				Theme.console.log.fatal,
+				Theme.console.log.info
 			]
 
-			model: pico.logModel
+			model: Pico.logModel
 
 			onCountChanged: {
 				if (settings.autoscroll) {

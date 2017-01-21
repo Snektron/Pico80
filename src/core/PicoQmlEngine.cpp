@@ -1,6 +1,12 @@
 #include "core/PicoQmlEngine.h"
 #include <QQmlComponent>
+#include <QQmlContext>
 #include <QDebug>
+
+PicoQmlEngine::PicoQmlEngine()
+{
+	addImportPath("qrc:/qml/");
+}
 
 QQuickItem* PicoQmlEngine::setDisplay(QUrl file)
 {
@@ -9,7 +15,10 @@ QQuickItem* PicoQmlEngine::setDisplay(QUrl file)
 	if (display)
 		setDisplay(display);
 	else
-		qCritical() << "Failed to create display component";
+	{
+		qCritical() << "Failed to load" << file.fileName();
+		qCritical() << component.errors();
+	}
 	return display;
 }
 

@@ -14,11 +14,14 @@ SOURCES += \
 	src/gui/Logging.cpp \
     src/core/PicoSettings.cpp \
     src/gui/PluginModel.cpp \
-    src/core/System.cpp \
     src/core/theme/ThemeEngine.cpp \
     src/core/theme/ThemeParser.cpp \
     src/core/PicoQmlEngine.cpp \
-    src/DefaultEmulatorContext.cpp
+    src/DefaultEmulatorContext.cpp \
+    src/core/theme/Node.cpp \
+    src/core/theme/Theme.cpp \
+    src/core/PicoEngine.cpp \
+    src/core/PicoQml.cpp
 
 HEADERS += \
 	include/core/PluginManager.h \
@@ -27,14 +30,20 @@ HEADERS += \
 	include/gui/Logging.h \
     include/core/PicoSettings.h \
     include/gui/PluginModel.h \
-    include/core/System.h \
     include/core/theme/ThemeEngine.h \
     include/core/theme/ThemeParser.h \
     include/core/PicoQmlEngine.h \
     include/Pico80/api/IEmulatorContext.h \
     include/Pico80/api/IPlugin.h \
     include/Pico80/api/IPicoQmlEngine.h \
-    include/DefaultEmulatorContext.h
+    include/DefaultEmulatorContext.h \
+    include/core/theme/Node.h \
+    include/core/theme/Theme.h \
+    include/core/PicoEngine.h \
+    include/core/PicoQml.h \
+    include/Pico80/api/IPicoSettings.h \
+    include/Pico80/api/IPicoEngine.h \
+    include/Pico80/api/ITheme.h
 
 RESOURCES += \
     rsrc.qrc

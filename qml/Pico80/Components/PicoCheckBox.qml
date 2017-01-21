@@ -18,7 +18,7 @@ CheckBox {
 		implicitHeight: 15
 		anchors.verticalCenter: parent.verticalCenter
 
-		color: theme.checkbox.background
+		color: Theme.checkbox.background
 
 		Text {
 			id: indicatorText

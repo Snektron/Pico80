@@ -1,6 +1,7 @@
 #include "core/theme/ThemeParser.h"
 #include <QDebug>
 #include <QColor>
+#include <QVariantMap>
 
 #define IS_UPPER(c) ('A' <= (c) && c <= 'Z')
 #define IS_LOWER(c) ('a' <= (c) && c <= 'z')
@@ -8,63 +9,8 @@
 #define IS_LETTER(c) (IS_UPPER(c) || IS_LOWER(c) || (c) == '_')
 #define IS_WHITESPACE(c) ((c) == ' ' || (c) == '\n' || (c) == '\t')
 
-VariantNode::VariantNode(QVariant variant):
-	variant(variant)
-{}
-
-QVariant VariantNode::toVariant()
-{
-	return variant;
-}
-
-bool VariantNode::isMap()
-{
-	return false;
-}
-
-MapNode::~MapNode()
-{
-	QMapIterator<QString, Node*> i(children);
-	while (i.hasNext())
-	{
-		i.next();
-		delete i.value();
-	}
-}
-
-void MapNode::set(QString key, Node *value)
-{
-	if (children.contains(key))
-		delete children[key];
-	children[key] = value;
-}
-
-Node* MapNode::get(QString key)
-{
-	if (!children.contains(key))
-		return Q_NULLPTR;
-	return children[key];
-}
-
-QVariant MapNode::toVariant()
-{
-	QVariantMap map;
-
-	QMapIterator<QString, Node*> i(children);
-	while (i.hasNext())
-	{
-		i.next();
-		map[i.key()] = i.value()->toVariant();
-	}
-	return map;
-}
-
-bool MapNode::isMap()
-{
-	return true;
-}
-
-ThemeParser::ThemeParser(QString filename):
+ThemeParser::ThemeParser(MapNode *root, QString filename):
+	root(root),
 	file(filename),
 	state(State::OK)
 {
@@ -75,14 +21,12 @@ ThemeParser::ThemeParser(QString filename):
 	}
 }
 
-QVariant ThemeParser::parse()
+void ThemeParser::parse()
 {
 	if (state != State::OK)
-		return QVariantMap();
+		return;
 	if (parseFile() != State::OK)
 		qCritical() << "Syntax error in theme file";
-
-	return root.toVariant();
 }
 
 State ThemeParser::getState()
@@ -143,7 +87,7 @@ void ThemeParser::skipWhiteSpace()
 
 State ThemeParser::setThemeValue(QColor value)
 {
-	MapNode *map = &root;
+	MapNode *map = root;
 
 	for (int i = 0; i < stack.size() - 1; i++)
 	{

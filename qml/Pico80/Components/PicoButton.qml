@@ -8,9 +8,9 @@ Button {
 	font.family: "Roboto Light"
 	hoverEnabled: true
 
-	property color pressedColor: theme.button.pressed
-	property color releasedColor: theme.button.primary
-	property color hoveredColor: theme.button.hovered
+	property color pressedColor: Theme.button.pressed
+	property color releasedColor: Theme.button.primary
+	property color hoveredColor: Theme.button.hovered
 	property alias tooltip: tooltiparea.tooltip
 
 	contentItem: Text {

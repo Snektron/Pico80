@@ -16,7 +16,6 @@
         <file>fonts/Roboto-Thin.ttf</file>
         <file>theme/default.thm</file>
         <file>theme/test.thm</file>
-        <file>qml/Settings.qml</file>
         <file>qml/components/SideBarItem.qml</file>
         <file>qml/Pico80/Components/PicoButton.qml</file>
         <file>qml/Pico80/Components/PicoCheckBox.qml</file>

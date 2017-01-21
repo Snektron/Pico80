@@ -24,7 +24,7 @@ View {
 
 					PicoComboBox {
 						textRole: "name"
-						model: pico.pluginModel
+						model: Pico.pluginModel
 						id: pluginSetting
 						currentIndex: 0
 
@@ -45,7 +45,7 @@ View {
 
 						onActivated: updatePlugin(currentIndex)
 						Component.onCompleted: {
-							var text = pico.settings.value("General/Emulator", "none");
+							var text = Settings.value("General/Emulator", "none");
 							var index = find(text);
 							if (index === -1)
 								index = 0;
@@ -55,8 +55,8 @@ View {
 
 						function updatePlugin(index)
 						{
-							pico.settings.setValue("General/Emulator", currentText);
-							pico.setPlugin(pico.pluginModel.fileForPlugin(index));
+							Settings.setValue("General/Emulator", currentText);
+							Pico.setPlugin(Pico.pluginModel.fileForPlugin(index));
 						}
 					}
 				}

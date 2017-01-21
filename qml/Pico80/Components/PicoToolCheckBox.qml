@@ -5,14 +5,13 @@ CheckBox {
 	id: control
 	implicitWidth: 24
 	implicitHeight: 24
-	spacing: 3
-	font.pointSize: 14
+	font.pixelSize: 14
 	font.family: "FontAwesome"
 	hoverEnabled: true
 
-	property color enabledColor: theme.toolbar.button.checked
-	property color disabledColor: theme.toolbar.button.unchecked
-	property color hoveredColor: theme.toolbar.button.hovered
+	property color enabledColor: Theme.toolbar.button.checked
+	property color disabledColor: Theme.toolbar.button.unchecked
+	property color hoveredColor: Theme.toolbar.button.hovered
 	property alias tooltip: tooltiparea.tooltip
 
 	indicator: Rectangle {

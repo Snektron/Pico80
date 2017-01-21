@@ -3,13 +3,13 @@ import Pico80.Components 1.0
 
 View {
 	id: display
-	color: theme.display_placeholder.background
+	color: Theme.display_placeholder.background
 
 	Column {
 		anchors.centerIn: parent
 
 		Text {
-			color: theme.display_placeholder.text
+			color: Theme.display_placeholder.text
 			text: "\uF071"
 			font.pointSize: 50
 			font.family: "FontAwesome"
@@ -17,7 +17,7 @@ View {
 		}
 
 		Text {
-			color: theme.display_placeholder.text
+			color: Theme.display_placeholder.text
 			width: display.width
 			horizontalAlignment: Text.AlignHCenter
 			text: "No plugin selected or something has gone wrong."

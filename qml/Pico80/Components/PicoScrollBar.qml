@@ -6,7 +6,7 @@ ScrollBar {
 	implicitWidth: 12
 
 	contentItem: Rectangle {
-		color: bar.pressed ? theme.scrollbar.grabbed : theme.scrollbar.slider
+		color: bar.pressed ? Theme.scrollbar.grabbed : Theme.scrollbar.slider
 		anchors.left: parent.left
 		anchors.right: parent.right
 		anchors.margins: 1
@@ -17,6 +17,6 @@ ScrollBar {
 	background: Rectangle {
 		id: background
 		anchors.fill: parent
-		color: theme.scrollbar.background
+		color: Theme.scrollbar.background
 	}
 }

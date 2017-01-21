@@ -3,8 +3,9 @@
 
 #include <QObject>
 #include <QVariantMap>
+#include "Pico80/api/IPicoSettings.h"
 
-class PicoSettings: public QObject
+class PicoSettings: public QObject, public IPicoSettings
 {
 	Q_OBJECT
 private:

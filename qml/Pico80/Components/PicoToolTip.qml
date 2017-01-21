@@ -14,7 +14,7 @@ Popup {
 		id: background
 		glowRadius: 1
 		spread: 0.2
-		color: theme.tooltip.shadow
+		color: Theme.tooltip.shadow
 		cornerRadius: 6
 		width: text.width + 10
 		height: text.height + 10
@@ -24,7 +24,7 @@ Popup {
 			id: rect
 			anchors.fill: parent
 			radius: 4
-			color: theme.tooltip.background
+			color: Theme.tooltip.background
 		}
 	}
 
@@ -32,7 +32,7 @@ Popup {
 		id: text
 		text: "tooltip"
 		anchors.centerIn: background
-		color: theme.tooltip.text
+		color: Theme.tooltip.text
 		font.family: "Roboto"
 		font.pointSize: 10
 	}

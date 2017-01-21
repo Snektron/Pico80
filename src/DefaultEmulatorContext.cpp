@@ -1,8 +1,9 @@
 #include "DefaultEmulatorContext.h"
+#include <QDebug>
 
-DefaultEmulatorContext::DefaultEmulatorContext(IPicoQmlEngine *engine)
+DefaultEmulatorContext::DefaultEmulatorContext(IPicoEngine *engine)
 {
-	display = engine->setDisplay(QUrl("qrc:/qml/impl/Display.qml"));
+	display = engine->qmlEngine()->setDisplay(QUrl("qrc:/qml/impl/Display.qml"));
 }
 
 DefaultEmulatorContext::~DefaultEmulatorContext()

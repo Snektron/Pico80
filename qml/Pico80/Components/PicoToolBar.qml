@@ -7,7 +7,7 @@ Rectangle {
 	implicitHeight: 32
 	anchors.left: parent.left
 	anchors.right: parent.right
-	color: theme.toolbar.primary
+	color: Theme.toolbar.primary
 	z: 100
 
 	property alias shadowColor: gradientBegin.color
@@ -30,7 +30,7 @@ Rectangle {
 			GradientStop {
 				id: gradientBegin
 				position: 0.0
-				color: theme.toolbar.shadow
+				color: Theme.toolbar.shadow
 			}
 
 			GradientStop {

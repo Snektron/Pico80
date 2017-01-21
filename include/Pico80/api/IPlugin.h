@@ -3,13 +3,13 @@
 
 #include <QString>
 #include "Pico80/api/IEmulatorContext.h"
-#include "Pico80/api/IPicoQmlEngine.h"
+#include "Pico80/api/IPicoEngine.h"
 
 class IPlugin
 {
 public:
 	virtual QString name() = 0;
-	virtual IEmulatorContext* createContext(IPicoQmlEngine *engine) = 0;
+	virtual IEmulatorContext* createContext(IPicoEngine *engine) = 0;
 	virtual ~IPlugin() = default;
 };
 

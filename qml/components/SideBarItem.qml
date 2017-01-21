@@ -21,11 +21,11 @@ Button {
 	background: Rectangle {
 		color: {
 			if (button.checked)
-				return theme.sidebar.button.selected;
+				return Theme.sidebar.button.selected;
 			else if(button.hovered || button.down)
-				return theme.sidebar.button.hovered;
+				return Theme.sidebar.button.hovered;
 			else
-				return theme.sidebar.button.primary;
+				return Theme.sidebar.button.primary;
 		}
 
 		Rectangle {
@@ -33,13 +33,13 @@ Button {
 			anchors.top: parent.top
 			anchors.bottom: parent.bottom
 			width: 5
-			color: theme.sidebar.button.accent
+			color: Theme.sidebar.button.accent
 			visible: button.checked
 		}
 	}
 
 	Text {
-		color: button.checked ? theme.sidebar.icon.selected : theme.sidebar.icon.primary
+		color: button.checked ? Theme.sidebar.icon.selected : Theme.sidebar.icon.primary
 		text: button.icon
 		font.pointSize: 15
 		font.family: "FontAwesome"
@@ -48,7 +48,7 @@ Button {
 	}
 
 	Text {
-		color: button.checked ? theme.sidebar.text.selected : theme.sidebar.text.primary
+		color: button.checked ? Theme.sidebar.text.selected : Theme.sidebar.text.primary
 		text: button.caption
 		anchors.topMargin: 5
 		font.pointSize: 10

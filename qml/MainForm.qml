@@ -17,13 +17,18 @@ Rectangle {
 	FontLoader { source: "/fonts/OpenSans-Light.ttf" }
 	FontLoader { source: "/fonts/fontawesome-webfont.ttf"}
 
-	Settings {
+	Item {
 		id: settings
+		property bool autoscroll: Settings.value("Console/AutoScroll", "true") === "true";
+
+		Component.onDestruction: {
+			Settings.setValue("Console/AutoScroll", autoscroll);
+		}
 	}
 
 	Rectangle {
 		id: sidebar_base
-		color: theme.sidebar.primary
+		color: Theme.sidebar.primary
 		anchors.left: parent.left
 		anchors.top: parent.top
 		anchors.bottom: parent.bottom
@@ -31,8 +36,8 @@ Rectangle {
 
 		PicoToolBar {
 			id: bartoolbar
-			color: theme.sidebar.toolbar.primary
-			shadowColor: theme.sidebar.toolbar.shadow
+			color: Theme.sidebar.toolbar.primary
+			shadowColor: Theme.sidebar.toolbar.shadow
 		}
 
 		SideBar {
@@ -95,7 +100,7 @@ Rectangle {
 
 		handleDelegate: Rectangle {
 			width: 1
-			color: theme.spacer
+			color: Theme.spacer
 
 			PicoToolBar {
 				Rectangle {
@@ -104,7 +109,7 @@ Rectangle {
 					anchors.bottom: parent.bottom
 					anchors.topMargin: 5
 					anchors.bottomMargin: 5
-					color: theme.toolbar.spacer
+					color: Theme.toolbar.spacer
 				}
 			}
 		}

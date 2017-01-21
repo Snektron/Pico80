@@ -5,12 +5,12 @@ Button {
 	id: control
 	implicitHeight: 24
 	implicitWidth: 24
-	font.pointSize: 14
+	font.pixelSize: 14
 	font.family: "FontAwesome"
 	hoverEnabled: true
 
-	property color pressedColor: theme.toolbar.button.pressed
-	property color hoveredColor: theme.toolbar.button.hovered
+	property color pressedColor: Theme.toolbar.button.pressed
+	property color hoveredColor: Theme.toolbar.button.hovered
 	property alias tooltip: tooltiparea.tooltip
 	property alias tooltiparea: tooltiparea
 
