@@ -8,7 +8,6 @@
         <file>qml/view/ConsoleView.qml</file>
         <file>qml/view/DebugView.qml</file>
         <file>qml/view/SettingsView.qml</file>
-        <file>qml/components/SideBar.qml</file>
         <file>qml/impl/Display.qml</file>
         <file>fonts/OpenSans-Light.ttf</file>
         <file>fonts/OpenSans-Regular.ttf</file>
@@ -16,7 +15,6 @@
         <file>fonts/Roboto-Thin.ttf</file>
         <file>theme/default.thm</file>
         <file>theme/test.thm</file>
-        <file>qml/components/SideBarItem.qml</file>
         <file>qml/Pico80/Components/PicoButton.qml</file>
         <file>qml/Pico80/Components/PicoCheckBox.qml</file>
         <file>qml/Pico80/Components/PicoComboBox.qml</file>
@@ -31,5 +29,8 @@
         <file>qml/Pico80/Settings/SettingGroup.qml</file>
         <file>qml/Pico80/Settings/SettingItem.qml</file>
         <file>qml/Pico80/Components/View.qml</file>
+        <file>qml/Pico80/Components/SideBar.qml</file>
+        <file>qml/Pico80/Components/SideBarButton.qml</file>
+        <file>qml/Pico80/Components/ViewContainer.qml</file>
     </qresource>
 </RCC>

@@ -9,3 +9,6 @@ PicoToolTip 1.0 PicoToolTip.qml
 PicoToolTipArea 1.0 PicoToolTipArea.qml
 PicoScrollBar 1.0 PicoScrollBar.qml
 View 1.0 View.qml
+ViewContainer 1.0 ViewContainer.qml
+SideBar 1.0 SideBar.qml
+SideBarButton 1.0 SideBarButton.qml

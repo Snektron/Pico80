@@ -3,7 +3,6 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.3
 import Pico80.Components 1.0
-import "components"
 import "view"
 
 Rectangle {
@@ -42,48 +41,13 @@ Rectangle {
 
 		SideBar {
 			id: sidebar
-
-			onCurrentChanged: {
-				if (current) {
-					menuview.state = ""
-					menuview.currentIndex = current.index
-				} else
-					menuview.state = "hidden"
-			}
-		}
-
-		Column {
 			objectName: "SideBar"
+			container: menucontainer
+
 			anchors.top: bartoolbar.bottom
-			anchors.bottom: parent.bottom
 			anchors.left: parent.left
 			anchors.right: parent.right
-
-			SideBarItem {
-				id: sb_debug
-				objectName: "Test"
-				sidebar: sidebar
-				index: 0
-				caption: "Debug"
-				icon: "\uF188"
-				checked: true
-			}
-
-			SideBarItem {
-				id: sb_console
-				sidebar: sidebar
-				index: 1
-				caption: "Console"
-				icon: "\uF120"
-			}
-
-			SideBarItem {
-				id: sb_settings
-				index: 2
-				sidebar: sidebar
-				caption: "Settings"
-				icon: "\uF085"
-			}
+			anchors.bottom: parent.bottom
 		}
 	}
 
@@ -94,8 +58,8 @@ Rectangle {
 		anchors.bottom: parent.bottom
 
 		onWidthChanged: {
-			if (width > 0 && mainview_container.width > width - 300 - 1)
-				mainview_container.width = width - 300 - 1;
+			if (width > 0 && menucontainer.width > width - 300 - 1)
+				menucontainer.width = width - 300 - 1;
 		}
 
 		handleDelegate: Rectangle {
@@ -114,32 +78,22 @@ Rectangle {
 			}
 		}
 
-		Rectangle {
-			id: mainview_container
+		ViewContainer {
+			id: menucontainer
+			objectName: "SideBarContainer"
 			Layout.minimumWidth: 300
 			width: 400
 
-			StackLayout {
-				id: menuview
-				objectName: "View"
-				anchors.fill: parent
-				currentIndex: 0
+			DebugView {
+				id: debugview
+			}
 
-				states: [
-					State {
-						name: "hidden"
-						PropertyChanges {
-							target: mainview_container;
-							Layout.preferredWidth: 0
-							visible: false
-							Layout.fillWidth: false
-						}
-					}
-				]
+			ConsoleView {
+				id: consoleview
+			}
 
-				DebugView {}
-				ConsoleView {}
-				SettingsView {}
+			SettingsView {
+				id: settingsview
 			}
 		}
 

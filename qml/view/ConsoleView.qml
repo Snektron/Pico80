@@ -4,6 +4,9 @@ import QtQuick.Layouts 1.3
 import Pico80.Components 1.0
 
 View {
+	icon: "\uF120"
+	caption: "Console"
+
 	toolbar: Row {
 		spacing: 2
 		anchors.leftMargin: 4

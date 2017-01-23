@@ -8,18 +8,16 @@ PicoQmlEngine::PicoQmlEngine()
 	addImportPath("qrc:/qml/");
 }
 
-QQuickItem* PicoQmlEngine::setDisplay(QUrl file)
+QQuickItem* PicoQmlEngine::loadComponent(QUrl file)
 {
 	QQmlComponent component(this, file);
-	QQuickItem *display = qobject_cast<QQuickItem*>(component.create());
-	if (display)
-		setDisplay(display);
-	else
+	QQuickItem * item = qobject_cast<QQuickItem*>(component.create());
+	if (!item)
 	{
 		qCritical() << "Failed to load" << file.fileName();
 		qCritical() << component.errors();
 	}
-	return display;
+	return item;
 }
 
 void PicoQmlEngine::setDisplay(QQuickItem *display)
@@ -28,4 +26,11 @@ void PicoQmlEngine::setDisplay(QQuickItem *display)
 	display->setObjectName("Display");
 	display->setParentItem(displayContainer);
 	QMetaObject::invokeMethod(displayContainer, "updateDisplay");
+}
+
+void PicoQmlEngine::addSidebarView(QQuickItem *item, QString id)
+{
+	QQuickItem *sideBarContainer = findChild<QQuickItem*>("SideBarContainer");
+	item->setParentItem(sideBarContainer);
+	item->setProperty("id", id);
 }

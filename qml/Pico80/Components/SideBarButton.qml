@@ -5,11 +5,6 @@ import QtPositioning 5.7
 Button {
 	property string caption: "Button"
 	property string icon: "\uF188"
-	property int index: 0
-	property var sidebar: null
-
-	property Component content: null
-	property Component toolbar: null
 
 	width: 80
 	height: 64
@@ -55,19 +50,5 @@ Button {
 		font.family: "Roboto"
 		anchors.top: button.verticalCenter
 		anchors.horizontalCenter: button.horizontalCenter
-	}
-
-	Component.onCompleted: {
-		if (checked && sidebar)
-			sidebar.setCurrent(this);
-	}
-
-	onClicked: {
-		if (sidebar) {
-			if (checked)
-				sidebar.setCurrent(this);
-			else
-				sidebar.setCurrent(null);
-		}
 	}
 }

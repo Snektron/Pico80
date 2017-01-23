@@ -7,6 +7,9 @@ import Pico80.Settings 1.0
 import Pico80.Components 1.0
 
 View {
+	icon: "\uF085"
+	caption: "Settings"
+
 	Item {
 		anchors.fill: parent
 		anchors.margins: 10

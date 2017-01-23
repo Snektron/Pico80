@@ -11,8 +11,9 @@ class PicoQmlEngine: public IPicoQmlEngine
 	Q_OBJECT
 public:
 	PicoQmlEngine();
-	QQuickItem* setDisplay(QUrl file);
+	QQuickItem* loadComponent(QUrl file);
 	void setDisplay(QQuickItem *display);
+	void addSidebarView(QQuickItem *item, QString id);
 };
 
 #endif // PICOQMLENGINE_H
