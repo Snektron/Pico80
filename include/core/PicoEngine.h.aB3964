@@ -20,7 +20,7 @@ class PicoEngine: public QObject, public IPicoEngine
 	Q_OBJECT
 private:
 	PluginManager mManager;
-	PicoQml mPico;
+	PicoQml pico;
 	PicoSettings mSettings;
 	Theme mTheme;
 	PicoQmlEngine mQmlEngine;
@@ -35,9 +35,6 @@ public:
 
 private slots:
 	void onThemeChanged();
-
-signals:
-	pluginChanged(QString filename);
 };
 
 #endif // PICOENGINE_H

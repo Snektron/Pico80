@@ -11,9 +11,6 @@ Rectangle {
 
 	FontLoader { source: "/fonts/Roboto-Regular.ttf" }
 	FontLoader { source: "/fonts/Roboto-Light.ttf" }
-	FontLoader { source: "/fonts/Roboto-Thin.ttf" }
-	FontLoader { source: "/fonts/OpenSans-Regular.ttf" }
-	FontLoader { source: "/fonts/OpenSans-Light.ttf" }
 	FontLoader { source: "/fonts/fontawesome-webfont.ttf"}
 
 	Item {
@@ -83,10 +80,6 @@ Rectangle {
 			objectName: "SideBarContainer"
 			Layout.minimumWidth: 300
 			width: 400
-
-			DebugView {
-				id: debugview
-			}
 
 			ConsoleView {
 				id: consoleview

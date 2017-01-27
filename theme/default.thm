@@ -64,6 +64,11 @@ display_placeholder {
 
 console {
 	background = #FFFFFF
+	spacer = #9E9E9E
+	input {
+		background = #EEEEEE
+		text = #616161
+	}
 	log {
 		debug = #616161
 		warning = #FFC400

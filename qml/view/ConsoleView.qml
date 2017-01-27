@@ -6,6 +6,7 @@ import Pico80.Components 1.0
 View {
 	icon: "\uF120"
 	caption: "Console"
+	color: Theme.console.background
 
 	toolbar: Row {
 		spacing: 2
@@ -16,7 +17,7 @@ View {
 			id: clearButton
 			text: "\uF12D"
 			anchors.verticalCenter: parent.verticalCenter
-			onClicked: pico.logModel.clear()
+			onClicked: Pico.logModel.clear()
 
 			tooltip: PicoToolTip {
 				text: "Clear console"
@@ -37,15 +38,16 @@ View {
 		}
 	}
 
-	Rectangle {
-		color: Theme.console.background
+	ColumnLayout {
 		anchors.fill: parent
+		spacing: 0
 
 		ListView {
 			id: logview
 			boundsBehavior: Flickable.StopAtBounds
 			flickableDirection: Flickable.VerticalFlick
-			anchors.fill: parent
+			Layout.fillWidth: true
+			Layout.fillHeight: true
 
 			property var consolecolors: [
 				Theme.console.log.debug,
@@ -73,12 +75,51 @@ View {
 				anchors.rightMargin: 5 + scrollbar.width
 				textFormat: Text.PlainText
 				wrapMode: Text.WordWrap
-				font.pointSize: 11
+				font.pixelSize: 13
 				font.family: "Courier"
+				renderType: Text.NativeRendering
 			}
 
 			ScrollBar.vertical: PicoScrollBar {
 				id: scrollbar
+			}
+		}
+
+		Rectangle {
+			implicitHeight: 1
+			Layout.fillWidth: true
+			color: Theme.console.spacer
+		}
+
+		Rectangle {
+			height: 32
+			color: Theme.console.input.background
+			Layout.preferredHeight: height
+			Layout.maximumHeight: height
+			Layout.minimumHeight: height
+			Layout.fillWidth: true
+
+			TextInput {
+				objectName: "ConsoleInput"
+				height: 16
+				anchors.fill: parent
+				anchors.margins: 8
+
+				focus: true
+				color: Theme.console.input.text
+				selectByMouse: true
+				verticalAlignment: Text.AlignVCenter
+				font.pixelSize: 13
+				font.family: "Roboto Light"
+				renderType: Text.NativeRendering
+
+				signal commandEntered(string text)
+
+				onAccepted: {
+					console.log(text)
+					commandEntered(text)
+					text = ""
+				}
 			}
 		}
 	}

@@ -14,6 +14,7 @@ public:
 	QQuickItem* loadComponent(QUrl file);
 	void setDisplay(QQuickItem *display);
 	void addSidebarView(QQuickItem *item, QString id);
+	QQuickItem* consoleInputComponent();
 };
 
 #endif // PICOQMLENGINE_H

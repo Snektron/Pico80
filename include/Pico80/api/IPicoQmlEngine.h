@@ -25,6 +25,7 @@ public:
 	virtual QQuickItem* loadComponent(QUrl file) = 0;
 	virtual void setDisplay(QQuickItem *display) = 0;
 	virtual void addSidebarView(QQuickItem *item, QString id) = 0;
+	virtual QQuickItem* consoleInputComponent() = 0;
 	virtual ~IPicoQmlEngine() = default;
 };
 

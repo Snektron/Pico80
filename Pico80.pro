@@ -10,7 +10,6 @@ SOURCES += \
     src/main.cpp \
 	src/core/PluginManager.cpp \
     src/Pico80.cpp \
-    src/Settings.cpp \
 	src/gui/Logging.cpp \
     src/core/PicoSettings.cpp \
     src/gui/PluginModel.cpp \
@@ -26,7 +25,6 @@ SOURCES += \
 HEADERS += \
 	include/core/PluginManager.h \
     include/Pico80.h \
-    include/Settings.h \
 	include/gui/Logging.h \
     include/core/PicoSettings.h \
     include/gui/PluginModel.h \

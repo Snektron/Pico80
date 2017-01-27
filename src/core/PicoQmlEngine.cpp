@@ -34,3 +34,8 @@ void PicoQmlEngine::addSidebarView(QQuickItem *item, QString id)
 	item->setParentItem(sideBarContainer);
 	item->setProperty("id", id);
 }
+
+QQuickItem* PicoQmlEngine::consoleInputComponent()
+{
+	return findChild<QQuickItem*>("ConsoleInput");
+}

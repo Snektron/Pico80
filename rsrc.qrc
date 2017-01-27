@@ -6,13 +6,9 @@
         <file>fonts/fontawesome-webfont.ttf</file>
         <file>textures/palette.png</file>
         <file>qml/view/ConsoleView.qml</file>
-        <file>qml/view/DebugView.qml</file>
         <file>qml/view/SettingsView.qml</file>
         <file>qml/impl/Display.qml</file>
-        <file>fonts/OpenSans-Light.ttf</file>
-        <file>fonts/OpenSans-Regular.ttf</file>
         <file>fonts/Roboto-Light.ttf</file>
-        <file>fonts/Roboto-Thin.ttf</file>
         <file>theme/default.thm</file>
         <file>theme/test.thm</file>
         <file>qml/Pico80/Components/PicoButton.qml</file>

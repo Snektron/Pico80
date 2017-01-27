@@ -11,5 +11,6 @@ Row {
 		id: title
 		font.pointSize: 10
 		font.family: "Roboto Light"
+		renderType: Text.NativeRendering
 	}
 }

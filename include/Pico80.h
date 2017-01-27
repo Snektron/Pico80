@@ -11,8 +11,6 @@ class Pico80 : public QObject
 {
 	Q_OBJECT
 private:
-	PluginManager *manager;
-	PicoQml *pico;
 	PicoEngine *engine;
 	IEmulatorContext *emulator;
 

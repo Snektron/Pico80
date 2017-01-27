@@ -27,17 +27,17 @@ Column {
 			icon: modelData.icon
 			checked: currentIndex == index
 			onClicked: currentIndex = currentIndex == index ? -1 : index
-			Component.onDestruction: {
-				if (container && container.children.length >= 0)
-					currentIndex = 0
-				else
-					currentIndex = -1
-			}
 
 			Connections {
 				target: modelData
 				onShow: currentIndex = index
 			}
+		}
+
+		onModelChanged: {
+			var length = container.children.length
+			if (currentIndex >= length)
+				currentIndex = length > 0 ? 0 : -1
 		}
 	}
 }

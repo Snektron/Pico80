@@ -1,5 +1,6 @@
 #include "Pico80.h"
 #include <QDebug>
+#include <QString>
 #include "gui/Logging.h"
 #include "DefaultEmulatorContext.h"
 
@@ -9,25 +10,18 @@ Pico80::Pico80():
 	Logging::installMessageHandler();
 	qInfo() << "Starting";
 
-	manager = new PluginManager();
-	pico = new PicoQml(manager);
-	engine = new PicoEngine();
+	engine = new PicoEngine(QUrl("qrc:/qml/main.qml"));
 
-	connect(pico, SIGNAL(pluginChanged(QString)), this, SLOT(setEmulatorPlugin(QString)), Qt::QueuedConnection);
-
-	engine->rootContext()->setContextProperty("Pico", pico);
-	engine->qmlEngine()->load(QUrl("qrc:/qml/main.qml"));
+	connect(engine, SIGNAL(pluginChanged(QString)), this, SLOT(setEmulatorPlugin(QString)));
 
 	emulator = new DefaultEmulatorContext(engine);
 }
 
 Pico80::~Pico80()
 {
-	Logging::removeMessageHandler();
 	delete emulator;
 	delete engine;
-	delete pico;
-	delete manager;
+	Logging::removeMessageHandler();
 }
 
 void Pico80::setEmulatorPlugin(QString file)
@@ -36,7 +30,7 @@ void Pico80::setEmulatorPlugin(QString file)
 	emulator = Q_NULLPTR;
 	if (file != "")
 	{
-		IPlugin *plugin = manager->loadPluginByFile(file);
+		IPlugin *plugin = engine->pluginManager()->loadPluginByFile(file);
 		if (plugin)
 		{
 			qDebug() << "Activating plugin" << plugin->name();
