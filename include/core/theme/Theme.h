@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QVariant>
+#include <QString>
 #include "Pico80/api/ITheme.h"
 #include "core/theme/Node.h"
 

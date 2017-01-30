@@ -13,7 +13,6 @@ SOURCES += \
 	src/gui/Logging.cpp \
     src/core/PicoSettings.cpp \
     src/gui/PluginModel.cpp \
-    src/core/theme/ThemeEngine.cpp \
     src/core/theme/ThemeParser.cpp \
     src/core/PicoQmlEngine.cpp \
     src/DefaultEmulatorContext.cpp \
@@ -28,7 +27,6 @@ HEADERS += \
 	include/gui/Logging.h \
     include/core/PicoSettings.h \
     include/gui/PluginModel.h \
-    include/core/theme/ThemeEngine.h \
     include/core/theme/ThemeParser.h \
     include/core/PicoQmlEngine.h \
     include/Pico80/api/IEmulatorContext.h \

@@ -1,6 +1,8 @@
 #ifndef ITHEME_H
 #define ITHEME_H
 
+#include <QString>
+
 class ITheme
 {
 public:

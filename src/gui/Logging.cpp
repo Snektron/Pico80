@@ -79,7 +79,7 @@ void LogModel::write(QtMsgType type, const QMessageLogContext& ctx, const QStrin
 
 void LogModel::clear()
 {
-	beginRemoveRows(QModelIndex(), 0, log.size());
+	beginRemoveRows(QModelIndex(), 0, log.size() - 1);
 	foreach (LogEntry *entry, log)
 		delete entry;
 	log.clear();

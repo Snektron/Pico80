@@ -101,6 +101,7 @@ View {
 
 			TextInput {
 				objectName: "ConsoleInput"
+				id: consoleInput
 				height: 16
 				anchors.fill: parent
 				anchors.margins: 8
@@ -116,7 +117,7 @@ View {
 				signal commandEntered(string text)
 
 				onAccepted: {
-					console.log(text)
+					console.info(text)
 					commandEntered(text)
 					text = ""
 				}

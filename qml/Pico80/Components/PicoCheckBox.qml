@@ -11,6 +11,7 @@ CheckBox {
 	property alias checkSize: indicatorText.font.pointSize
 	property alias tooltip: tooltiparea.tooltip
 	property alias bgColor: indicator.color
+	property alias check: indicatorText.text
 
 	indicator: Rectangle {
 		id: indicator

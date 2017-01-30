@@ -4,7 +4,6 @@
 #include <QObject>
 #include "core/PluginManager.h"
 #include "core/PicoSettings.h"
-#include "core/theme/ThemeEngine.h"
 #include "gui/PluginModel.h"
 #include "gui/Logging.h"
 
