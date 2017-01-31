@@ -20,7 +20,7 @@ public:
 	QVariant toVariant();
 
 signals:
-	themeChanged();
+	void themeChanged();
 };
 
 #endif // THEME_H

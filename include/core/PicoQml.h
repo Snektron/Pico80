@@ -23,7 +23,7 @@ public:
 	LogModel* getLogModel();
 
 signals:
-	pluginChanged(QString file);
+	void pluginChanged(QString file);
 };
 
 #endif // PICOQML_H

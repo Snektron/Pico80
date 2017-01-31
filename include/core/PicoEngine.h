@@ -37,7 +37,7 @@ private slots:
 	void onThemeChanged();
 
 signals:
-	pluginChanged(QString filename);
+	void pluginChanged(QString filename);
 };
 
 #endif // PICOENGINE_H
